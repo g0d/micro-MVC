@@ -12,9 +12,13 @@ The main static class you need to call is "MICRO_MVC". Under MICRO_MVC you can c
 
 The small API provides just 5 calls:
 1. Go_To($mvc_route, $mvc_args = null) - Go to the specific route and optionally pass any information
+
 2. Setup_Route($mvc_route) - Setup a new route
+
 3. Get_Route($option) - Get this route or all routes [$option: "this" / "all"]
+
 4. Store_Content($mvc_var, $content) - Store any content for this route
+
 5. Show_Content($mvc_var) - Show any content stored for the route you are in now
 
 
