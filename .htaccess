@@ -1,0 +1,33 @@
+# HTACCESS configuration file
+
+Options All -Indexes
+Options +FollowSymLinks
+
+IndexIgnore *
+DirectorySlash on
+DirectoryIndex index.php
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(.*)/$
+
+# Fix trailing slash
+RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+
+# Manage pages
+RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
+
+# Prevent viewing of .htaccess
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
+<Files ~ "\.(phtml)$">
+    order allow,deny
+    deny from all
+</Files>
+
+# ----- End -----
