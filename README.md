@@ -11,6 +11,7 @@ micro-MVC is trying to be hassle free, straightforward and let you stay to the p
 The main static class you need to call is "MICRO_MVC". Under MICRO_MVC you can call the API.
 
 The small API provides just 5 calls:
+
 1. Go_To($mvc_route, $mvc_args = null) - Go to the specific route and optionally pass any information
 
 2. Setup_Route($mvc_route) - Setup a new route
@@ -20,6 +21,7 @@ The small API provides just 5 calls:
 4. Store_Content($mvc_var, $content) - Store any content for this route
 
 5. Show_Content($mvc_var) - Show any content stored for the route you are in now
+
 
 
 Best,
