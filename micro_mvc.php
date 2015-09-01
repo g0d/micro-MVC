@@ -15,7 +15,7 @@
     // MICRO_MVC class
     class MICRO_MVC
     {
-        // MVC_Go_To - MVC::Route front-end (Go to a virtual MVC route passing any arguments)
+        // MVC_Go_To - Go to a virtual MVC route passing any arguments
         public static function Go_To($mvc_route, $mvc_args = null)
         {
             return MVC::Route($mvc_route, $mvc_args);

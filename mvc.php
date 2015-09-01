@@ -27,30 +27,20 @@
             if (empty($method))
                 return false;
             
-            $this_route = self::Get_Route('this');
-            $all_mvc_routes = self::$__mvc_routes;
+            // Always include the root model
+            require_once('mvc/models/root.php');
             
-            foreach ($all_mvc_routes as $mvc_route)
-            {
-                if ($this_route == $mvc_route)
-                {
-                    // Always include the root model
-                    require_once('mvc/models/root.php');
-                    
-                    // Include the specified model
-                    require_once('mvc/models/' . $method . '.php');
-                    
-                    // Call the specified controller function (if it exists)
-                    if (in_array($method, get_class_methods('MVC_CONTROLLER')))
-                        MVC_CONTROLLER::$method($args);
-                    
-                    // Include the specified view
-                    require('mvc/views/' . $method . '.phtml');
-                    
-                    return true;
-                }
-            }
-            return false;
+            // Include the specified model
+            require_once('mvc/models/' . $method . '.php');
+            
+            // Call the specified controller function (if it exists)
+            if (in_array($method, get_class_methods('MVC_CONTROLLER')))
+                MVC_CONTROLLER::$method($args);
+            
+            // Include the specified view
+            require_once('mvc/views/' . $method . '.phtml');
+            
+            return true;
         }
         
         // Setup a virtual MVC route

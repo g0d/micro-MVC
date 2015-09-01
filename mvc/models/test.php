@@ -10,11 +10,11 @@
     */
     
     // TEST MODEL class
-    class TEST_MODEL
+    class TEST_MODEL extends ROOT_MODEL
     {
         public static function Get_Data()
         {
-            return 'This is a test!';
+            return 'This is a test view!';
         }
     }
 ?>

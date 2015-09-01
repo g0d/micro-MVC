@@ -9,7 +9,10 @@
         Copyright (C) 2015
     */
 
-	// Include MICRO MVC framework
+    // Enable/Disable errors
+    error_reporting(1);
+    
+    // Include MICRO MVC framework
     require('micro_mvc.php');
     
     // Setup new routes
@@ -27,7 +30,21 @@
     </head>
     <body>
     <?php
-        MICRO_MVC::Go_To($this_route);
+        $all_routes = MICRO_MVC::Get_Route('all');
+        
+        // Handle non existing pages
+        if (!in_array($this_route, $all_routes))
+        {
+            echo '<b>The page you requested does not exist!</b><br>';
+            
+            MICRO_MVC::Go_To('root');
+        }
+        else
+        {
+            $args = '';
+
+            MICRO_MVC::Go_To($this_route, $args);
+        }
     ?>
     </body>
 </html>
