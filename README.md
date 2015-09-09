@@ -2,7 +2,7 @@
 An agile, small, productive and robust MVC framework.
 
 micro-MVC is a simple, agile but concrete and powerful MVC framework that empowers developers to write 
-MVC-based code vey quickly. Although there are tons of free and open source MVC frameworks out there, they 
+MVC-based code very quickly. Although there are tons of free and open source MVC frameworks out there, they 
 usually end up to become too complicated and come with a bunch of infinite extensions that only 5% of devs 
 really use them.
 
@@ -22,7 +22,9 @@ The small API provides just 5 calls:
 
 5. Show_Content($mvc_var) - Show any content stored for the route you are in now
 
+* Note: It works out of the box for Apache. Please consult an expert if you use Nginx.
 
 
 Best,
+
 George Delaportas (ViR4X)
