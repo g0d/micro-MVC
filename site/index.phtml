@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/site/main.css">
+        <title>micro-MVC</title>
+    </head>
+    <body>
+    <?php
+        $all_routes = MVC::Get_Route('all');
+        
+        // Handle non existing pages
+        if (!in_array($this_route, $all_routes))
+            require('framework/errors/404.phtml');
+        
+        else
+        {
+            $args = '';
+
+            MVC::Go_To($this_route, $args);
+        }
+    ?>
+    </body>
+</html>

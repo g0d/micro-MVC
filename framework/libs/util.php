@@ -23,6 +23,12 @@
             return $final_path;
         }
         
+        // Normalize route
+        public static function Normalize_Route($mvc_route)
+        {
+            return str_replace('-', '_', str_replace('/', '_', $mvc_route));
+        }
+        
         // Convert any associative array mapped with one or more elements to an XML
         public static function Convert_Array_To_XML($elements, $data_array, $xml_file)
         {
@@ -173,13 +179,23 @@
                 return false;
         }
         
+        // Setup routes
+        public static function Setup_Routes()
+        {
+            $routes = file_get_contents('framework/config/routes.cfg');
+            $routes_array = explode(',', $routes);
+            
+            foreach ($routes_array as $route)
+                MVC::Set_Route($route);
+            
+            return true;
+        }
+        
         // Load extension
         public static function Load_Extension($extension, $ext_type)
         {
             if (empty($extension))
                 return false;
-            
-            $xml_array = array();
             
             // PHP extensions
             if ($ext_type == 'php')
@@ -201,10 +217,7 @@
                         {
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                             
-                            $xml_array = self::Convert_XML_To_Array($file['dirpath'] . '/' . $file_name . 'xml');
-                            
-                            if ($xml_array['status'] == '1' || $xml_array['status'] == 'on')
-                                require_once($file['dirpath'] . '/' . $file['filename']);
+                            require_once($file['dirpath'] . '/' . $file['filename']);
                         }
                     }
                     
@@ -229,10 +242,7 @@
                             {
                                 $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                                 
-                                $xml_array = self::Convert_XML_To_Array($file['dirpath'] . '/' . $file_name . 'xml');
-                                
-                                if ($xml_array['status'] == '1' || $xml_array['status'] == 'on')
-                                    require_once($file['dirpath'] . '/' . $file['filename']);
+                                require_once($file['dirpath'] . '/' . $file['filename']);
                                 
                                 break;
                             }
@@ -265,15 +275,7 @@
                             
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
                             
-                            $xml_array = self::Convert_XML_To_Array($file['dirpath'] . '/' . $file_name . 'xml');
-                            
-                            if ($xml_array['status'] == '1' || $xml_array['status'] == 'on')
-                            {
-                                if ($ext_type == 'js')
-                                    echo '<script type="text/javascript" src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
-                                else
-                                    echo '<script type="text/javascript" src="/framework/extensions/ajax/' . $dir_path . '/' . $file['filename'] . '"></script>';
-                            }
+                            echo '<script type="text/javascript" src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
                         }
                     }
                     
@@ -296,17 +298,11 @@
                             
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
                             
-                            $xml_array = self::Convert_XML_To_Array($file['dirpath'] . '/' . $file_name . 'xml');
-                            
-                            if ($xml_array['status'] == '1' || $xml_array['status'] == 'on')
+                            if ($file_ext == '.js')
                             {
-                                if ($file_ext == '.js')
-                                {
-                                    if ($ext_type == 'js')
-                                        echo '<script type="text/javascript" src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
-                                    
-                                    break;
-                                }
+                                echo '<script type="text/javascript" src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
+                                
+                                break;
                             }
                         }
                     }
@@ -314,9 +310,7 @@
                     return true;
                 }
                 
-                echo '<noscript>
-                        Your browser does not support Javascript!
-                      </noscript>';
+                echo '<noscript>Your browser does not support Javascript!</noscript>';
             }
             else
                 return false;

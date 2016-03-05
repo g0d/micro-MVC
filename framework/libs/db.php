@@ -16,7 +16,7 @@
         private static $__db_con = null;
         
         // Shared database configuration file
-        private static $__db_conf = 'db.cfg';
+        private static $__db_conf = 'framework/config/db.cfg';
         
         // Connect to the database
         public static function Connect($user, $pass, $domain, $db, $port = 3306)
@@ -63,7 +63,7 @@
         }
         
         // Store a database connection
-        public static function Store_DB_Con($user, $pass, $domain, $db, $port)
+        public static function Store_Connection($user, $pass, $domain, $db, $port)
         {
             if (empty($user) || empty($domain) || empty($db))
                 return false;
@@ -84,7 +84,7 @@
         }
         
         // Restore the database connection
-        public static function Restore_DB_Con()
+        public static function Restore_Connection()
         {
             $result = array();
             
@@ -106,7 +106,7 @@
         }
         
         // Use the current database connection
-        public static function Use_DB_Con()
+        public static function Use_Connection()
         {
             if (empty(self::$__db_con))
             {
@@ -129,7 +129,7 @@
         }
         
         // Delete the database connection
-        public static function Delete_DB_Con()
+        public static function Delete_Connection()
         {
             $file_handler = fopen(self::$__db_conf, 'w');
             
@@ -150,7 +150,7 @@
         }
         
         // Execute SQL commands
-        public static function Exec_SQL($sql_com)
+        public static function Exec_SQL_Command($sql_com)
         {
             if (empty($sql_com))
                 return false;

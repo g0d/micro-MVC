@@ -1,0 +1,34 @@
+/*
+    micro-MVC
+
+    File name: main.css
+    Description: This file contains the main CSS.
+
+    Coded by George Delaportas (ViR4X)
+    Copyright (C) 2015
+*/
+
+body
+{
+    font: 14px Verdana;
+    margin: 10px;
+    padding: 0px;
+}
+
+a
+{
+    color: #6495ED;
+}
+
+.error
+{
+    background-color: #FFBBBB;
+    color: #9A4444;
+    font-weight: bold;
+    text-align: center;
+    width: 30%;
+    height: auto;
+    margin: auto;
+    margin-top: 30px;
+    padding: 50px;
+}

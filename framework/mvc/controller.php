@@ -14,15 +14,17 @@
     {
         public static function root()
         {
-            $result = ROOT_MODEL::Get_Data();   
-            MICRO_MVC::Store_Content('root', $result);
+            $result = ROOT_MODEL::Get_Data();
+            MVC::Store_Content('root', $result);
+            
             return true;
         }
         
         public static function test()
         {
-            $result = TEST_MODEL::Get_Data();   
-            MICRO_MVC::Store_Content('test', $result);
+            $result = TEST_MODEL::Get_Data();
+            MVC::Store_Content('test', $result);
+            
             return true;
         }
     }

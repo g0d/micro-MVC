@@ -15,33 +15,12 @@
     // Include MICRO MVC framework
     require('framework/micro_mvc.php');
     
-    // Setup new routes
-    MICRO_MVC::Setup_Route('test');
+    // Load and setup all routes in config
+    UTIL::Setup_Routes();
     
     // Read current route
-    $this_route = MICRO_MVC::Get_Route('this');
+    $this_route = MVC::Get_Route('this');
+    
+    // Include index
+    require('site/index.phtml');
 ?>
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>micro-MVC</title>
-    </head>
-    <body>
-    <?php
-        $all_routes = MICRO_MVC::Get_Route('all');
-        
-        // Handle non existing pages
-        if (!in_array($this_route, $all_routes))
-            echo '<b>The page you requested does not exist!</b><br>';
-        
-        else
-        {
-            $args = '';
-
-            MICRO_MVC::Go_To($this_route, $args);
-        }
-    ?>
-    </body>
-</html>
