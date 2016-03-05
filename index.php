@@ -13,7 +13,7 @@
     error_reporting(E_ALL);
     
     // Include MICRO MVC framework
-    require('micro_mvc.php');
+    require('framework/micro_mvc.php');
     
     // Setup new routes
     MICRO_MVC::Setup_Route('test');

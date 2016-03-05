@@ -27,7 +27,7 @@
             if (empty($method))
                 return false;
             
-            $mvc_path = 'mvc/';
+            $mvc_path = 'framework/mvc/';
             
             // Always include the root model
             require($mvc_path . 'models/root.php');

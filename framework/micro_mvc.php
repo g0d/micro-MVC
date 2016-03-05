@@ -9,6 +9,15 @@
         Copyright (C) 2015
     */
     
+    // Include UTIL class
+    require('util.php');
+    
+    // Include DB class
+    require('db.php');
+    
+    // Include LANG class
+    require('lang.php');
+    
     // Include MVC class
     require('mvc.php');
     
