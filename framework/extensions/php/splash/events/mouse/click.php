@@ -4,7 +4,7 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: click.php
         Description: This file contains the server MOUSE CLICK event actions.

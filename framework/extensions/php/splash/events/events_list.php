@@ -4,10 +4,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: events_list.php
-        Description: This file contains the EVENTS LIST wrapper.
+        Description: This file contains the "EVENTS LIST" wrapper.
 
         Coded by George Delaportas (G0D)
 
@@ -21,10 +21,10 @@
     /* ------------------------ BEGIN ------------------------ */
 
     // Include MOUSE::CLICK event
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/events/mouse/click.php'));
+    require(UTIL::Absolute_Path('framework/extensions/php/splash/events/mouse/click.php'));
 
     // Include KEY::DOWN event
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/events/key/down.php'));
+    require(UTIL::Absolute_Path('framework/extensions/php/splash/events/key/down.php'));
 
     /* ------------------------- END ------------------------- */
 

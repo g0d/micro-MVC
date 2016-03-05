@@ -4,10 +4,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: list.php
-        Description: This file contains the LIST class.
+        Description: This file contains the "LIST" class.
 
         Coded by George Delaportas (G0D)
 
@@ -21,7 +21,7 @@
     /* ------------------------ BEGIN ------------------------ */
 
     // Include OPTION class
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/utilities/control/option.php'));
+    require_once(UTIL::Absolute_Path('framework/extensions/php/splash/utilities/control/option.php'));
 
     // Class: [CLIST]
     class CLIST extends OPTION
@@ -246,7 +246,7 @@
                                 return false;
 
                             $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 1, ';
 
                             if (empty($value[1]))
@@ -266,7 +266,7 @@
                                 return false;
 
                             $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 2, ';
 
                             if (empty($value[1]))
@@ -381,7 +381,7 @@
                                 return false;
 
                             $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 1, ';
 
                             if (empty($value[1]))
@@ -401,7 +401,7 @@
                                 return false;
 
                             $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 2, ';
 
                             if (empty($value[1]))

@@ -9,7 +9,7 @@
         Copyright (C) 2015
     */
     
-    // Enable/Disable errors
+    // Enable / Disable errors
     error_reporting(E_ALL);
     
     // Include MICRO MVC framework

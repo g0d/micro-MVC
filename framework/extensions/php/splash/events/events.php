@@ -4,10 +4,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: events.php
-        Description: This file contains the EVENTS wrapper.
+        Description: This file contains the "EVENTS" wrapper.
 
         Coded by George Delaportas (G0D)
 
@@ -28,10 +28,10 @@
     {
 
         // Include HELPERS class
-        require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
+        require(UTIL::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
 
         // Include EVENTS LIST wrapper
-        require_once('events_list.php');
+        require('events_list.php');
 
         HELPERS::Call_User_Function($_POST['splash_action']);
 
@@ -41,17 +41,14 @@
        $_POST['splash_ajax_post'] == 1 && !empty($_POST['splash_ajax_action']))
     {
 
-        // Include ALPHA Framework class
-        require('../../../../alpha.php');
-
-        // Include ALPHA CMS class
-        require('../../../../../cms/alpha_cms.php');
+        // Include micro-MVC framework
+        require('../../../../micro_mvc.php');
 
         // Include HELPERS class
-        require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
+        require(UTIL::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
 
         // Include EVENTS LIST wrapper
-        require_once('events_list.php');
+        require('events_list.php');
 
         HELPERS::Call_User_Function($_POST['splash_ajax_action']);
 

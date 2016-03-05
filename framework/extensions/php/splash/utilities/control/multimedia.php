@@ -5,10 +5,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: multimedia.php
-        Description: This file contains the MULTIMEDIA abstract class.
+        Description: This file contains the "MULTIMEDIA" abstract class.
 
         Coded by George Delaportas (G0D)
 
@@ -22,7 +22,7 @@
     /* ------------------------ BEGIN ------------------------ */
 
     // Include CONTROL class
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/classes/control.php'));
+    require_once(UTIL::Absolute_Path('framework/extensions/php/splash/classes/control.php'));
 
     // Utility: [MULTIMEDIA]
     abstract class MULTIMEDIA extends CONTROL

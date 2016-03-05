@@ -4,10 +4,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: control.php
-        Description: This file contains the CONTROL abstract class.
+        Description: This file contains the "CONTROL" abstract class.
 
         Coded by George Delaportas (G0D)
 
@@ -21,7 +21,7 @@
     /* ------------------------ BEGIN ------------------------ */
 
     // Include HELPERS class
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
+    require_once(UTIL::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
 
     // Class: [CONTROL]
     abstract class CONTROL

@@ -10,7 +10,7 @@
     */
     
     // Include MVC CONTROLLER class
-    require('framework/mvc/controller.php');
+    require(UTIL::Absolute_Path('framework/mvc/controller.php'));
     
     // MVC class
     class MVC

@@ -4,10 +4,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: button.php
-        Description: This file contains the BUTTON class.
+        Description: This file contains the "BUTTON" class.
 
         Coded by George Delaportas (G0D)
 
@@ -21,7 +21,7 @@
     /* ------------------------ BEGIN ------------------------ */
 
     // Include ACTION class
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/utilities/control/action.php'));
+    require_once(UTIL::Absolute_Path('framework/extensions/php/splash/utilities/control/action.php'));
 
     // Class: [BUTTON]
     class BUTTON extends ACTION
@@ -221,7 +221,7 @@
                                 return false;
 
                             $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 1, ';
 
                             if (empty($value[1]))
@@ -241,7 +241,7 @@
                                 return false;
 
                             $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 2, ';
 
                             if (empty($value[1]))
@@ -347,7 +347,7 @@
                                 return false;
 
                             $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 1, ';
 
                             if (empty($value[1]))
@@ -367,7 +367,7 @@
                                 return false;
 
                             $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         'framework/extensions/php/splash/events/events.php' . 
+                                         '/framework/extensions/php/splash/events/events.php' . 
                                          '\'' . ', 2, ';
 
                             if (empty($value[1]))

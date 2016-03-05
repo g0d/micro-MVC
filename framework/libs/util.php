@@ -217,7 +217,7 @@
                         {
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                             
-                            require_once($file['dirpath'] . '/' . $file['filename']);
+                            require($file['dirpath'] . '/' . $file['filename']);
                         }
                     }
                     
@@ -242,7 +242,7 @@
                             {
                                 $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                                 
-                                require_once($file['dirpath'] . '/' . $file['filename']);
+                                require($file['dirpath'] . '/' . $file['filename']);
                                 
                                 break;
                             }

@@ -4,7 +4,7 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: helpers.php
         Description: This file contains the HELPERS class.
@@ -26,6 +26,9 @@
 
         private static $TRUE = array(true, 1, 'true', '1', 'yes', 'on');
         private static $FALSE = array(false, 0, 'false', '0', 'no', 'off');
+        
+        private static $CREATE = array('CREATE', 'create', 1);
+        private static $DEBUG = array('DEBUG', 'debug', 2);
 
         public static function Is_Logic($value)
         {
@@ -33,9 +36,9 @@
             if (empty($value) || is_array($value))
                 return false;
 
-            $true_false_table = array_merge(self::$TRUE, self::$FALSE);
+            $true_false_array = array_merge(self::$TRUE, self::$FALSE);
 
-            $result = in_array($value, $true_false_table);
+            $result = in_array($value, $true_false_array);
 
             return $result;
 
@@ -82,10 +85,9 @@
         public static function Is_Valid_Mode($value)
         {
 
-            if (is_array($value))
-                return false;
+            $create_debug_array = array_merge(self::$CREATE, self::$DEBUG);
 
-            if (is_nan($value) || $value < 1 || $value > 2)
+            if (!in_array($value, $create_debug_array))
                 return false;
 
             return true;
@@ -153,6 +155,32 @@
                 return true;
 
             return false;
+
+        }
+
+        public static function Mode_Matches_Case($mode, $case)
+        {
+
+            if (!is_int($case) || $case < 1 || $case > 2)
+                return false;
+
+            if ($case == 1)
+            {
+
+                if (!in_array($mode, self::$CREATE))
+                    return false;
+
+            }
+
+            else
+            {
+
+                if (!in_array($mode, self::$DEBUG))
+                    return false;
+
+            }
+
+            return true;
 
         }
 

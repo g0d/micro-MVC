@@ -4,10 +4,10 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.0
+        Version: 4.2
 
         File name: browser.php
-        Description: This file contains the BROWSER abstract class.
+        Description: This file contains the "BROWSER" abstract class.
 
         Coded by George Delaportas (G0D)
 
@@ -21,14 +21,14 @@
     /* ------------------------ BEGIN ------------------------ */
 
     // Include WINDOW class
-    require_once(ALPHA_CMS::Absolute_Path('framework/extensions/php/splash/classes/window.php'));
+    require_once(UTIL::Absolute_Path('framework/extensions/php/splash/classes/window.php'));
 
     // Class: [BROWSER]
     class BROWSER extends WINDOW
     {
 
-            // To Do:
-            // Code here...
+        // To Do:
+        // Code here...
 
     }
 

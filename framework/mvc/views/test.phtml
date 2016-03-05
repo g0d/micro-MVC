@@ -12,8 +12,32 @@
 
         <div id="test">
         <?php
+            UTIL::Load_Extension('bull', 'js');
+            UTIL::Load_Extension('splash', 'php');
+            
             $result = MVC::Restore_Content('test');
             
-            echo '<p>' . $result . '</p>';
+            $splash = new SPLASH();
         ?>
+            <p><?php echo $result; ?></p>
+            <div id="test_data">
+                <div id="test_elements">
+                <?php
+                    echo $splash->Button('create', array('value' => 'Click me',
+                                                         'type' => 'button'),
+                                                   array('onajaxserverclick' => 
+                                                   array('Server_Mouse_Click(Hello World!)', 
+                                                         'test_results')));
+                    
+                    //print_r ($splash->Button('debug', array('value', 'id')));
+                ?>
+                </div>
+                <div id="test_results"></div>
+            </div>
+            
+            <script type="text/javascript">
+               var ajax = new bull();
+               
+               ajax.data('/framework/mvc/views/assets/test.php', 'id=1', 'test_results', false);
+            </script>
         </div>
