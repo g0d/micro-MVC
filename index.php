@@ -8,9 +8,9 @@
         Coded by George Delaportas (ViR4X)
         Copyright (C) 2015
     */
-
+    
     // Enable/Disable errors
-    error_reporting(1);
+    error_reporting(E_ALL);
     
     // Include MICRO MVC framework
     require('micro_mvc.php');
@@ -34,11 +34,8 @@
         
         // Handle non existing pages
         if (!in_array($this_route, $all_routes))
-        {
             echo '<b>The page you requested does not exist!</b><br>';
-            
-            MICRO_MVC::Go_To('root');
-        }
+        
         else
         {
             $args = '';

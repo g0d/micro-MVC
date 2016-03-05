@@ -27,18 +27,22 @@
             if (empty($method))
                 return false;
             
+            $mvc_path = 'mvc/';
+            
             // Always include the root model
-            require_once('mvc/models/root.php');
+            require($mvc_path . 'models/root.php');
             
             // Include the specified model
-            require_once('mvc/models/' . $method . '.php');
+            if (file_exists($mvc_path . 'models/' . $method . '.php'))
+                require_once($mvc_path . 'models/' . $method . '.php');
             
             // Call the specified controller function (if it exists)
             if (in_array($method, get_class_methods('MVC_CONTROLLER')))
                 MVC_CONTROLLER::$method($args);
             
             // Include the specified view
-            require_once('mvc/views/' . $method . '.phtml');
+            if (file_exists($mvc_path . 'views/' . $method . '.phtml'))
+                require($mvc_path . 'views/' . $method . '.phtml');
             
             return true;
         }
@@ -46,7 +50,7 @@
         // Setup a virtual MVC route
         public static function Set_Route($mvc_route)
         {
-            if (empty($mvc_route))
+            if (empty($mvc_route) || $mvc_route == 'root')
                 return false;
             
             array_push(self::$__mvc_routes, $mvc_route);
