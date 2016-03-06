@@ -13,6 +13,7 @@
         <div id="test" style="margin: auto; width: 10%;">
         <?php
             //UTIL::Load_Extension('bull', 'js');
+            UTIL::Load_Extension('vulcan', 'js');
             UTIL::Load_Extension('splash', 'php');
             
             $result = MVC::Restore_Content('test');
@@ -22,6 +23,7 @@
             <p><?php echo $result; ?></p>
             <div id="test_data">
                 <div id="test_elements">
+                    <input id="fileinput" name="file" type="file" required />
                 <?php
                     echo $splash->Button('create', array('value' => 'Click Me (AJAX Post)',
                                                          'type' => 'button'),
@@ -38,14 +40,31 @@
                                                    array('Server_Mouse_Click(Hello World!)', 
                                                          '/test')));
                     //print_r ($splash->Button('debug', array('value', 'id'), array('onserverclick')));
+                    
+                    echo '<br>';
+                    
+                    echo $splash->Button('create', array('value' => 'Send Form Data (AJAX Post)',
+                                                         'type' => 'button'),
+                                                   array('onclick' => 'sendDataToServer()'));
                 ?>
                 </div>
                 <div id="test_results"></div>
             </div>
             
             <script type="text/javascript">
+               var dom = new vulcan();
                var ajax = new bull();
                
                ajax.data('/framework/mvc/views/assets/test.php', 'id=1', 'test_results', false);
+               
+               function sendDataToServer()
+               {
+                    var fileInputElement = dom.objects.by_id('fileinput');
+                    var formData = new FormData();
+
+                    formData.append("userfile", fileInputElement.files[0]);
+
+                    ajax.data('/framework/mvc/views/assets/test.php', formData, 'test_results', false);
+               }
             </script>
         </div>

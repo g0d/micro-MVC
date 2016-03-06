@@ -19,44 +19,52 @@ function bull()
     function utilities()
     {
         var me = this;
-
+        
         this.is_undefined = function(val)
         {
             if (val === undefined)
                 return true;
-
+            
             return false;
         };
-
+        
         this.is_invalid = function(val)
         {
             if (me.is_undefined(val) || val === null || val === '')
                 return true;
-
+            
             return false;
         };
-
+        
         this.is_bool = function(val)
         {
             if (typeof val === 'boolean')
                 return true;
-
+            
             return false;
         };
-
+        
         this.is_integer = function(val)
         {
             if (!isNaN(val) && (val % 1 === 0))
                 return true;
-
+            
             return false;
         };
-
+        
         this.is_function = function(val)
         {
             if (typeof val === 'function')
                 return true;
-
+            
+            return false;
+        };
+        
+        this.is_object = function(val)
+        {
+            if (typeof val === 'object')
+                return true;
+            
             return false;
         };
     }
@@ -75,7 +83,10 @@ function bull()
                 
                 __xml_http.open('POST', url, mode);
                 __xml_http.setRequestHeader('Access-Control-Allow-Origin', '*');
-                __xml_http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                
+                if (!utils.is_object(data))
+                    __xml_http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                
                 __xml_http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 
                 if (mode === true)
