@@ -10,9 +10,9 @@
     */
 ?>
 
-        <div id="test">
+        <div id="test" style="margin: auto; width: 10%;">
         <?php
-            UTIL::Load_Extension('bull', 'js');
+            //UTIL::Load_Extension('bull', 'js');
             UTIL::Load_Extension('splash', 'php');
             
             $result = MVC::Restore_Content('test');
@@ -23,13 +23,21 @@
             <div id="test_data">
                 <div id="test_elements">
                 <?php
-                    echo $splash->Button('create', array('value' => 'Click me',
+                    echo $splash->Button('create', array('value' => 'Click Me (AJAX Post)',
                                                          'type' => 'button'),
                                                    array('onajaxserverclick' => 
                                                    array('Server_Mouse_Click(Hello World!)', 
                                                          'test_results')));
+                    //print_r ($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
                     
-                    //print_r ($splash->Button('debug', array('value', 'id')));
+                    echo '<br>';
+                    
+                    echo $splash->Button('create', array('value' => 'Click Me (Form Post)',
+                                                         'type' => 'button'),
+                                                   array('onserverclick' => 
+                                                   array('Server_Mouse_Click(Hello World!)', 
+                                                         '/test')));
+                    //print_r ($splash->Button('debug', array('value', 'id'), array('onserverclick')));
                 ?>
                 </div>
                 <div id="test_results"></div>
