@@ -8,7 +8,7 @@
     Coded by George Delaportas (G0D)
     Contributions by Catalin Maftei
     
-    Copyright © 2013 - 2015
+    Copyright © 2013 - 2016
 
 */
 
