@@ -1,18 +1,23 @@
-<?php
-    /*
-        micro-MVC
-        
-        File name: root.phtml
-        Description: This file contains the "root" view.
-        
-        Coded by George Delaportas (ViR4X)
-        Copyright (C) 2015
-    */
+<?
+    UTIL::Load_Extension('content_fetcher', 'js');
 ?>
+            <div id="root" class="page">
+                <div class="content">
+                    <?UTIL::Load_File('root');?>
+                    <div class="controls">
+                        <br>
+                        <div class="control_item">
+                            <a id="index_button" class="button" href="test">
+                                <?UTIL::Load_File('go_to_button_text');?>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div id="root">
-            <p>Welcome to micro-MVC</p>
-            <br>
-            <br>
-            <a href="/test/">Test me!</a>
-        </div>
+<script>
+    ultron(function(event)
+           {
+                
+           });
+</script>

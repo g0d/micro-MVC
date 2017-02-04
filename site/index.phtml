@@ -2,23 +2,36 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="icon" type="image/png" href="/site/pix/micro_mvc_icon.png">
         <link rel="stylesheet" href="/site/main.css">
-        <title>micro-MVC</title>
+        <?
+            UTIL::Load_Extension('vulcan', 'js');
+            UTIL::Load_Extension('bull', 'js');
+            UTIL::Load_Extension('ultron', 'js');
+        ?>
+        <title><?UTIL::Load_File('title');?></title>
     </head>
     <body>
-    <?php
-        $all_routes = MVC::Get_Route('all');
-        
-        // Handle non existing pages
-        if (!in_array($this_route, $all_routes))
-            require('framework/errors/404.phtml');
-        
-        else
-        {
-            $args = '';
-
-            MVC::Go_To($this_route, $args);
-        }
-    ?>
+        <div id="main">
+        <?
+            require('sections/header.phtml');
+            
+            if (UTIL::Get_Variable('this_route') === 'root')
+                MVC::Go_To(UTIL::Get_Variable('this_route'));
+            else
+            {
+                if (!in_array(UTIL::Get_Variable('this_route'), UTIL::Get_Variable('all_routes')))
+                    require('framework/errors/404.phtml');
+                else
+                {
+                    $args = '';
+                    
+                    MVC::Go_To(UTIL::Get_Variable('this_route'), $args);
+                }
+            }
+            
+            require('sections/footer.phtml');
+        ?>
+        </div>
     </body>
 </html>

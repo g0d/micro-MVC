@@ -1,12 +1,11 @@
 /*
 
-    Vulcan - General JS Programming Utilities
+    Vulcan (General JS Programming Utilities)
     
-    File name: vulcan.js (Version: 0.2)
+    File name: vulcan.js (Version: 0.5)
     Description: This file contains the Vulcan - General JS Programming Utilities.
     
     Coded by George Delaportas (G0D)
-    
     Copyright © 2014
 
 */
@@ -56,7 +55,7 @@ function vulcan()
 
             this.is_integer = function(val)
             {
-                if (me.is_number(val) && (val % 1 === 0))
+                if (me.is_number(val) && (val % 1 === 0) && (val.toString().indexOf('.') === -1))
                     return true;
 
                 return false;
@@ -102,7 +101,7 @@ function vulcan()
 
             this.is_array = function(val)
             {
-                if (Object.prototype.toString.call(val) === '[object Array]')
+                if (Array.isArray(val))
                     return true;
 
                 return false;
@@ -280,7 +279,9 @@ function vulcan()
                 self.validation.alpha.is_symbol(func) || !self.validation.misc.is_function(handler))
                 return false;
 
-            if (self.validation.misc.is_undefined(object.length) || self.validation.misc.is_undefined(object.item)) // Single element
+            if (object.tagName === 'SELECT' || 
+                self.validation.misc.is_undefined(object.length) || 
+                self.validation.misc.is_undefined(object.item)) // Single element
             {
                 if (!__controller.insert(caller_id, object, func, handler))
                     return false;
@@ -311,7 +312,9 @@ function vulcan()
 
             var __handler = null;
 
-            if (self.validation.misc.is_undefined(object.length) || self.validation.misc.is_undefined(object.item))
+            if (object.tagName === 'SELECT' || 
+                self.validation.misc.is_undefined(object.length) || 
+                self.validation.misc.is_undefined(object.item)) // Single element
             {
                 __handler = __controller.fetch(caller_id, object, func, handler);
 
@@ -320,7 +323,7 @@ function vulcan()
 
                 object.removeEventListener(func, __handler, false);
             }
-            else
+            else // Multiple elements
             {
                 var __object_length = object.length;
 

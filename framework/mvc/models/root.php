@@ -9,6 +9,10 @@
         Copyright (C) 2015
     */
     
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+    
     // ROOT MODEL class
     class ROOT_MODEL
     {

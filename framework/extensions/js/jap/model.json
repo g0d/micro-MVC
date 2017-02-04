@@ -1,0 +1,18 @@
+{ 	(ignore_keys_num: 	true|false), 	// (Optional) - Default: false
+	arguments: 	[
+					{
+						key 	:	
+									{
+										name		:	'a key name',
+										optional	:	true|false
+									},
+						value 	:	
+									{
+										type		:	'number|string|boolean|array|object|function|null|*(any)',	
+										(length		:	1 - ...), 							// (Optional)
+										(regex 		: 	/any valid regular expression/) 	// (Optional)
+									},
+					},
+					// As many objects you like...
+				]
+}

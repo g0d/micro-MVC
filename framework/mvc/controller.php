@@ -9,6 +9,10 @@
         Copyright (C) 2015
     */
     
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+    
     // MVC CONTROLLER class
     class MVC_CONTROLLER
     {
@@ -20,6 +24,7 @@
             return true;
         }
         
+        // Test route
         public static function test()
         {
             $result = TEST_MODEL::Get_Data();

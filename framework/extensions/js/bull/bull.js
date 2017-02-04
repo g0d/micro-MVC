@@ -2,73 +2,17 @@
 
     BULL (AJAX System/Framework)
     
-    File name: bull.js (Version: 14.2)
+    File name: bull.js (Version: 15.1)
     Description: This file contains the BULL - AJAX System/Framework.
     
-    Coded by George Delaportas (G0D)
-    Contributions by Catalin Maftei
-    
-    Copyright © 2013 - 2016
+    Coded by George Delaportas (G0D) / Contributions by Catalin Maftei
+    Copyright © 2013
 
 */
 
 // BULL
 function bull()
 {
-    // General utilities
-    function utilities()
-    {
-        var me = this;
-        
-        this.is_undefined = function(val)
-        {
-            if (val === undefined)
-                return true;
-            
-            return false;
-        };
-        
-        this.is_invalid = function(val)
-        {
-            if (me.is_undefined(val) || val === null || val === '')
-                return true;
-            
-            return false;
-        };
-        
-        this.is_bool = function(val)
-        {
-            if (typeof val === 'boolean')
-                return true;
-            
-            return false;
-        };
-        
-        this.is_integer = function(val)
-        {
-            if (!isNaN(val) && (val % 1 === 0))
-                return true;
-            
-            return false;
-        };
-        
-        this.is_function = function(val)
-        {
-            if (typeof val === 'function')
-                return true;
-            
-            return false;
-        };
-        
-        this.is_object = function(val)
-        {
-            if (typeof val === 'object')
-                return true;
-            
-            return false;
-        };
-    }
-    
     // AJAX core infrastructure
     function core()
     {
@@ -78,13 +22,15 @@ function bull()
         {
             this.http_session = function(url, data, mode)
             {
-                if (utils.is_undefined(url) || utils.is_undefined(data) || !utils.is_bool(mode))
+                if (utils.validation.misc.is_undefined(url) || 
+                    utils.validation.misc.is_undefined(data) || 
+                    !utils.validation.misc.is_bool(mode))
                     return false;
                 
                 __xml_http.open('POST', url, mode);
                 __xml_http.setRequestHeader('Access-Control-Allow-Origin', '*');
                 
-                if (!utils.is_object(data))
+                if (!utils.validation.misc.is_object(data))
                     __xml_http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 
                 __xml_http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -116,8 +62,13 @@ function bull()
         function state_changed()
         {
             if (__is_time_out === true)
+            {
+                if (utils.validation.misc.is_function(__timeout_callback))
+                    __timeout_callback.call(this, result());
+                
                 return false;
-            
+            }
+
             if (__xml_http.readyState === 4)
             {
                 __ajax_response = null;
@@ -130,7 +81,7 @@ function bull()
                     {
                         var __container = document.getElementById(__data_div_id);
                         
-                        if (utils.is_invalid(__container))
+                        if (utils.validation.misc.is_invalid(__container))
                             return false;
                         
                         __ajax_response = __xml_http.responseText;
@@ -141,23 +92,15 @@ function bull()
                             __container.innerHTML += __ajax_response;
                     }
                     
-                    if (utils.is_function(__success_callback))
-                    {
+                    if (utils.validation.misc.is_function(__success_callback))
                         __success_callback.call(this, result());
-                        
-                        __success_callback = null;
-                    }
                     
                     return true;
                 }
                 else
                 {
-                    if (utils.is_function(__fail_callback))
-                    {
+                    if (utils.validation.misc.is_function(__fail_callback))
                         __fail_callback.call(this, result());
-                        
-                        __fail_callback = null;
-                    }
                 }
             }
             
@@ -166,7 +109,7 @@ function bull()
         
         function result()
         {
-            if (utils.is_undefined(__ajax_response))
+            if (utils.validation.misc.is_undefined(__ajax_response))
                 return null;
             
             return __ajax_response;
@@ -179,46 +122,59 @@ function bull()
             return true;
         }
         
-        this.data = function(url, data, element_id, content_fill_mode, success_callback, request_time_out, fail_callback)
+        this.data = function(url, data, element_id, content_fill_mode, 
+                             success_callback, request_timeout, timeout_callback, fail_callback)
         {
-            if (utils.is_invalid(url) || (utils.is_invalid(data) && data !== '') || utils.is_invalid(element_id) || 
-                (!utils.is_invalid(content_fill_mode) && !utils.is_bool(content_fill_mode)) || 
-                (!utils.is_invalid(success_callback) && !utils.is_function(success_callback)) || 
-                (!utils.is_invalid(fail_callback) && !utils.is_function(fail_callback)) || 
-                (!utils.is_invalid(request_time_out) && (!utils.is_integer(request_time_out) || request_time_out < 1)))
+            if (utils.validation.misc.is_invalid(url) || (utils.validation.misc.is_invalid(data) && data !== '') || 
+                utils.validation.misc.is_invalid(element_id) || 
+                (!utils.validation.misc.is_invalid(content_fill_mode) && !utils.validation.misc.is_bool(content_fill_mode)) || 
+                (!utils.validation.misc.is_invalid(success_callback) && !utils.validation.misc.is_function(success_callback)) || 
+                (!utils.validation.misc.is_invalid(fail_callback) && !utils.validation.misc.is_function(fail_callback)) || 
+                (!utils.validation.misc.is_invalid(request_timeout) && 
+                 (!utils.validation.numerics.is_integer(request_timeout) || request_timeout < 1)) || 
+                (!utils.validation.misc.is_invalid(timeout_callback) && 
+                (!utils.validation.misc.is_function(timeout_callback) || 
+                 !utils.validation.numerics.is_integer(request_timeout) || request_timeout < 1)))
                 return false;
             
             __data_div_id = element_id;
             
-            __content_fill_mode = content_fill_mode;
+            if (utils.validation.misc.is_bool(content_fill_mode))
+                __content_fill_mode = content_fill_mode;
             
-            if (utils.is_integer(request_time_out))
-                setTimeout(function() { __is_time_out = true; }, request_time_out);
+            if (utils.validation.numerics.is_integer(request_timeout))
+                setTimeout(function() { __is_time_out = true; }, request_timeout);
             
             __success_callback = success_callback;
             __fail_callback = fail_callback;
+            __timeout_callback = timeout_callback;
             
             ajax.http_session(url, data, true);
             
             return null;
         };
         
-        this.request = function(url, data, ajax_mode, success_callback, request_time_out, fail_callback)
+        this.request = function(url, data, ajax_mode, success_callback, request_timeout, 
+                                timeout_callback, fail_callback)
         {
-            if (utils.is_invalid(url) || (utils.is_invalid(data) && data !== '') || 
-                (!utils.is_integer(ajax_mode) || ajax_mode < 1 || ajax_mode > 2) || 
-                (!utils.is_invalid(success_callback) && !utils.is_function(success_callback)) || 
-                (!utils.is_invalid(fail_callback) && !utils.is_function(fail_callback)) || 
-                (!utils.is_invalid(request_time_out) && (!utils.is_integer(request_time_out) || request_time_out < 1)))
+            if (utils.validation.misc.is_invalid(url) || (utils.validation.misc.is_invalid(data) && data !== '') || 
+                (!utils.validation.numerics.is_integer(ajax_mode) || ajax_mode < 1 || ajax_mode > 2) || 
+                (!utils.validation.misc.is_invalid(success_callback) && !utils.validation.misc.is_function(success_callback)) || 
+                (!utils.validation.misc.is_invalid(fail_callback) && !utils.validation.misc.is_function(fail_callback)) || 
+                (!utils.validation.misc.is_invalid(request_timeout) && 
+                 (!utils.validation.numerics.is_integer(request_timeout) || request_timeout < 1)) || 
+                (!utils.validation.misc.is_invalid(timeout_callback) && (!utils.validation.misc.is_function(timeout_callback) || 
+                 !utils.validation.numerics.is_integer(request_timeout) || request_timeout < 1)))
                 return false;
             
             __data_div_id = null;
             
-            if (utils.is_integer(request_time_out))
-                setTimeout(function() { __is_time_out = true; }, request_time_out);
+            if (utils.validation.numerics.is_integer(request_timeout))
+                setTimeout(function() { __is_time_out = true; }, request_timeout);
             
             __success_callback = success_callback;
             __fail_callback = fail_callback;
+            __timeout_callback = timeout_callback;
             
             if (ajax_mode === 1)
                 ajax.http_session(url, data, true);
@@ -226,7 +182,7 @@ function bull()
             {
                 ajax.http_session(url, data, false);
                 
-                if (__ajax_response !== null && !utils.is_undefined(__ajax_response))
+                if (__ajax_response !== null && !utils.validation.misc.is_undefined(__ajax_response))
                     return __ajax_response;
             }
             
@@ -239,6 +195,7 @@ function bull()
             __content_fill_mode = false,
             __success_callback = null,
             __fail_callback = null,
+            __timeout_callback = null,
             __is_time_out = false,
             ajax = new ajax_model();
         
@@ -246,20 +203,24 @@ function bull()
     }
     
     // AJAX data (Asynchronous)
-    this.data = function(url, data, element_id, content_fill_mode, success_callback, request_time_out, fail_callback)
+    this.data = function(url, data, element_id, content_fill_mode, 
+                         success_callback, request_timeout, timeout_callback, fail_callback)
     {
         var bull_core = new core();
         
-        return bull_core.data(url, data, element_id, content_fill_mode, success_callback, request_time_out, fail_callback);
+        return bull_core.data(url, data, element_id, content_fill_mode, 
+                              success_callback, request_timeout, timeout_callback, fail_callback);
     };
     
     // AJAX request (Asynchronous / Synchronous)
-    this.request = function(url, data, ajax_mode, success_callback, request_time_out, fail_callback)
+    this.request = function(url, data, ajax_mode, success_callback, request_timeout, 
+                            timeout_callback, fail_callback)
     {
         var bull_core = new core();
         
-        return bull_core.request(url, data, ajax_mode, success_callback, request_time_out, fail_callback);
+        return bull_core.request(url, data, ajax_mode, success_callback, request_timeout, 
+                                 timeout_callback, fail_callback);
     };
     
-    var utils = new utilities();
+    var utils = new vulcan();
 }

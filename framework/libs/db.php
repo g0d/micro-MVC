@@ -6,8 +6,12 @@
         Description: This file contains the "DB" class.
         
         Coded by George Delaportas (ViR4X)
-        Copyright (C) 2016
+        Copyright (C) 2015
     */
+    
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
     
     // DB class
     class DB
@@ -88,7 +92,7 @@
         {
             $result = array();
             
-            $file_handler = fopen(self::$__db_conf, 'r');
+            $file_handler = fopen(UTIL::Absolute_Path(self::$__db_conf), 'r');
             
             if ($file_handler === false)
                 return false;
@@ -112,7 +116,7 @@
             {
                 $con_array = array();
                 
-                $con_array = self::Restore_DB_Con();
+                $con_array = self::Restore_Connection();
                 
                 if ($con_array === false)
                     return false;
@@ -131,7 +135,7 @@
         // Delete the database connection
         public static function Delete_Connection()
         {
-            $file_handler = fopen(self::$__db_conf, 'w');
+            $file_handler = fopen(UTIL::Absolute_Path(self::$__db_conf), 'w');
             
             if ($file_handler === false)
                 return false;
@@ -155,7 +159,7 @@
             if (empty($sql_com))
                 return false;
             
-            $mysql_con = self::Use_DB_Con();
+            $mysql_con = self::Use_Connection();
             
             if ($mysql_con === false)
                 return false;
@@ -187,7 +191,7 @@
             if ($mysql_multi_query === false)
                 return false;
             
-            $mysql_con = self::Use_DB_Con();
+            $mysql_con = self::Use_Connection();
             
             if ($mysql_con === false)
                 return false;

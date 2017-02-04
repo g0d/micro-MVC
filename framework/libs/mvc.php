@@ -9,6 +9,10 @@
         Copyright (C) 2015
     */
     
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+    
     // Include MVC CONTROLLER class
     require(UTIL::Absolute_Path('framework/mvc/controller.php'));
     
@@ -50,26 +54,47 @@
         // Set a virtual MVC route
         public static function Set_Route($mvc_route)
         {
-            if (empty($mvc_route) || $mvc_route == 'root')
+            $fixed_route = trim($mvc_route);
+            
+            if (empty($fixed_route) || $fixed_route === 'root')
                 return false;
             
-            array_push(self::$__mvc_routes, UTIL::Normalize_Route($mvc_route));
+            array_push(self::$__mvc_routes, UTIL::Normalize_Route($fixed_route));
             
             return true;
         }
         
-        // Get current or all virtual MVC routes ("this" / "all")
-        public static function Get_Route($option)
+        // Get current or all virtual MVC routes ("this" / "all") passing any language code
+        public static function Get_Route($option, $lang = null)
         {
-            if ($option == 'this')
+            if ($option === 'this')
             {
                 $result = UTIL::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
                 
-                if ($result == '')
+                if ($lang !== null)
+                {
+                    if ($lang !== '*')
+                    {
+                        if (LANG::Exists($lang) === false)
+                            return false;
+                    }
+                    
+                    $result = substr($result, 3);
+                }
+                
+                if ($result === 'root')
+                    return false;
+                
+                if ($result === '' || $result === false)
                     $result = 'root';
             }
-            elseif ($option == 'all')
+            elseif ($option === 'all')
+            {
+                if ($lang !== null)
+                    return false;
+                
                 $result = self::$__mvc_routes;
+            }
             else
                 return false;
             

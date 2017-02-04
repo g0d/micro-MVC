@@ -6,12 +6,65 @@
         Description: This file contains the "UTIL" class.
         
         Coded by George Delaportas (ViR4X)
-        Copyright (C) 2016
+        Copyright (C) 2015
     */
+    
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
     
     // UTIL class
     class UTIL
     {
+        // Configuration importer
+        private static function Config_Importer($config_file, $delimiter = null)
+        {
+            $file_result = file_get_contents(self::Absolute_Path('framework/config/') . $config_file . '.cfg');
+
+            if ($file_result === false)
+                return false;
+
+            if ($delimiter === null)
+                $results = trim($file_result);
+            else
+                $results = explode($delimiter, trim($file_result));
+
+            return $results;
+        }
+
+        // Setup languages
+        public static function Setup_Languages()
+        {
+            $langs_array = self::Config_Importer('langs', ',');
+            
+            foreach ($langs_array as $lang)
+                LANG::Set($lang);
+            
+            return true;
+        }
+        
+        // Setup routes
+        public static function Setup_Routes()
+        {
+            $routes_array = self::Config_Importer('routes', ',');
+            
+            foreach ($routes_array as $route)
+                MVC::Set_Route($route);
+            
+            return true;
+        }
+
+        // Load registered activities (Fortress gates)
+        public static function Load_Activities()
+        {
+            $result = json_decode(self::Config_Importer('gates'), true);
+
+            if (json_last_error() !== JSON_ERROR_NONE)
+                return false;
+
+            return $result;
+        }
+        
         // Absolute system path of a relative file path
         public static function Absolute_Path($file_path = null)
         {
@@ -23,10 +76,136 @@
             return $final_path;
         }
         
+        // Fetch the language code from route
+        public static function Fetch_Route_Lang()
+        {
+            $normalized_route = self::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
+            $dash_pos = strpos($normalized_route, '_');
+            
+            if ($dash_pos === false)
+                $lang = substr($normalized_route, 0);
+            else
+                $lang = substr($normalized_route, 0, $dash_pos);
+
+            return $lang;
+        }
+        
+        // Check for language code in route
+        public static function Check_Route_Lang()
+        {
+            $lang = self::Fetch_Route_Lang();
+            
+            if (LANG::Verify($lang) === false)
+                return false;
+            
+            return true;
+        }
+        
         // Normalize route
         public static function Normalize_Route($mvc_route)
         {
+            if (empty($mvc_route))
+                return false;
+            
             return str_replace('-', '_', str_replace('/', '_', $mvc_route));
+        }
+        
+        // Denormalize route
+        public static function Denormalize_Route($mvc_route)
+        {
+            if (empty($mvc_route))
+                return false;
+            
+            return str_replace('_', '-', str_replace('_', '/', $mvc_route));
+        }
+        
+        // Set a new variable and put data (optional)
+        public static function Set_Variable($variable_name, $variable_data = null)
+        {
+            if (empty($variable_name))
+                return false;
+            
+            $_SESSION['micro_mvc'][$variable_name] = $variable_data;
+            
+            return true;
+        }
+
+        // Get data from a previously set variable
+        public static function Get_Variable($variable_name)
+        {
+            if (empty($variable_name))
+                return null;
+            
+            return $_SESSION['micro_mvc'][$variable_name];
+        }
+
+        // Check if content code has data and return the filename for a specific language code (optional)
+        public static function Content_Data($content_code, $lang = null)
+        {
+            if (empty($content_code))
+                return false;
+            
+            if ($lang !== null)
+            {
+                if (LANG::Verify($lang) === false)
+                    return false;
+                
+                $this_lang = $lang;
+            }
+            else
+                $this_lang = LANG::Get('this');
+            
+            $filename = self::Absolute_Path('framework/mvc/views/content/') . $this_lang . '/' . $content_code . '.phtml';
+            
+            if (file_exists($filename) === false)
+                return false;
+            
+            return $filename;
+        }
+
+        // Load file using a specific language code (optional)
+        public static function Load_File($content_code, $lang = null)
+        {
+            $filename = self::Content_Data($content_code, $lang);
+
+            if ($filename === false)
+                return false;
+            
+            require($filename);
+            
+            return true;
+        }
+        
+        // Load file contents using a specific language code (optional)
+        public static function Load_File_Contents($content_code, $lang = null)
+        {
+            $filename = self::Content_Data($content_code, $lang);
+
+            if ($filename === false)
+                return false;
+            
+            return trim(file_get_contents($filename));
+        }
+        
+        // Fetch a template passing arguments (optional)
+        public static function Fetch_Template($template_name, $arguments_array = null)
+        {
+            if (empty($template_name) || ($arguments_array !== null && is_array($arguments_array) && count($arguments_array) !== 2))
+                return false;
+            
+            $filename = self::Absolute_Path('framework/templates/') . $template_name . '.phtml';
+            
+            if (file_exists($filename) === false)
+                return false;
+            
+            $template = file_get_contents($filename);
+            
+            if ($arguments_array === null)
+                $result = $template;
+            else
+                $result = str_replace($arguments_array[0], $arguments_array[1], $template);
+            
+            return $result;
         }
         
         // Convert any associative array mapped with one or more elements to an XML
@@ -86,7 +265,7 @@
         // Convert any valid XML file into an associative array map
         public static function Convert_XML_To_Array($xml, $callback = null, $recursive = false)
         {
-            $new_data = (!$recursive && file_get_contents($xml))? simplexml_load_file($xml): $xml;
+            $new_data = (!$recursive && file_get_contents(self::Absolute_Path($xml)))? simplexml_load_file($xml): $xml;
             
             if ($new_data instanceof SimpleXMLElement)
                 $new_data = (array)$new_data;
@@ -107,7 +286,7 @@
             {
                 for ($list = array(), $handle = opendir($dir); (($file = readdir($handle)) != false);)
                 {
-                    if (($file != '.' && $file != '..') && (file_exists($path = $dir . '/' . $file)))
+                    if (($file !== '.' && $file !== '..') && (file_exists($path = $dir . '/' . $file)))
                     {
                         if (is_dir($path) && ($recursive))
                             $list = array_merge($list, self::Process_Dir($path, true));
@@ -150,9 +329,9 @@
                  
                  foreach ($files as $this_file)
                  {
-                   if ($this_file != '.' && $this_file != '..')
+                   if ($this_file !== '.' && $this_file !== '..')
                    {
-                       if (filetype($dir . '/' . $this_file) == 'dir')
+                       if (filetype($dir . '/' . $this_file) === 'dir')
                        {
                            $result = Delete_Dir($dir . '/' . $this_file);
                            
@@ -178,19 +357,7 @@
             else
                 return false;
         }
-        
-        // Setup routes
-        public static function Setup_Routes()
-        {
-            $routes = file_get_contents('framework/config/routes.cfg');
-            $routes_array = explode(',', $routes);
-            
-            foreach ($routes_array as $route)
-                MVC::Set_Route($route);
-            
-            return true;
-        }
-        
+
         // Load extension
         public static function Load_Extension($extension, $ext_type)
         {
@@ -198,9 +365,9 @@
                 return false;
             
             // PHP extensions
-            if ($ext_type == 'php')
+            if ($ext_type === 'php')
             {
-                if ($extension == 'all')
+                if ($extension === 'all')
                 {
                     $result = self::Process_Dir(self::Absolute_Path('framework/extensions/php'), true);
                     
@@ -213,11 +380,11 @@
                     {
                         $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
                         
-                        if ($file_ext == 'php')
+                        if ($file_ext === 'php')
                         {
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                             
-                            require($file['dirpath'] . '/' . $file['filename']);
+                            require_once($file['dirpath'] . '/' . $file['filename']);
                         }
                     }
                     
@@ -234,15 +401,15 @@
                     // Load this extension
                     foreach ($result as $file)
                     {
-                        if (mb_substr($file['filename'], 0, strlen($file['filename']) - 4, 'utf8') == $extension)
+                        if (mb_substr($file['filename'], 0, strlen($file['filename']) - 4, 'utf8') === $extension)
                         {
                             $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
                             
-                            if ($file_ext == 'php')
+                            if ($file_ext === 'php')
                             {
                                 $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                                 
-                                require($file['dirpath'] . '/' . $file['filename']);
+                                require_once($file['dirpath'] . '/' . $file['filename']);
                                 
                                 break;
                             }
@@ -254,9 +421,9 @@
             }
             
             // Javascript extensions
-            elseif ($ext_type == 'js')
+            elseif ($ext_type === 'js')
             {
-                if ($extension == 'all')
+                if ($extension === 'all')
                 {
                     $result = self::Process_Dir(self::Absolute_Path('framework/extensions/js'), true);
                     
@@ -269,13 +436,13 @@
                     {
                         $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
                         
-                        if ($file_ext == '.js')
+                        if ($file_ext === '.js')
                         {
                             $dir_path = mb_substr($file['dirpath'], strrpos($file['dirpath'], '/') + 1);
                             
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
                             
-                            echo '<script type="text/javascript" src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
+                            echo '<script src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
                         }
                     }
                     
@@ -292,15 +459,15 @@
                     // Load this extension
                     foreach ($result as $file)
                     {
-                        if (mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8') == $extension)
+                        if (mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8') === $extension)
                         {
                             $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
                             
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
                             
-                            if ($file_ext == '.js')
+                            if ($file_ext === '.js')
                             {
-                                echo '<script type="text/javascript" src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
+                                echo '<script src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
                                 
                                 break;
                             }
@@ -310,7 +477,7 @@
                     return true;
                 }
                 
-                echo '<noscript>Your browser does not support Javascript!</noscript>';
+                echo '<noscript>Your browser does not support JavaScript!</noscript>';
             }
             else
                 return false;

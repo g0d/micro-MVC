@@ -1,70 +1,26 @@
-<?php
-    /*
-        micro-MVC
-        
-        File name: test.phtml
-        Description: This file contains the "test" view.
-        
-        Coded by George Delaportas (ViR4X)
-        Copyright (C) 2015
-    */
+<?
+    UTIL::Load_Extension('content_fetcher', 'js');
 ?>
+            <div id="test" class="page">
+                <div class="content">
+                    <?UTIL::Load_File('test');?>
+                    <div class="controls">
+                        <div class="control_item">
 
-        <div id="test" style="margin: auto; width: 10%;">
-        <?php
-            //UTIL::Load_Extension('bull', 'js');
-            UTIL::Load_Extension('vulcan', 'js');
-            UTIL::Load_Extension('splash', 'php');
-            
-            $result = MVC::Restore_Content('test');
-            
-            $splash = new SPLASH();
-        ?>
-            <p><?php echo $result; ?></p>
-            <div id="test_data">
-                <div id="test_elements">
-                    <input id="fileinput" name="file" type="file" required />
-                <?php
-                    echo $splash->Button('create', array('value' => 'Click Me (AJAX Post)',
-                                                         'type' => 'button'),
-                                                   array('onajaxserverclick' => 
-                                                   array('Server_Mouse_Click(Hello World!)', 
-                                                         'test_results')));
-                    //print_r ($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
-                    
-                    echo '<br>';
-                    
-                    echo $splash->Button('create', array('value' => 'Click Me (Form Post)',
-                                                         'type' => 'button'),
-                                                   array('onserverclick' => 
-                                                   array('Server_Mouse_Click(Hello World!)', 
-                                                         '/test')));
-                    //print_r ($splash->Button('debug', array('value', 'id'), array('onserverclick')));
-                    
-                    echo '<br>';
-                    
-                    echo $splash->Button('create', array('value' => 'Send Form Data (AJAX Post)',
-                                                         'type' => 'button'),
-                                                   array('onclick' => 'sendDataToServer()'));
-                ?>
+                        </div>
+                        <br>
+                        <div class="control_item">
+                            <a id="test_button" class="button" href="#">
+                                <?UTIL::Load_File('test_button_text');?>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div id="test_results"></div>
             </div>
-            
-            <script type="text/javascript">
-               var dom = new vulcan();
-               var ajax = new bull();
-               
-               ajax.data('/framework/mvc/views/assets/test.php', 'id=1', 'test_results', false);
-               
-               function sendDataToServer()
-               {
-                    var fileInputElement = dom.objects.by_id('fileinput');
-                    var formData = new FormData();
 
-                    formData.append("userfile", fileInputElement.files[0]);
-
-                    ajax.data('/framework/mvc/views/assets/test.php', formData, 'test_results', false);
-               }
-            </script>
-        </div>
+<script>
+    ultron(function(event)
+           {
+                
+           });
+</script>

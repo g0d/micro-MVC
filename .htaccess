@@ -19,13 +19,14 @@ RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 # Manage pages
 RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
 
-# Prevent viewing of .htaccess
-<Files .htaccess>
+# Prevent viewing of phtml files
+<Files ~ "\.(phtml)$">
     order allow,deny
     deny from all
 </Files>
 
-<Files ~ "\.(phtml)$">
+# Prevent viewing of .htaccess
+<Files .htaccess>
     order allow,deny
     deny from all
 </Files>

@@ -1,26 +1,29 @@
 <?php
     /*
         micro-MVC
-        
+
         File name: index.php
-        Description: This file contains the index.
-        
+        Description: This file contains the index (bootstrapping).
+
         Coded by George Delaportas (ViR4X)
         Copyright (C) 2015
     */
-    
-    // Enable / Disable errors
-    error_reporting(E_ALL);
-    
+
+    // Enable (1) / Disable errors (0)
+    error_reporting(0);
+
+    // Enable sessions
+    session_start();
+
     // Include MICRO MVC framework
     require('framework/micro_mvc.php');
-    
-    // Load and setup all routes in config
-    UTIL::Setup_Routes();
-    
-    // Read current route
-    $this_route = MVC::Get_Route('this');
-    
-    // Include index
-    require('site/index.phtml');
+
+    // Include the config loader
+    require('framework/misc/config_loader.php');
+
+    // Include the languages and routes supervisor
+    require('framework/misc/supervisor.php');
+
+    // Include the AJAX dispatcher
+    require('framework/misc/fortress.php');
 ?>
