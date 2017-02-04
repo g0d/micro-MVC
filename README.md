@@ -1,4 +1,4 @@
-![alt tag](https://github.com/g0d/micro-MVC/tree/master/site/pix/micro_mvc.png)
+![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
 # micro-MVC (2.0)
 An agile, small, productive and robust MVC framework for PHP (with integrated AJAX support).

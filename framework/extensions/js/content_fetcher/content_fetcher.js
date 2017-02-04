@@ -4,6 +4,7 @@
     
     File name: content_fetcher.js (Version: 0.1)
     Description: This file contains the Content Fetcher - International content loader.
+    Dependencies: Depends on BULL and Vulcan.
     
     Coded by George Delaportas (G0D)
     Copyright © 2016
