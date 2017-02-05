@@ -16,7 +16,7 @@ RewriteCond %{REQUEST_URI} !(.*)/$
 # Fix trailing slash (HTTP)
 RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 
-# ENABLE FOR HTTPS ANd DISABLE THE ONE ABOVE :: Fix trailing slash (HTTPS)
+# ENABLE FOR HTTPS AND DISABLE THE ONE ABOVE :: Fix trailing slash (HTTPS)
 #RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1/ [R=301,L]
 
 # Manage pages
