@@ -1,27 +1,125 @@
 <?
+    if (!empty($_POST))
+    {
+        $post_data = $_POST;
+
+        $_POST = null;
+    }
+    
     UTIL::Load_Extension('splash', 'php');
+    UTIL::Load_Extension('vulcan', 'js');
     UTIL::Load_Extension('content_fetcher', 'js');
+    UTIL::Load_Extension('ultron', 'js');
 ?>
             <div id="test" class="page">
                 <div class="content">
-                    <?UTIL::Load_File('test');?>
-                    <div class="controls">
-                        <div class="control_item">
+                    <?
+                        UTIL::Load_File('test');
 
-                        </div>
-                        <br>
-                        <div class="control_item">
-                            <a id="test_button" class="button" href="#">
-                                <?UTIL::Load_File('test_button_text');?>
-                            </a>
+                        echo '<br><br>';
+                        echo MVC::Restore_Content('test');
+                    ?>
+                    <div class="controls">
+                        <div id="test_data">
+                            <br>
+                            <div id="test_elements">
+                                <?
+                                    $splash = new SPLASH();
+
+                                    $test_text = UTIL::Load_File_Contents('test_button_text');
+
+                                    echo '<div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX request)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button'),
+                                                                   array('onclick'  => 'ajax_fetch_content(\'motto\')'));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
+
+                                    echo '<div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX response)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button'),
+                                                                   array('onajaxserverclick'   => 
+                                                                   array('Server_Mouse_Click(Hello micro-MVC! (AJAX))', 
+                                                                         'test_results')));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
+                                    
+                                    echo '<div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (Form post)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button'),
+                                                                   array('onserverclick'        => 
+                                                                   array('Server_Mouse_Click(Hello micro-MVC! (POST))', 
+                                                                         '../test/')));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onserverclick')));
+                                    
+                                    echo '<br>
+                                          <div class="control_item">
+                                          <input id="file_input" name="file" type="file" class="button" required>
+                                          </div>';
+                                    echo '<div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX file post)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button'),
+                                                                   array('onclick'  =>  'send_data_to_server()'));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
+                                ?>
+                            </div>
+                            <br>
+                            <div id="test_results" class="note">
+                            <?
+                                if (isset($post_data))
+                                {
+                                    $searches = array('{message}');
+                                    $replaces = array(print_r($post_data, true));
+                                    $arguments = array($searches, $replaces);
+                                    $info_template = UTIL::Fetch_Template('info', $arguments);
+
+                                    echo $info_template;
+                                }
+                            ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
 <script>
+    function ajax_fetch_content(content_id)
+    {
+        content_fetcher(content_id, '<?=UTIL::Get_Variable("this_lang");?>', function(response) { alert(response); });
+    }
+
+    function send_data_to_server()
+    {
+        var dom = new vulcan();
+        var ajax = new bull();
+        var file_input_element = dom.objects.by_id('file_input');
+        var form_data = new FormData();
+
+        form_data.append('test_file', file_input_element.files[0]);
+
+        ajax.data('/framework/mvc/views/assets/misc/test.php', form_data, 'test_results', false);
+    }
+
     ultron(function(event)
            {
-                
+                var dom = new vulcan();
+                var ajax = new bull();
+
+                <?
+                    if (!isset($post_data))
+                    {
+                ?>
+                        ajax.data('/framework/mvc/views/assets/misc/test.php', 'id=1', 'test_results', false);
+                <?
+                    }
+
+                    unset($post_data);
+                ?>
            });
 </script>

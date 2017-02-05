@@ -1,5 +1,5 @@
 <?
-    // Fetch content based on ID
+    // Test - Fetch content based on ID (AJAX)
     if (!empty($_POST['content_id']))
     {
     	if (!empty($_POST['language_code']))

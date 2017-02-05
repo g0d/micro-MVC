@@ -9,7 +9,7 @@
         Copyright (C) 2015
     */
 
-    // Enable (1) / Disable errors (0)
+    // Enable: 1 / Disable: 0 errors
     error_reporting(0);
 
     // Enable sessions

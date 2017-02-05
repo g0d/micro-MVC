@@ -28,7 +28,7 @@
     {
 
         // Include HELPERS class
-        require(UTIL::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
+        require_once(UTIL::Absolute_Path('framework/extensions/php/splash/helpers/helpers.php'));
 
         // Include EVENTS LIST wrapper
         require('events_list.php');

@@ -16,7 +16,7 @@
 
 var splash = function(action, file, mode, misc, func)
              {
-                 // Splash Post
+                 // Splash post
                  function splash(action, file, mode, misc, func)
                  {
                      var dynamic_element = null;
@@ -28,11 +28,11 @@ var splash = function(action, file, mode, misc, func)
                          (func !== undefined && typeof func !== 'function'))
                          return false;
                      
-                     if (mode == 1)
+                     if (mode === 1)
                      {
                          var form = document.getElementsByTagName('form');
                          
-                         if (form.length == 0)
+                         if (form.length === 0)
                          {
                              dynamic_element = document.createElement('form');
                              dynamic_element.setAttribute('action', misc);
@@ -74,16 +74,16 @@ var splash = function(action, file, mode, misc, func)
                      return true;
                  }
                  
-                 // Set Splash Input
+                 // Set splash input
                  function __set_input(type, action)
                  {
                      if (isNaN(type) || type < 1 || type > 2 || 
-                         (type == 2 && (action === null || action == '')))
+                         (type === 2 && (action === null || action == '')))
                          return false;
                      
                      var dynamic_element = null;
                      
-                     if (type == 1)
+                     if (type === 1)
                      {
                          dynamic_element = document.createElement('input');
                          dynamic_element.setAttribute('id', 'splash_post');

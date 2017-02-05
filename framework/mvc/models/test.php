@@ -18,7 +18,16 @@
     {
         public static function Get_Data()
         {
-            return null;
+            if (UTIL::Get_Variable('this_lang') === 'en')
+            {
+                return 'This is a test facility utilizing spl@sh (classful server-side controls toolset) extension working 
+                        with BULL (AJAX subsystem) and Vulcan (JS utilities)!';
+            }
+            else
+            {
+                return 'Αυτή η σελίδα περιλαμβάνει ένα δοκιμαστικό demo για το spl@sh (classful server-side controls toolset) extension 
+                        σε συνεργασία με το BULL (AJAX subsystem) και το Vulcan (JS utilities)!';
+            }
         }
     }
 ?>
