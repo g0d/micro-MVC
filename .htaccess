@@ -13,14 +13,29 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !(.*)/$
 
-# Fix trailing slash
+# Fix trailing slash (HTTP)
 RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+
+# ENABLE FOR HTTPS ANd DISABLE THE ONE ABOVE :: Fix trailing slash (HTTPS)
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1/ [R=301,L]
 
 # Manage pages
 RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
 
 # Prevent viewing of phtml files
 <Files ~ "\.(phtml)$">
+    order allow,deny
+    deny from all
+</Files>
+
+# Prevent viewing of cfg files
+<Files ~ "\.(cfg)$">
+    order allow,deny
+    deny from all
+</Files>
+
+# Prevent viewing of log files
+<Files ~ "\.(log)$">
     order allow,deny
     deny from all
 </Files>
