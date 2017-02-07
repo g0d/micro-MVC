@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <link rel="icon" type="image/png" href="/site/pix/micro_mvc_icon.png">
         <link rel="stylesheet" href="/site/main.css">
-        <title><?UTIL::Load_File('title');?></title>
+        <title><?=UTIL::Load_Content('title', 'static');?></title>
     </head>
     <body>
         <div id="main">
         <?
-            require('sections/header.phtml');
+            UTIL::Load_Section('header');
             
             $this_route = UTIL::Get_Variable('this_route');
 
@@ -29,7 +29,7 @@
 
             unset($this_route);
 
-            require('sections/footer.phtml');
+            UTIL::Load_Section('footer');
         ?>
         </div>
     </body>

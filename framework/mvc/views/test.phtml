@@ -14,7 +14,7 @@
             <div id="test" class="page">
                 <div class="content">
                     <?
-                        UTIL::Load_File('test');
+                        UTIL::Load_Content('test', 'dynamic');
 
                         echo '<br><br>';
                         echo MVC::Restore_Content('test');
@@ -26,7 +26,7 @@
                                 <?
                                     $splash = new SPLASH();
 
-                                    $test_text = UTIL::Load_File_Contents('test_button_text');
+                                    $test_text = UTIL::Load_Content('test_button_text', 'static');
 
                                     echo '<div class="control_item">';
                                     echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX request)',

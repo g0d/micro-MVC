@@ -4,12 +4,12 @@
 ?>
             <div id="root" class="page">
                 <div class="content">
-                    <?UTIL::Load_File('root');?>
+                    <?UTIL::Load_Content('root', 'dynamic');?>
                     <div class="controls">
                         <br>
                         <div class="control_item">
                             <a id="index_button" class="button" href="test">
-                                <?UTIL::Load_File('go_to_button_text');?>
+                                <?=UTIL::Load_Content('go_to_button_text', 'static');?>
                             </a>
                         </div>
                     </div>

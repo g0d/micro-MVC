@@ -17,7 +17,7 @@
     class UTIL
     {
         // Configuration importer
-        private static function Config_Importer($config_file, $delimiter = null)
+        public static function Config_Importer($config_file, $delimiter = null)
         {
             $file_result = file_get_contents(self::Absolute_Path('framework/config/') . $config_file . '.cfg');
 
@@ -162,29 +162,44 @@
             
             return $filename;
         }
-
-        // Load file using a specific language code (optional)
-        public static function Load_File($content_code, $lang = null)
+        
+        // Load content choosing a loading mode and using a specific language code (optional)
+        public static function Load_Content($content_code, $mode, $lang = null)
         {
+            $load_modes = array('dynamic', 'static');
+
+            if (!in_array($mode, $load_modes))
+                return false;
+            
             $filename = self::Content_Data($content_code, $lang);
 
+            if ($filename === false)
+                return false;
+            
+            if ($mode === 'dynamic')
+            {
+                require($filename);
+
+                return true;
+            }
+            else
+                return trim(file_get_contents($filename));
+        }
+        
+        // Load the specified site section
+        public static function Load_Section($section)
+        {
+            if (empty($section))
+                return false;
+            
+            $filename = self::Absolute_Path('site/sections/') . $section . '.phtml';
+            
             if ($filename === false)
                 return false;
             
             require($filename);
-            
-            return true;
-        }
-        
-        // Load file contents using a specific language code (optional)
-        public static function Load_File_Contents($content_code, $lang = null)
-        {
-            $filename = self::Content_Data($content_code, $lang);
 
-            if ($filename === false)
-                return false;
-            
-            return trim(file_get_contents($filename));
+            return true;
         }
         
         // Fetch a template passing arguments (optional)
@@ -206,6 +221,19 @@
                 $result = str_replace($arguments_array[0], $arguments_array[1], $template);
             
             return $result;
+        }
+        
+        // Log info and error messages
+        public static function Log($log_data, $log_type)
+        {
+            $log_types = array('info', 'error');
+
+            if (empty($log_data) || empty($log_type) || !in_array($log_type, $log_types))
+                return false;
+            
+            file_put_contents(self::Absolute_Path('framework/logs/') . $log_type . '.log', $log_data);
+
+            return true;
         }
         
         // Convert any associative array mapped with one or more elements to an XML

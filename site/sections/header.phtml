@@ -1,9 +1,9 @@
                 <div id="header">
-                	<?require('languages.phtml');?>
+                	<?UTIL::Load_Section('languages');?>
                     <div class="logo">
-                        <a href="/<?=UTIL::Get_Variable('this_lang');?>/" title="<?UTIL::Load_File('mouse_tag');?>">
+                        <a href="/<?=UTIL::Get_Variable('this_lang');?>/" title="<?=UTIL::Load_Content('mouse_tag', 'static');?>">
                             <img src="/site/pix/micro_mvc.png">
                         </a>
                     </div>
-                    <div class="motto"><?UTIL::Load_File('motto');?></div>
+                    <div class="motto"><?=UTIL::Load_Content('motto', 'static');?></div>
                 </div>
