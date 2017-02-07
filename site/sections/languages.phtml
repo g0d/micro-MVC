@@ -1,15 +1,15 @@
 		            <div id="languages">
 		            	<?
-		            		$my_route = UTIL::Denormalize_Route(MVC::Get_Route('this', '*'));
+		            		$my_route = UTIL::Denormalize_Route(MVC::Get_Route('this'));
 
 		            		if ($my_route === 'root')
 		            			$my_route = '';
 
-							$all_langs = UTIL::Get_Variable('all_langs');
+							$all_langs = LANG::Get('all');
 
 		            		foreach ($all_langs as $index => $language)
 		            		{
-		            			if ($language === UTIL::Get_Variable('this_lang'))
+		            			if ($language === LANG::Get('this'))
 		            				$active = 'active_language';
 		            			else
 		            				$active = '';
@@ -19,7 +19,7 @@
 		            							   $active . '">' . 
 		            							   strtoupper($language) . '</a>';
 
-		            			if ($index < (count(UTIL::Get_Variable('all_langs')) - 1))
+		            			if ($index < (count(LANG::Get('all')) - 1))
 		            				echo ' | ';
 		            		}
 		            	?>

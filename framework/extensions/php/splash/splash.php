@@ -8,7 +8,7 @@
         
         File name: splash.php
         Description: This file contains the "SPLASH" wrapper class.
-        Dependencies: Depends on ALPHA CMS / micro-MVC and BULL.
+        Dependencies: ALPHA CMS / micro-MVC and BULL.
         
         Coded by George Delaportas (G0D)
         

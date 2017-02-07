@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (2.1)
+# micro-MVC (2.2)
 An agile, small, productive and robust MVC framework for PHP (with integrated AJAX support).
 
 micro-MVC is a simple, agile and powerful MVC framework that empowers developers to write 
@@ -11,7 +11,7 @@ usually end up to become too complicated as they are stuffed with a bunch of inf
 micro-MVC is trying to be hassle free, straightforward and helps you stay on track. micro-MVC API is robust 
 and solves roughly 95% of all the everyday issues you face under development with PHP.
 
-micro-MVC version 2.1 has been upgraded and optimized to be secure, lightning fast and use as less resource as possible.
+micro-MVC version 2.x has been upgraded and optimized to be secure, lightning fast and use as less resource as possible.
 The new framework can now run in embedded systems. It has been tested extensively in several hardware configurations 
 and the minimum requirements are CPU: 300MHz, RAM: 32MB, DISK: 600KB. Finally, the framework comes with ready 
 HTTP/S configurations for Apache and NGINX.

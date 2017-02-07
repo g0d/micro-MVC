@@ -11,14 +11,14 @@
         <?
             UTIL::Load_Section('header');
             
-            $this_route = UTIL::Get_Variable('this_route');
-
-            if ($this_route === 'root')
-                MVC::Go_To($this_route);
+            $this_route = MVC::Get_Route('this');
+            
+            if ($this_route === false)
+                require('framework/errors/404.phtml');
             else
             {
-                if (!in_array($this_route, UTIL::Get_Variable('all_routes')))
-                    require('framework/errors/404.phtml');
+                if ($this_route === 'root')
+                    MVC::Go_To($this_route);
                 else
                 {
                     $args = '';
@@ -28,7 +28,7 @@
             }
 
             unset($this_route);
-
+            
             UTIL::Load_Section('footer');
         ?>
         </div>

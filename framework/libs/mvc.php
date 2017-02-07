@@ -51,6 +51,38 @@
             return true;
         }
         
+        // Get current or all virtual MVC routes ("this" / "all") choosing if route is relative or absolute to language code
+        public static function Get_Route($option, $lang_relative = true)
+        {
+            if ($option === 'this')
+            {
+                $result = UTIL::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
+                
+                if ($lang_relative === true)
+                    $result = substr($result, 3);
+                
+                if ($result === 'root')
+                    return false;
+                
+                if ($result === '' || $result === false)
+                    $result = 'root';
+                
+                if ($lang_relative === true && !self::Route_Exists($result))
+                    return false;
+            }
+            elseif ($option === 'all')
+            {
+                if ($lang_relative === false)
+                    return false;
+                
+                $result = self::$__mvc_routes;
+            }
+            else
+                return false;
+            
+            return $result;
+        }
+        
         // Set a virtual MVC route
         public static function Set_Route($mvc_route)
         {
@@ -64,43 +96,15 @@
             return true;
         }
         
-        // Get current or all virtual MVC routes ("this" / "all") passing any language code
-        public static function Get_Route($option, $lang = null)
+        // Check if a route exists
+        public static function Route_Exists($this_route)
         {
-            if ($option === 'this')
-            {
-                $result = UTIL::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
-                
-                if ($lang !== null)
-                {
-                    if ($lang !== '*')
-                    {
-                        if (LANG::Exists($lang) === false)
-                            return false;
-                    }
-                    
-                    $result = substr($result, 3);
-                }
-                
-                if ($result === 'root')
-                    return false;
-                
-                if ($result === '' || $result === false)
-                    $result = 'root';
-            }
-            elseif ($option === 'all')
-            {
-                if ($lang !== null)
-                    return false;
-                
-                $result = self::$__mvc_routes;
-            }
-            else
+            if (!in_array($this_route, self::$__mvc_routes))
                 return false;
             
-            return $result;
+            return true;
         }
-        
+
         // Store an MVC content
         public static function Store_Content($mvc_var, $content)
         {

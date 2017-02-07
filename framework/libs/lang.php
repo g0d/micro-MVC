@@ -20,15 +20,15 @@
         private static $__langs = array(0 => 'en');
         
         // Check if the argument is a valid country code
-        private static function Is_Country_Code($lang)
+        public static function Is_Country_Code($lang)
         {
             if (empty($lang) || !ctype_alpha($lang) || strlen($lang) != 2)
                 return false;
 
             return true;
         }
-
-        // Get current or all physical and virtual language codes ("this" / "all") [Returns 'en' if language is missing from address]
+        
+        // Get current or all physical and virtual language codes ("this" / "all") [Returns 'en' if option is null or language is missing from route]
         public static function Get($option = null)
         {
             if ($option === null)

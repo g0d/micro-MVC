@@ -91,7 +91,7 @@
 <script>
     function ajax_fetch_content(content_id)
     {
-        content_fetcher(content_id, '<?=UTIL::Get_Variable("this_lang");?>', function(response) { alert(response); });
+        content_fetcher(content_id, '<?=LANG::Get('this');?>', function(response) { alert(response); });
     }
 
     function send_data_to_server()

@@ -7,15 +7,15 @@
     {
         $route_lang_exists = UTIL::Check_Route_Lang();
 
-        $this_lang = LANG::Get('this');
-        $all_langs = LANG::Get('all');
-        
         if ($route_lang_exists === false)
         {
-            header('Location: /' . $this_lang . '/');
+            header('Location: /en/');
             
             exit();
         }
+        
+        $this_lang = LANG::Get('this');
+        $all_langs = LANG::Get('all');
         
         if (!isset($_SESSION['micro_mvc']['index']))
         {
@@ -26,7 +26,7 @@
             exit();
         }
         
-        $this_route = MVC::Get_Route('this', $this_lang);
+        $this_route = MVC::Get_Route('this');
         $all_routes = MVC::Get_Route('all');
         
         require('framework/misc/dragon.php');

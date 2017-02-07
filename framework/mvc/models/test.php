@@ -18,7 +18,7 @@
     {
         public static function Get_Data()
         {
-            if (UTIL::Get_Variable('this_lang') === 'en')
+            if (LANG::Get('this') === 'en')
             {
                 return 'This is a test facility utilizing spl@sh (classful server-side controls toolset) extension working 
                         with BULL (AJAX subsystem) and Vulcan (JS utilities)!';
