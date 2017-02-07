@@ -1,13 +1,14 @@
 /*
 
-    Content Fetcher (International content loader)
+    Content Fetcher (Universal content loader)
     
     File name: content_fetcher.js (Version: 0.1)
-    Description: This file contains the Content Fetcher - International content loader.
+    Description: This file contains the Content Fetcher - Universal content loader.
     Dependencies: BULL and Vulcan.
     
     Coded by George Delaportas (G0D)
-    Copyright © 2016
+    Copyright (C) 2016
+    Open Software License (OSL 3.0)
 
 */
 

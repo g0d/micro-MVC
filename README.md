@@ -21,3 +21,7 @@ Enjoy!
 Best,
 
 George Delaportas (G0D/ViR4X)
+
+Copyright (C) 2015-2017 micro-MVC
+
+Open Software License (OSL 3.0)

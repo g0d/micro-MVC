@@ -1,4 +1,15 @@
 <?
+	/*
+		Content (Programmable gate for delivering content)
+		
+		File name: content.php
+		Description: This file contains the content gate.
+		
+		Coded by George Delaportas (ViR4X)
+		Copyright (C) 2017
+		Open Software License (OSL 3.0)
+	*/
+
     // Test - Fetch content based on ID (AJAX)
     if (!empty($_POST['content_id']))
     {

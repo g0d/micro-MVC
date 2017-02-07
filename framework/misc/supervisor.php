@@ -1,4 +1,15 @@
 <?
+	/*
+		Supervisor (Languages and routes central dispatcher)
+		
+		File name: supervisor.php
+		Description: This file contains the Supervisor - Languages and routes central dispatcher.
+		
+		Coded by George Delaportas (ViR4X)
+		Copyright (C) 2016
+		Open Software License (OSL 3.0)
+	*/
+
     // Check for direct access
     if (!defined('micro_mvc'))
         exit();

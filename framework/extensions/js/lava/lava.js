@@ -6,7 +6,8 @@
     Description: This file contains the L.A.Va - LIVE Argument Validator.
     
     Coded by George Delaportas (G0D) 
-    Copyright © 2016
+    Copyright (C) 2016
+    Open Software License (OSL 3.0)
 
 */
 

@@ -7,6 +7,7 @@
         
         Coded by George Delaportas (ViR4X)
         Copyright (C) 2015
+        Open Software License (OSL 3.0)
     */
     
     if (!empty($_POST['id']) && $_POST['id'] === '1')

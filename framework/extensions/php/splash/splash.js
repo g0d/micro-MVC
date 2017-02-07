@@ -8,7 +8,8 @@
     Coded by George Delaportas (G0D)
     
     localhost Ltd
-    Copyright © 2013
+    Copyright (C) 2013
+    Open Software License (OSL 3.0)
 
 */
 

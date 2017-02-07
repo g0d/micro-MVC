@@ -6,7 +6,8 @@
     Description: This file contains the Vulcan - General JS Programming Utilities.
     
     Coded by George Delaportas (G0D)
-    Copyright © 2014
+    Copyright (C) 2014
+    Open Software License (OSL 3.0)
 
 */
 

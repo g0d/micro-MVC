@@ -7,6 +7,7 @@
 		
 		Coded by George Delaportas (ViR4X)
 		Copyright (C) 2016
+		Open Software License (OSL 3.0)
 	*/
 
     // Check for direct access
