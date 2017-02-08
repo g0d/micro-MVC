@@ -35,7 +35,7 @@
             $mvc_path = 'framework/mvc/';
             
             // Always include the root model
-            require($mvc_path . 'models/root.php');
+            require_once($mvc_path . 'models/root.php');
             
             // Include the specified model
             if (file_exists($mvc_path . 'models/' . $method . '.php'))
@@ -47,7 +47,7 @@
             
             // Include the specified view
             if (file_exists($mvc_path . 'views/' . $method . '.phtml'))
-                require($mvc_path . 'views/' . $method . '.phtml');
+                require_once($mvc_path . 'views/' . $method . '.phtml');
             
             return true;
         }

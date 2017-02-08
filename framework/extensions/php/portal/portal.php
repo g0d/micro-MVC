@@ -2,7 +2,7 @@
 	/*
 		Portal (REST Framework)
 		
-		File name: portal.php
+		File name: portal.php (Version: 1.0)
 		Description: This file contains the Portal - REST Framework.
 		
 		Coded by George Delaportas (ViR4X)

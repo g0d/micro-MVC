@@ -40,8 +40,6 @@
         $this_route = MVC::Get_Route('this');
         $all_routes = MVC::Get_Route('all');
         
-        require('framework/misc/dragon.php');
-        
         UTIL::Set_Variable('this_lang', $this_lang);
         UTIL::Set_Variable('all_langs', $all_langs);
         UTIL::Set_Variable('this_route', $this_route);
@@ -51,6 +49,8 @@
         unset($all_langs);
         unset($this_route);
         unset($all_routes);
+        
+        require('framework/misc/dragon.php');
     }
     else
     {
