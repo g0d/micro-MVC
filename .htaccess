@@ -1,4 +1,6 @@
 # HTACCESS configuration file
+# Copyright (C) 2016
+# Open Software License (OSL 3.0)
 
 Options All -Indexes
 Options +FollowSymLinks
@@ -16,26 +18,83 @@ RewriteCond %{REQUEST_URI} !(.*)/$
 # Fix trailing slash (HTTP)
 RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 
-# ENABLE FOR HTTPS AND DISABLE THE ONE ABOVE :: Fix trailing slash (HTTPS)
+# !!! ENABLE FOR HTTPS AND DISABLE THE ONE ABOVE :: Fix trailing slash (HTTPS) !!!
 #RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1/ [R=301,L]
 
 # Manage pages
 RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
 
+# Add types aliases for web fonts
+AddType application/vnd.ms-fontobject .eot
+AddType font/ttf .ttf
+AddType font/otf .otf
+AddType application/x-font-woff .woff
+
+# Use caching with headers module (1 day)
+<ifModule mod_headers.c>
+  # Support varying encoding for compressed served files (GZip)
+  <FilesMatch ".(js|css|xml|html?|gz)$">
+    Header append Vary: Accept-Encoding
+  </FilesMatch>
+
+  # Expire multimedia
+  <filesMatch "\.(ico|jpe?g|png|gif|mp4|webm)$">
+    Header set Cache-Control "max-age=86400, public"
+  </filesMatch>
+
+  # Enable CORS for web fonts
+	<FilesMatch "\.(ttf|ttc|otf|eot|woff|svg)$">
+		Header add Access-Control-Allow-Origin "*"
+	</FilesMatch>
+
+  # Expire CSS
+  <filesMatch "\.(css)$">
+    Header set Cache-Control "max-age=86400, public"
+  </filesMatch>
+
+  # Expire JS
+  <filesMatch "\.(js)$">
+    Header set Cache-Control "max-age=86400, private"
+  </filesMatch>
+
+  # Expire HTM(L) & PHP
+  <filesMatch "\.(html?|php)$">
+    Header set Cache-Control "max-age=86400, private, must-revalidate"
+  </filesMatch>
+</ifModule>
+
+# Use caching with expires module (1 day)
+<ifModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 day"
+    ExpiresByType image/x-icon "access plus 86400 seconds"
+    ExpiresByType image/jpg "access plus 86400 seconds"
+    ExpiresByType image/jpeg "access plus 86400 seconds"
+    ExpiresByType image/png "access plus 86400 seconds"
+    ExpiresByType image/gif "access plus 86400 seconds"
+    ExpiresByType video/mp4 "access plus 86400 seconds"
+    ExpiresByType video/webm "access plus 86400 seconds"
+    ExpiresByType text/css "access plus 86400 seconds"
+    ExpiresByType text/javascript "access plus 86400 seconds"
+    ExpiresByType application/javascript "access plus 86400 seconds"
+    ExpiresByType application/x-javascript "access plus 86400 seconds"
+    ExpiresByType text/html "access plus 86400 seconds"
+    ExpiresByType application/xhtml+xml "access plus 86400 seconds"
+</ifModule>
+
+# Enable compression of files
+<ifModule mod_deflate.c>
+  # Common files
+  <filesMatch "\.(php|html?|js|css)$">
+    SetOutputFilter DEFLATE
+  </filesMatch>
+
+  # Special files
+  AddOutputFilterByType DEFLATE font/ttf application/x-font-ttf font/otf application/x-font-otf font/opentype
+</ifModule>
+
 # Prevent viewing of phtml files
-<Files ~ "\.(phtml)$">
-    order allow,deny
-    deny from all
-</Files>
-
-# Prevent viewing of cfg files
-<Files ~ "\.(cfg)$">
-    order allow,deny
-    deny from all
-</Files>
-
-# Prevent viewing of log files
-<Files ~ "\.(log)$">
+<Files ~ "\.(phtml|cfg|log)$">
     order allow,deny
     deny from all
 </Files>

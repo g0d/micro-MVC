@@ -1,9 +1,9 @@
 <?
 	/*
-		Portal (REST Framework)
+		Portal (REST Framework using POST)
 		
 		File name: portal.php (Version: 1.0)
-		Description: This file contains the Portal - REST Framework.
+		Description: This file contains the Portal - REST Framework (POST).
 		
 		Coded by George Delaportas (ViR4X)
 		Copyright (C) 2016
