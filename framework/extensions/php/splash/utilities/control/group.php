@@ -4,7 +4,7 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.2
+        Version: 4.3
 
         File name: group.php
         Description: This file contains the "GROUP" abstract class.

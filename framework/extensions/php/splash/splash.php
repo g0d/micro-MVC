@@ -4,7 +4,7 @@
     
         localhost Ltd - spl@sh
         
-        Version: 4.2
+        Version: 4.3
         
         File name: splash.php
         Description: This file contains the "SPLASH" wrapper class.
@@ -17,9 +17,11 @@
         Open Software License (OSL 3.0)
     
     */
-
-
-
+    
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+    
     // Load AJAX support
     UTIL::Load_Extension('bull', 'js');
 

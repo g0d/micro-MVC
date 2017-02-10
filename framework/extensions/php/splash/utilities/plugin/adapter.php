@@ -4,7 +4,7 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.2
+        Version: 4.3
 
         File name: action.php
         Description: This file contains the "ADAPTER" abstract class.
@@ -18,7 +18,7 @@
     */
 
 
-
+    
     /* ------------------------ BEGIN ------------------------ */
 
     // Include PLUGIN class

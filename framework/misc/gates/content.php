@@ -9,7 +9,11 @@
 		Copyright (C) 2017
 		Open Software License (OSL 3.0)
 	*/
-
+	
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+	
     // Test - Fetch content based on ID (AJAX)
     if (!empty($_POST['content_id']))
     {

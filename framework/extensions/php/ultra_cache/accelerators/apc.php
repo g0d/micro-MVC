@@ -10,6 +10,10 @@
         Open Software License (OSL 3.0)
     */
     
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+    
     // APC[u] class
     class APC extends UC
     {
@@ -71,7 +75,7 @@
         {
             $cached_data = apcu_fetch($key);
             
-            if(!$cached_data)
+            if (!$cached_data)
             {
                 $cache_result = apcu_store($key, $data, $ttl);
                 

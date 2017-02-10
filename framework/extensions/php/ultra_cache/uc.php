@@ -10,6 +10,10 @@
         Open Software License (OSL 3.0)
     */
     
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
+    
     // Ultra Cache (UC) abstract class
     abstract class UC
     {

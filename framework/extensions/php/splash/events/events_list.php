@@ -4,7 +4,7 @@
 
         localhost Ltd - spl@sh
 
-        Version: 4.2
+        Version: 4.3
 
         File name: events_list.php
         Description: This file contains the "EVENTS LIST" wrapper.

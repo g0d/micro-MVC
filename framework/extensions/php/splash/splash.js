@@ -2,7 +2,7 @@
 
     localhost Ltd - spl@sh (splash AJAX utility)
     
-    File name: splash.js (Version: 4.2)
+    File name: splash.js (Version: 4.3)
     Description: This file contains the spl@sh AJAX utility.
     
     Coded by George Delaportas (G0D)
@@ -48,6 +48,8 @@ var splash = function(action, file, mode, misc, func)
                              dynamic_element = __set_input(2, action);
                              
                              form.appendChild(dynamic_element);
+
+                             document.body.appendChild(form);
                              
                              form.submit();
                          }
