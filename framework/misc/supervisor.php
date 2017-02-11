@@ -1,9 +1,9 @@
 <?
 	/*
-		Supervisor (Languages and routes central dispatcher)
+		Supervisor (Control dispatcher)
 		
 		File name: supervisor.php
-		Description: This file contains the Supervisor - Languages and routes central dispatcher.
+		Description: This file contains the Supervisor - Control dispatcher.
 		
 		Coded by George Delaportas (ViR4X)
 		Copyright (C) 2016
@@ -50,7 +50,11 @@
         unset($this_route);
         unset($all_routes);
         
-        require('framework/misc/dragon.php');
+        // User-defined MVC routes dispatcher
+        require('framework/misc/dispatchers/dragon.php');
+        
+        // Main site
+        require('site/index.phtml');
     }
     else
     {
@@ -60,5 +64,8 @@
             
             exit();
         }
+        
+        // AJAX dispatcher
+        require('framework/misc/dispatchers/fortress.php');
     }
 ?>

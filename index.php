@@ -24,7 +24,4 @@
 
     // Include the languages and routes supervisor
     require('framework/misc/supervisor.php');
-
-    // Include the AJAX dispatcher
-    require('framework/misc/fortress.php');
 ?>

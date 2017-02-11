@@ -120,6 +120,18 @@
             return str_replace('_', '-', str_replace('_', '/', $mvc_route));
         }
         
+        // Get data from a previously set variable
+        public static function Get_Variable($variable_name)
+        {
+            if (empty($variable_name))
+                return null;
+            
+            if (!isset($_SESSION['micro_mvc'][$variable_name]))
+                return null;
+            
+            return $_SESSION['micro_mvc'][$variable_name];
+        }
+        
         // Set a new variable and put data (optional)
         public static function Set_Variable($variable_name, $variable_data = null)
         {
@@ -130,16 +142,7 @@
             
             return true;
         }
-
-        // Get data from a previously set variable
-        public static function Get_Variable($variable_name)
-        {
-            if (empty($variable_name))
-                return null;
-            
-            return $_SESSION['micro_mvc'][$variable_name];
-        }
-
+        
         // Check if content code has data and return the filename for a specific language code (optional)
         public static function Content_Data($content_code, $lang = null)
         {

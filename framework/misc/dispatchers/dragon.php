@@ -1,9 +1,9 @@
 <?
 	/*
-		Dragon (MVC routes dispatcher)
+		Dragon (User-defined MVC routes dispatcher)
 		
 		File name: dragon.php
-		Description: This file contains the Dragon - MVC routes dispatcher.
+		Description: This file contains the Dragon - User-defined MVC routes dispatcher.
 		
 		Coded by George Delaportas (ViR4X)
 		Copyright (C) 2016
