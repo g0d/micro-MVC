@@ -13,7 +13,7 @@ and solves roughly 95% of all the everyday issues you face under development wit
 
 micro-MVC version 2.x has been upgraded and optimized to be secure, lightning fast and use as less resource as possible.
 The new framework can now run in embedded systems. It has been tested extensively in several hardware configurations 
-and the minimum requirements are CPU: 300MHz, RAM: 32MB, DISK: 600KB. Finally, the framework comes with enteprise ready 
+and the minimum requirements are CPU: 300MHz, RAM: 32MB, DISK: 600KB. Finally, the framework comes with enterprise ready 
 HTTP/S configurations for Apache and NGINX offering smart caching and compression.
 
 Enjoy!
