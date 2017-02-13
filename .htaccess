@@ -24,6 +24,9 @@ RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 # Manage pages
 RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
 
+# Enable CORS for AJAX requests (Web services)
+Header set Access-Control-Allow-Origin "*"
+
 # Add types aliases for web fonts
 AddType application/vnd.ms-fontobject .eot
 AddType font/ttf .ttf

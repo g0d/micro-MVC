@@ -235,8 +235,9 @@
             if (empty($log_data) || empty($log_type) || !in_array($log_type, $log_types))
                 return false;
             
-            file_put_contents(self::Absolute_Path('framework/logs/') . $log_type . '.log', $log_data);
-
+            if (file_put_contents(self::Absolute_Path('framework/logs/') . $log_type . '.log', $log_data) === false)
+                return false;
+            
             return true;
         }
         
