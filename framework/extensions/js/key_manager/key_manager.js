@@ -2,7 +2,7 @@
 
     Key Manager
     
-    File name: key_manager.js (Version: 0.1)
+    File name: key_manager.js (Version: 0.2)
     Description: This file contains the Key Manager.
     
     Coded by George Delaportas (G0D)
@@ -11,10 +11,25 @@
 
 */
 
+// Key Manager
 function key_manager()
 {
     // Global keyboard key
     var keyboard_key = null;
+
+    // Key Constants
+    function key_constants() 
+    {
+        this.ENTER = 13;
+        this.BACKSPACE = 8;
+        this.SHIFT = 16;
+    };
+
+    // Constants
+    this.constants = function()
+    {
+        return new key_constants();
+    }
 
     // Scan keys
     this.scan = function(key_event)
@@ -32,7 +47,7 @@ function key_manager()
         {
             return false;
         }
-    }
+    };
 
     // Get keys
     this.get = function()
@@ -45,5 +60,5 @@ function key_manager()
         {
             return false;
         }
-    }
+    };
 }

@@ -2,7 +2,7 @@
 
     L.A.Va (LIVE Argument Validator)
     
-    File name: lava.js (Version: 0.2)
+    File name: lava.js (Version: 0.3)
     Description: This file contains the L.A.Va - LIVE Argument Validator.
     
     Coded by George Delaportas (G0D) 
@@ -100,14 +100,11 @@ function lava()
         {
             this_field = document.getElementById(__json_def_model[def_counter].key.id);
 
-            if (__json_def_model[def_counter].key.optional === true)
-            {
-                if (this_field === null)
-                    keys_optional = true;
-            }
-
             if (this_field === null)
                 return false;
+
+            if (__json_def_model[def_counter].key.optional === true)
+                keys_optional = true;
 
             keys_found++;
         }
@@ -119,7 +116,7 @@ function lava()
         {
             this_field = document.getElementById(__json_def_model[def_counter].key.id);
 
-            if (this_field === null)
+            if (this_field === null && keys_optional === true)
                 continue;
 
             if (__json_def_model[def_counter].value.type !== '*')

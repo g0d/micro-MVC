@@ -96,6 +96,11 @@ AddType application/x-font-woff .woff
   AddOutputFilterByType DEFLATE font/ttf application/x-font-ttf font/otf application/x-font-otf font/opentype
 </ifModule>
 
+# Enable short open tags in PHP
+<IfModule mod_php5.c>
+  php_value short_open_tag 1
+</IfModule>
+
 # Prevent viewing of phtml files
 <Files ~ "\.(phtml|cfg|log)$">
     order allow,deny

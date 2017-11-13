@@ -213,7 +213,7 @@ function bull()
                               success_callback, request_timeout, timeout_callback, fail_callback);
     };
     
-    // AJAX request (Asynchronous / Synchronous)
+    // AJAX request (Asynchronous [1] / Synchronous [2])
     this.request = function(url, data, ajax_mode, success_callback, request_timeout, 
                             timeout_callback, fail_callback)
     {
