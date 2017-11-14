@@ -56,7 +56,7 @@
         // Execute SQL commands
         public static function Exec_SQL_Command($sql_com)
         {
-            $mssql_result =  sqlsrv_query(self::$__db_con, $sql_com);
+            $mssql_result = sqlsrv_query(self::$__db_con, $sql_com);
 
             if ($mssql_result === false)
                 return false;

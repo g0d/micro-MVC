@@ -62,5 +62,5 @@ function stopwatch()
         is_on = false;
 
         return true;
-    }
+    };
 }
