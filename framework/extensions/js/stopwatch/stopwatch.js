@@ -36,7 +36,7 @@ function stopwatch()
 
         if (!utils.validation.numerics.is_integer(interval) || interval < 1 || 
             !utils.validation.misc.is_function(callback))
-        return false;
+            return false;
 
         timer_handler = setTimeout(function() { instance(interval, callback); }, interval);
 
