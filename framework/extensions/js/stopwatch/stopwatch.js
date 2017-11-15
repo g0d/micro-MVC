@@ -14,13 +14,6 @@
 // Stopwatch (High precision timer)
 function stopwatch()
 {
-    var my_vulcan = new vulcan();
-    var init_time = new Date().getTime();
-    var delay = 0;
-    var diff = 0;
-    var timer_handler = null;
-    var is_on = false;
-
     function instance(interval, callback)
     {
         if (!is_on)
@@ -41,8 +34,8 @@ function stopwatch()
         if (is_on)
             return false;
 
-        if (!my_vulcan.validation.numerics.is_integer(interval) || interval < 1 || 
-            !my_vulcan.validation.misc.is_function(callback))
+        if (!utils.validation.numerics.is_integer(interval) || interval < 1 || 
+            !utils.validation.misc.is_function(callback))
         return false;
 
         timer_handler = setTimeout(function() { instance(interval, callback); }, interval);
@@ -63,4 +56,11 @@ function stopwatch()
 
         return true;
     };
+
+    var is_on = false,
+        init_time = new Date().getTime(),
+        delay = 0,
+        diff = 0,
+        timer_handler = null,
+        utils = new vulcan();
 }
