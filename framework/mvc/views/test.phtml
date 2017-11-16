@@ -5,10 +5,15 @@
 
         $_POST = null;
     }
-    
+
     UTIL::Load_Extension('splash', 'php');
     UTIL::Load_Extension('vulcan', 'js');
+    UTIL::Load_Extension('pythia', 'js');
+    UTIL::Load_Extension('jap', 'js');
     UTIL::Load_Extension('stopwatch', 'js');
+    UTIL::Load_Extension('centurion', 'js');
+    UTIL::Load_Extension('parallel', 'js');
+    UTIL::Load_Extension('aether', 'js');
     UTIL::Load_Extension('content_fetcher', 'js');
     UTIL::Load_Extension('ultron', 'js');
 ?>
@@ -99,6 +104,7 @@
     {
         var dom = new vulcan();
         var ajax = new bull();
+        var my_pythia = new pythia();
         var file_input_element = dom.objects.by_id('file_input');
         var form_data = new FormData();
 
@@ -111,6 +117,90 @@
            {
                 var dom = new vulcan();
                 var ajax = new bull();
+                var my_aether = new aether();
+
+                var aether_config = {
+                                        settings    :   {
+                                                            chain_mode          :   'serial',           // CHOICES: ['serial', 'parallel', 'delay', 'callback' (ON SUCCESS)]
+                                                            use_workers         :   true,               // OPTIONAL (DEFAULT: false)
+                                                            init_delay          :   5000,               // OPTIONAL (Delay initialization of scheduler by so many milliseconds)
+                                                            interval            :   30000,              // OPTIONAL (Repeat scheduled tasks every so many milliseconds)
+                                                            final_callback      :   function() {  }     // OPTIONAL (Function to execute when scheduler finishes)
+                                                        },
+                                        tasks       :   [
+                                                            {
+                                                                priority            :   3,          // OPTIONAL
+                                                                latency             :   100,        // OPTIONAL
+                                                                bandwidth           :   [20, 28],   // OPTIONAL
+                                                                delay               :   2000,       // OPTIONAL
+                                                                type                :   'data',
+                                                                element_id          :   'test_id',
+                                                                content_mode        :   'replace',
+                                                                url                 :   '/test',
+                                                                data                :   '',
+                                                                response_timeout    :   2500,
+                                                                callbacks           :   {
+                                                                                            success     :   function() {  },
+                                                                                            fail        :   function() {  },    // OPTIONAL
+                                                                                            timeout     :   function() {  }     // OPTIONAL
+                                                                                        }
+                                                            },
+                                                            {
+                                                                priority            :   1,
+                                                                latency             :   [50, 350],
+                                                                bandwidth           :   34,
+                                                                delay               :   1340,
+                                                                type                :   'data',
+                                                                element_id          :   'test_id',
+                                                                content_mode        :   'append',
+                                                                url                 :   '/test',
+                                                                data                :   '',
+                                                                response_timeout    :   2500,
+                                                                callbacks           :   {
+                                                                                            success     :   function() {  },
+                                                                                            //fail        :   function() {  },
+                                                                                            timeout     :   function() {  }
+                                                                                        }
+                                                            },
+                                                            {
+                                                                priority            :   4,
+                                                                latency             :   14,
+                                                                bandwidth           :   200,
+                                                                //delay               :   400,
+                                                                type                :   'request',
+                                                                ajax_mode           :   'synchronous',
+                                                                url                 :   '/test',
+                                                                data                :   '',
+                                                                response_timeout    :   3000,
+                                                                callbacks           :   {
+                                                                                            success     :   function() {  },
+                                                                                            fail        :   function() {  },
+                                                                                            timeout     :   function() {  }
+                                                                                        }
+                                                            },
+                                                            {
+                                                                priority            :   2,
+                                                                latency             :   1000,
+                                                                bandwidth           :   [100, 420],
+                                                                type                :   'request',
+                                                                ajax_mode           :   'asynchronous',
+                                                                url                 :   '/test',
+                                                                data                :   '',
+                                                                response_timeout    :   1000,
+                                                                callbacks           :   {
+                                                                                            success     :   function() {  },
+                                                                                            fail        :   function() {  }
+                                                                                            //timeout     :   function() {  }
+                                                                                        }
+                                                            }
+                                                        ]
+                                    };
+
+                var task_list = my_aether.schedule(aether_config);
+                my_aether.cancel(); // All tasks
+                my_aether.cancel(task_list[1]); // Only a specified task
+                console.log(my_aether.status()); // All tasks
+                my_aether.status(task_list[3]); // Only a specified task
 
                 <?
                     if (!isset($post_data))

@@ -21,7 +21,7 @@
     // Check for direct access
     if (!defined('micro_mvc'))
         exit();
-    
+
     // Load AJAX support
     UTIL::Load_Extension('bull', 'js');
 
