@@ -2,7 +2,7 @@
     /*
         Ultra Cache (Abstract class)
         
-        File name: uc.php (Version: 3.0)
+        File name: uc.php (Version: 3.2)
         Description: This file contains the Ultra Cache (UC) - Abstract class.
         
         Coded by George Delaportas (G0D)
@@ -20,11 +20,5 @@
         const _GET_ = 0;
         const _SET_ = 1;
         protected $__modes = array(self::_GET_, self::_SET_);
-        
-        abstract protected function Delete($key);
-        
-        abstract protected function Exists($key);
-        
-        abstract protected function Clear();
     }
 ?>

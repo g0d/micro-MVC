@@ -19,7 +19,7 @@
     require_once('accelerators/memcache.php');
     
     // Ultra Cache factory class
-    class ULTRA_CACHE
+    class ULTRA_CACHE extends UC
     {
         public static function APC()
         {
@@ -28,7 +28,7 @@
 
         public static function MEMCACHE()
         {
-            return new MEMCC();
+            return new MEMC();
         }
     }
 ?>

@@ -2,7 +2,7 @@
     /*
         Memcache Accelerator
         
-        File name: memcache.php (Version: 1.0)
+        File name: memcache.php (Version: 1.2)
         Description: This file contains the Memcache Accelerator.
         
         Coded by George Delaportas (G0D)
@@ -15,7 +15,7 @@
         exit();
     
     // Memcache class
-    class MEMCC extends UC
+    class MEMC extends UC
     {
         public function DB($key, $sql_data, $ttl = 0, $mode)
         {
@@ -26,38 +26,6 @@
                 return $this->Get_DB($key, $sql_data, $ttl);
             else
                 return $this->Set_DB($key, $sql_data, $ttl);
-        }
-        
-        public function Fetch($key)
-        {
-            if (empty($key))
-                return false;
-            
-            return apc_fetch($key);
-        }
-        
-        public function Exists($key)
-        {
-            if (empty($key))
-                return false;
-            
-            return apc_exists($key);
-        }
-        
-        public function Delete($key)
-        {
-            if (empty($key))
-                return false;
-            
-            if (!$this->Exists($key))
-                return false;
-            
-            return apc_delete($key);
-        }
-        
-        public function Clear()
-        {
-            return apc_clear_cache($cache_type);
         }
         
         private function Get_DB($key, $sql_data, $ttl)

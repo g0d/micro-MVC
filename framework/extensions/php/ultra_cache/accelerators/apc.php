@@ -2,7 +2,7 @@
     /*
         APC[u] Accelerator
         
-        File name: apc.php (Version: 1.0)
+        File name: apc.php (Version: 1.2)
         Description: This file contains the APC[u] Accelerator.
         
         Coded by George Delaportas (G0D)
@@ -19,7 +19,7 @@
     {
         public function Data($key, $data, $ttl = 0, $mode)
         {
-            if (empty($key) || empty($data) || is_nan($ttl) || $ttl < 0 | !in_array($mode, $this->__modes))
+            if (empty($key) || empty($data) || is_nan($ttl) || $ttl < 0 || !in_array($mode, $this->__modes))
                 return false;
             
             if ($mode === self::_GET_)
@@ -30,7 +30,7 @@
         
         public function File($key, $filename, $ttl = 0, $mode)
         {
-            if (empty($key) || empty($filename) || is_nan($ttl) || $ttl < 0 | !in_array($mode, $this->__modes))
+            if (empty($key) || empty($filename) || is_nan($ttl) || $ttl < 0 || !in_array($mode, $this->__modes))
                 return false;
             
             if ($mode === self::_GET_)
@@ -90,7 +90,7 @@
         
         private function Set_Data($key, $data, $ttl)
         {
-            return apcu_store($key, $data, $ttl);;
+            return apcu_store($key, $data, $ttl);
         }
         
         private function Get_File($key, $filename, $ttl)
