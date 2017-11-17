@@ -1,10 +1,10 @@
 /*
 
     J.A.P (JSON Argument Parser)
-    
-    File name: jap.js (Version: 0.9)
+
+    File name: jap.js (Version: 1.0)
     Description: This file contains the J.A.P - JSON Argument Parser.
-    
+
     Coded by George Delaportas (G0D)
     Copyright (C) 2016
     Open Software License (OSL 3.0)
@@ -31,7 +31,7 @@ function jap()
             !utils.validation.misc.is_object(definition_model.arguments))
             return false;
 
-        var def_counter,
+        var def_counter = 0,
             def_model_args = definition_model.arguments;
 
         for (def_counter = 0; def_counter < def_model_args.length; def_counter++)
@@ -101,30 +101,42 @@ function jap()
 
         var def_counter,
             def_model_args = __json_def_model.arguments,
-            json_key,
+            json_key = null,
             keys_exist = 0,
             keys_found = 0,
-            keys_optional = false,
-            regex_tester = null;
+            optional_keys_exist = false;
 
         for (json_key in json_object)
         {
             for (def_counter = 0; def_counter < def_model_args.length; def_counter++)
             {
-                if (def_model_args[def_counter].key.optional === true)
-                {
-                    if (json_object[def_model_args[def_counter].key.name] === undefined)
-                        keys_optional = true;
-                }
+                if (typeof parseInt(json_key) === 'number')
+                {/*
+                    console.log(json_object[json_key].hasOwnProperty(def_model_args[def_counter].key.name));
+                    if (json_object[json_key].hasOwnProperty(def_model_args[def_counter].key.name))
+                    {
+                        keys_found++;
 
-                if (def_model_args[def_counter].key.name === json_key)
-                    keys_found++;
+                        break;
+                    }*/
+                }
+                else
+                {
+                    if (def_model_args[def_counter].key.optional === true && optional_keys_exist === false)
+                    {
+                        if (json_object[def_model_args[def_counter].key.name] === undefined)
+                            optional_keys_exist = true;
+                    }
+
+                    if (def_model_args[def_counter].key.name === json_key)
+                        keys_found++;
+                }
             }
 
             keys_exist++;
         }
-
-        if (keys_found < def_model_args.length && keys_optional === false)
+/*
+        if (keys_found < def_model_args.length && optional_keys_exist === false)
             return false;
 
         if (!__json_def_model.hasOwnProperty('ignore_keys_num') || __json_def_model.ignore_keys_num === false)
@@ -132,7 +144,7 @@ function jap()
             if (keys_found !== keys_exist)
                 return false;
         }
-
+*/
         for (def_counter = 0; def_counter < def_model_args.length; def_counter++)
         {
             if (json_object[def_model_args[def_counter].key.name] === undefined)
@@ -147,12 +159,13 @@ function jap()
                 }
                 else if (def_model_args[def_counter].value.type === 'array')
                 {
-                    if (!Array.isArray(json_object[def_model_args[def_counter].key.name]))
+                    if (!utils.validation.misc.is_array(json_object[def_model_args[def_counter].key.name]))
                         return false;
                 }
                 else
                 {
-                    if (typeof json_object[def_model_args[def_counter].key.name] !== def_model_args[def_counter].value.type)
+                    if (typeof json_object[def_model_args[def_counter].key.name] !== 
+                        def_model_args[def_counter].value.type)
                         return false;
                 }
             }
@@ -175,10 +188,8 @@ function jap()
 
             if (def_model_args[def_counter].value.hasOwnProperty('regex'))
             {
-                regex_tester = new RegExp(def_model_args[def_counter].value.regex);
-
-                if (regex_tester.test(json_object[def_model_args[def_counter].key.name]) === false)
-                    return false;
+                return utils.validation.utilities.reg_exp(def_model_args[def_counter].value.regex, 
+                                                          json_object[def_model_args[def_counter].key.name]);
             }
         }
 

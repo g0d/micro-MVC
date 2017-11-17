@@ -10,7 +10,7 @@
 						type		:	'number|string|boolean|array|object|function|null|*(any)',	
 						(length		:	1 - ...), 							// (Optional)
 						(regex 		: 	/any valid regular expression/) 	// (Optional)
-					},
+					}
 	},
 	// As many objects you like...
 ]

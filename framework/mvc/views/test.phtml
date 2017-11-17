@@ -104,7 +104,6 @@
     {
         var dom = new vulcan();
         var ajax = new bull();
-        var my_pythia = new pythia();
         var file_input_element = dom.objects.by_id('file_input');
         var form_data = new FormData();
 
@@ -117,22 +116,17 @@
            {
                 var dom = new vulcan();
                 var ajax = new bull();
+                var timer = new stopwatch();
                 var my_aether = new aether();
-
                 var aether_config = {
                                         settings    :   {
                                                             chain_mode          :   'serial',           // CHOICES: ['serial', 'parallel', 'delay', 'callback' (ON SUCCESS)]
-                                                            use_workers         :   true,               // OPTIONAL (DEFAULT: false)
                                                             init_delay          :   5000,               // OPTIONAL (Delay initialization of scheduler by so many milliseconds)
                                                             interval            :   30000,              // OPTIONAL (Repeat scheduled tasks every so many milliseconds)
-                                                            final_callback      :   function() {  }     // OPTIONAL (Function to execute when scheduler finishes)
+                                                            final_callback      :   function() {  }     // OPTIONAL (Function to execute when scheduler finishes up)
                                                         },
                                         tasks       :   [
                                                             {
-                                                                priority            :   3,          // OPTIONAL
-                                                                latency             :   100,        // OPTIONAL
-                                                                bandwidth           :   [20, 28],   // OPTIONAL
-                                                                delay               :   2000,       // OPTIONAL
                                                                 type                :   'data',
                                                                 element_id          :   'test_id',
                                                                 content_mode        :   'replace',
@@ -141,14 +135,20 @@
                                                                 response_timeout    :   2500,
                                                                 callbacks           :   {
                                                                                             success     :   function() {  },
-                                                                                            fail        :   function() {  },    // OPTIONAL
-                                                                                            timeout     :   function() {  }     // OPTIONAL
-                                                                                        }
+                                                                                            fail        :   function() {  },        // OPTIONAL
+                                                                                            timeout     :   function() {  }         // OPTIONAL
+                                                                                        },
+                                                                priority            :   3,              // OPTIONAL (Relative priority to other tasks)
+                                                                latency             :   [100],          // OPTIONAL (Guarantee latency)
+                                                                bandwidth           :   [20, 28],       // OPTIONAL (Guarantee bandwidth)
+                                                                repeat              :   3,              // OPTIONAL (Repeat task so many times - DEFAULT: 0 / FOREVER: -1)
+                                                                delay               :   2000,           // OPTIONAL (Delayed start in milliseconds)
                                                             },
                                                             {
                                                                 priority            :   1,
                                                                 latency             :   [50, 350],
-                                                                bandwidth           :   34,
+                                                                bandwidth           :   [34],
+                                                                repeat              :   0,
                                                                 delay               :   1340,
                                                                 type                :   'data',
                                                                 element_id          :   'test_id',
@@ -164,8 +164,8 @@
                                                             },
                                                             {
                                                                 priority            :   4,
-                                                                latency             :   14,
-                                                                bandwidth           :   200,
+                                                                latency             :   [14],
+                                                                bandwidth           :   [200],
                                                                 //delay               :   400,
                                                                 type                :   'request',
                                                                 ajax_mode           :   'synchronous',
@@ -180,8 +180,9 @@
                                                             },
                                                             {
                                                                 priority            :   2,
-                                                                latency             :   1000,
+                                                                latency             :   [1000],
                                                                 bandwidth           :   [100, 420],
+                                                                repeat              :   -1,
                                                                 type                :   'request',
                                                                 ajax_mode           :   'asynchronous',
                                                                 url                 :   '/test',
@@ -189,19 +190,19 @@
                                                                 response_timeout    :   1000,
                                                                 callbacks           :   {
                                                                                             success     :   function() {  },
-                                                                                            fail        :   function() {  }
+                                                                                            //fail        :   function() {  }
                                                                                             //timeout     :   function() {  }
                                                                                         }
                                                             }
                                                         ]
                                     };
 
-                var task_list = my_aether.schedule(aether_config);
-                my_aether.cancel(); // All tasks
-                my_aether.cancel(task_list[1]); // Only a specified task
-                console.log(my_aether.status()); // All tasks
-                my_aether.status(task_list[3]); // Only a specified task
-
+                console.log(my_aether.schedule(aether_config)); // Schedule and run AJAX tasks
+                console.log(my_aether.status()); // All AJAX tasks
+                //console.log(my_aether.status(task_list[3])); // Only a specified AJAX task
+                //console.log(my_aether.cancel()); // All tasks
+                //console.log(my_aether.cancel(task_list[1])); // Only a specified AJAX task
+                //timer.start(1000, function() { console.log('HELLO!'); });
                 <?
                     if (!isset($post_data))
                     {

@@ -1,12 +1,12 @@
 /*
 
     Vulcan (General JS Programming Utilities)
-    
-    File name: vulcan.js (Version: 0.5)
+
+    File name: vulcan.js (Version: 0.7)
     Description: This file contains the Vulcan - General JS Programming Utilities.
-    
+
     Coded by George Delaportas (G0D)
-    Copyright (C) 2014
+    Copyright (C) 2014 - 2017
     Open Software License (OSL 3.0)
 
 */
@@ -149,6 +149,11 @@ function vulcan()
                 var pattern = /^\+?\d{2}[- ]?\d{3}[- ]?\d{5}$/;
 
                 return pattern.test(val);
+            };
+
+            this.reg_exp = function(pattern, expression)
+            {
+                return pattern.test(expression);
             };
         }
 
@@ -395,11 +400,15 @@ function vulcan()
                         return false;
 
                     if (self.validation.misc.is_undefined(__final_attributes))
-                        text = text.replace(url_info[i].expanded_url, '<a href="' + url_info[i].expanded_url + '">' + 
-                               url_info[i].display_url + '</a>');
+                    {
+                        text = text.replace(url_info[i].expanded_url, 
+                                            '<a href="' + url_info[i].expanded_url + '">' + url_info[i].display_url + '</a>');
+                    }
                     else
-                        text = text.replace(url_info[i].expanded_url, '<a ' + __final_attributes + 'href="' + 
-                               url_info[i].expanded_url + '">' + url_info[i].display_url + '</a>');
+                    {
+                        text = text.replace(url_info[i].expanded_url, 
+                                            '<a ' + __final_attributes + 'href="' + url_info[i].expanded_url + '">' + url_info[i].display_url + '</a>');
+                    }
                 }
 
                 return text;
@@ -495,16 +504,16 @@ function vulcan()
 
     function system()
     {
-        this.require = function(js_file_name)
+        this.require = function(js_file_path, js_file_name)
         {
-            if (self.validation.misc.is_invalid(js_file_name) || self.validation.alpha.is_symbol(js_file_name))
+            if (self.validation.misc.is_invalid(js_file_path) || self.validation.misc.is_invalid(js_file_name) || self.validation.alpha.is_symbol(js_file_name))
                 return false;
 
             var __dynamic_object = null;
 
             __dynamic_object = document.createElement('script');
             __dynamic_object.setAttribute('type', 'text/javascript');
-            __dynamic_object.setAttribute('src', '/framework/extensions/js/' + js_file_name + '/' + js_file_name + '.js');
+            __dynamic_object.setAttribute('src', js_file_path + '/' + js_file_name + '/' + js_file_name + '.js');
 
             self.objects.by_tag('head')[0].appendChild(__dynamic_object);
 
