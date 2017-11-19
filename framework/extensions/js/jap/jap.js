@@ -26,17 +26,18 @@ function jap()
     // Scan for unknown keywords
     function has_unknown_keywords(definition_model)
     {
+        if (!utils.validation.misc.is_object(definition_model))
+            return false;
+
         var __index = null,
-            __array_index = null,
             __attribute = null,
-            __option = null;
-console.log('MODEL >>> ');
-console.log(definition_model);
+            __option = null,
+            __property = null;
+
         for (__index in definition_model)
-        {console.log('INDEX: ' + __index);
+        {
             __attribute = definition_model[__index];
-console.log('ATTR: ');
-console.log(__attribute);
+
             if (!utils.validation.misc.is_object(__attribute))
             {
                 if (__def_keywords.indexOf(__index) === -1)
@@ -46,14 +47,26 @@ console.log(__attribute);
             }
 
             for (__option in __attribute)
-            {console.log('OPTION: ' );
-            console.log(__attribute[__option]);
-                for (__option in __attribute)
-                if (__def_keywords.indexOf(__option) === -1)
-                    return true;
+            {
+                if (utils.validation.misc.is_object(__attribute[__option]))
+                {
+                    for (__property in __attribute[__option])
+                    {
+                        if (__def_keywords.indexOf(__property) === -1)
+                            return true;
 
-                if (has_unknown_keywords(__attribute[__option]))
-                    return true;
+                        if (has_unknown_keywords(__attribute[__option][__property]))
+                            return true;
+                    }
+                }
+                else
+                {
+                    if (__def_keywords.indexOf(__option) === -1)
+                        return true;
+
+                    if (has_unknown_keywords(__attribute[__option]))
+                        return true;
+                }
             }
         }
 
@@ -286,9 +299,10 @@ console.log(__attribute);
         {
             __this_key = __def_model_args[__counter].key;
             __this_value = __def_model_args[__counter].value;
-console.log(__this_key.name);
+/* console.log(__this_key.name);
 console.log(json_object[__counter]);
-            if ((__is_multiple_keys_array && json_object[__counter] === undefined || 
+console.log(''); */
+            if ((json_object[__counter] === undefined || 
                  json_object[__counter].hasOwnProperty(__this_key.name) === undefined) || 
                 json_object[__this_key.name] === undefined)
                     continue;
