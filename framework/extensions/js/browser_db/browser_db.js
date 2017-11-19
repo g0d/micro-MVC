@@ -40,7 +40,7 @@ function browser_db()
 	// Controller
 	function controller_class()
 	{
-		var me = this;
+		var __self = this;
 
 		// Add record
 		this.add_record = function(record)
@@ -48,7 +48,7 @@ function browser_db()
 			if (!utils.validation.misc.is_object(record))
 				return false;
 
-			if (me.check_duplicates(record.id))
+			if (__self.check_duplicates(record.id))
 				return false;
 
 			var __new_record_id = 1,
@@ -99,7 +99,7 @@ function browser_db()
 			if (!utils.validation.misc.is_object(record))
 				return false;
 
-			if (!me.check_duplicates(record.id))
+			if (!__self.check_duplicates(record.id))
 				return false;	
 
 			var __index = 0;

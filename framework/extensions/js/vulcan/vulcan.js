@@ -18,7 +18,7 @@ function vulcan()
     {
         function alpha()
         {
-            var __local_self = this;
+            var __self = this;
 
             this.is_string = function(val)
             {
@@ -30,7 +30,7 @@ function vulcan()
 
             this.is_symbol = function(val)
             {
-                if (!__local_self.is_string(val))
+                if (!__self.is_string(val))
                     return false;
 
                 if (val.match(/[!$%^&*()+|~=`{}\[\]:";'<>?,\/]/))
@@ -42,7 +42,7 @@ function vulcan()
 
         function numerics()
         {
-            var __local_self = this;
+            var __self = this;
 
             this.is_number = function(val)
             {
@@ -54,7 +54,7 @@ function vulcan()
 
             this.is_integer = function(val)
             {
-                if (__local_self.is_number(val) && (val % 1 === 0) && (val.toString().indexOf('.') === -1))
+                if (__self.is_number(val) && (val % 1 === 0) && (val.toString().indexOf('.') === -1))
                     return true;
 
                 return false;
@@ -65,7 +65,7 @@ function vulcan()
                 if (val === 0.0)
                     return true;
 
-                if (__local_self.is_number(val) && (val % 1 !== 0))
+                if (__self.is_number(val) && (val % 1 !== 0))
                     return true;
 
                 return false;
