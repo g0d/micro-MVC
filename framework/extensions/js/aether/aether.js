@@ -194,7 +194,7 @@ function aether()
             return true;
         };
 
-        this.verify_config_model = function(main_config)
+        this.verify_config = function(main_config)
         {
             var __index = 0;
 
@@ -207,7 +207,7 @@ function aether()
             if (!config_parser.define(__config_models['tasks']) || !config_parser.validate(main_config.tasks))
                 return false;
 
-            if (!config_parser.define(__config_models['callbacks']) || main_config.tasks.length < 1)
+            if (!config_parser.define(__config_models['callbacks']))
                 return false;
 
             for (__index = 0; __index < main_config.tasks.length; __index++)
@@ -215,6 +215,9 @@ function aether()
                 if (!config_parser.validate(main_config.tasks[__index].callbacks))
                     return false;
             }
+
+            //if (!config_parser.define(__config_models['latency']) || main_config.tasks.length < 1)
+            //    return false;
 
             return true;
         };
@@ -400,7 +403,7 @@ function aether()
         if (__is_init === true)
             return false;
 
-        if (!system_tools.verify_config_model(json_config))
+        if (!system_tools.verify_config(json_config))
             return false;
 
         if (!system_tools.load_settings(json_config.settings))

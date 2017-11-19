@@ -26,9 +26,16 @@ function lava()
     // Define the JSON object
     this.define = function(definition_model)
     {
-        if (!utils.validation.misc.is_object(definition_model))
+        if (!utils.validation.misc.is_array(definition_model))
         {
             info_log('Not a valid definition model!');
+
+            return false;
+        }
+
+        if (definition_model.length === 0)
+        {
+            info_log('The definition is null!');
 
             return false;
         }

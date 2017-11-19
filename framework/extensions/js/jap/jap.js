@@ -206,6 +206,14 @@ function jap()
 
             __keys_exist++;
         }
+
+        if (__keys_exist === 0)
+        {
+            info_log('The JSON object is null!');
+
+            return false;
+        }
+
 /*
         if (__keys_found < __def_model_args.length && __keys_optional === false)
             return false;
