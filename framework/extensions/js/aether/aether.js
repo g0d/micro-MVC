@@ -198,26 +198,29 @@ function aether()
         {
             var __index = 0;
 
-            if (!config_parser.define(__config_models['main']) || !config_parser.validate(main_config))
+            if (!config_parser.verify(__config_models['main'], main_config))
                 return false;
 
-            if (!config_parser.define(__config_models['settings']) || !config_parser.validate(main_config.settings))
+            if (!config_parser.verify(__config_models['settings'], main_config.settings))
                 return false;
 
-            if (!config_parser.define(__config_models['tasks']) || !config_parser.validate(main_config.tasks))
-                return false;
-
-            if (!config_parser.define(__config_models['callbacks']))
+            if (!config_parser.verify(__config_models['tasks'], main_config.tasks))
                 return false;
 
             for (__index = 0; __index < main_config.tasks.length; __index++)
             {
-                if (!config_parser.validate(main_config.tasks[__index].callbacks))
+                if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
+                    return false;
+
+                if (!config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
+                    return false;
+
+                if (!config_parser.verify(__config_models['bandwidth'], main_config.tasks[__index].bandwidth))
+                    return false;
+
+                if (!config_parser.verify(__config_models['repeat'], main_config.tasks[__index].repeat))
                     return false;
             }
-
-            //if (!config_parser.define(__config_models['latency']) || main_config.tasks.length < 1)
-            //    return false;
 
             return true;
         };

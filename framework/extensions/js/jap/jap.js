@@ -375,7 +375,17 @@ console.log(''); */
         return true;
     };
 
-    var __is_model_defined = false,
+    // Define and validate at once
+    this.verify = function(definition_model, json_object)
+    {
+        if (self.define(definition_model))
+            return self.validate(json_object);
+
+        return false;
+    };
+
+    var self = this,
+        __is_model_defined = false,
         __counter = 0,
         __json_def_model = null,
         __def_model_args = null,
