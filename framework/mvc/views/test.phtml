@@ -139,6 +139,7 @@
                                                         },
                                         tasks       :   [
                                                             {
+                                                                test : 1,
                                                                 type                :   'data',
                                                                 element_id          :   'test_id',
                                                                 content_mode        :   'replace',
@@ -210,7 +211,7 @@
                 //console.log(prng.generate());
                 //console.log(prng.reset());
                 console.log(my_aether.schedule(aether_config)); // Schedule and run AJAX tasks
-                console.log(my_aether.status()); // All AJAX tasks
+                //console.log(my_aether.status()); // All AJAX tasks
                 //console.log(my_aether.status(task_list[3])); // Only a specified AJAX task
                 //console.log(my_aether.cancel()); // All tasks
                 //console.log(my_aether.cancel(task_list[1])); // Only a specified AJAX task
@@ -236,11 +237,12 @@
                 //console.log(multi_proc.status.ended());
                 //console.log(multi_proc.status.delayed());
                 //console.log(my_lava);
+                /*
                 my_model = [
                                 {
                                     key 	:	{
                                                     id			:	'file_input',
-                                                    optional	:	false
+                                                    optional	:	false,
                                                 },
                                     value 	:	{
                                                     type		:	'string',
@@ -257,6 +259,7 @@
                                                 }
                                 }
                            ];
+                */
                 //console.log(my_lava.define(my_model));
                 //console.log(my_lava.validate());
                 <?

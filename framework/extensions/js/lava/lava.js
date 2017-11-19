@@ -2,7 +2,7 @@
 
     L.A.Va (LIVE Argument Validator)
 
-    File name: lava.js (Version: 0.5)
+    File name: lava.js (Version: 1.0)
     Description: This file contains the L.A.Va - LIVE Argument Validator.
 
     Coded by George Delaportas (G0D) 
@@ -23,6 +23,38 @@ function lava()
         console.log('');
     }
 
+    // Scan for unknown keywords
+    function has_unknown_keywords(definition_model)
+    {
+        var __index = null,
+            __attribute = null,
+            __option = null;
+
+        for (__index in definition_model)
+        {
+            __attribute = definition_model[__index];
+
+            if (!utils.validation.misc.is_object(__attribute))
+            {
+                if (__def_keywords.indexOf(__index) === -1)
+                    return true;
+
+                continue;
+            }
+
+            for (__option in __attribute)
+            {
+                if (__def_keywords.indexOf(__option) === -1)
+                    return true;
+
+                if (has_unknown_keywords(__attribute[__option]))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     // Define the JSON object
     this.define = function(definition_model)
     {
@@ -35,10 +67,20 @@ function lava()
 
         if (definition_model.length === 0)
         {
-            info_log('The definition is null!');
+            info_log('The definition model is null!');
 
             return false;
         }
+
+        if (has_unknown_keywords(definition_model))
+        {
+            info_log('The definition model contains unknown keywords!');
+
+            return false;
+        }
+
+        var __this_key = null,
+            __this_value = null;
 
         __is_model_defined = false;
 
@@ -51,72 +93,68 @@ function lava()
                 return false;
             }
 
-            if (!definition_model[__counter].hasOwnProperty('key') || 
-                !definition_model[__counter].hasOwnProperty('value'))
+            if (!definition_model[__counter].hasOwnProperty('key') || !definition_model[__counter].hasOwnProperty('value'))
             {
                 info_log('Missing "key" or "value" mandatory attributes!');
 
                 return false;
             }
 
-            if (!utils.validation.misc.is_object(definition_model[__counter].key) || 
-                !utils.validation.misc.is_object(definition_model[__counter].value))
+            __this_key = definition_model[__counter].key;
+            __this_value = definition_model[__counter].value;
+
+            if (!utils.validation.misc.is_object(__this_key) || !utils.validation.misc.is_object(__this_value))
             {
                 info_log('A "key" or "value" attribute does not point to a JSON object!');
 
                 return false;
             }
 
-            if (!definition_model[__counter].key.hasOwnProperty('id') ||
-                !definition_model[__counter].key.hasOwnProperty('optional'))
+            if (!__this_key.hasOwnProperty('id') || !__this_key.hasOwnProperty('optional'))
             {
                 info_log('Missing "id" or "optional" mandatory properties!');
 
                 return false;
             }
 
-            if (!utils.validation.alpha.is_string(definition_model[__counter].key.id) || 
-                !utils.validation.misc.is_bool(definition_model[__counter].key.optional))
+            if (!utils.validation.alpha.is_string(__this_key.id) || !utils.validation.misc.is_bool(__this_key.optional))
             {
                 info_log('Invalid specification for "id" or "optional" property!');
 
                 return false;
             }
 
-            if (utils.validation.misc.is_invalid(definition_model[__counter].key.id) || 
-                document.getElementById(definition_model[__counter].key.id) === null)
+            if (utils.validation.misc.is_invalid(__this_key.id) || document.getElementById(__this_key.id) === null)
             {
                 info_log('The "id" points to no HTML element!');
 
                 return false;
             }
 
-            if (!definition_model[__counter].value.hasOwnProperty('type'))
+            if (!__this_value.hasOwnProperty('type'))
             {
                 info_log('Missing "type" mandatory property!');
 
                 return false;
             }
 
-            if (!utils.validation.alpha.is_string(definition_model[__counter].value.type) || 
-                __all_value_types.indexOf(definition_model[__counter].value.type) === -1)
+            if (!utils.validation.alpha.is_string(__this_value.type) || __all_value_types.indexOf(__this_value.type) === -1)
             {
                 info_log('Invalid specification for "type" property!');
 
                 return false;
             }
 
-            if (definition_model[__counter].value.hasOwnProperty('length'))
+            if (__this_value.hasOwnProperty('length'))
             {
-                if (__uncountable_value_types.indexOf(definition_model[__counter].value.type) !== -1)
+                if (__uncountable_value_types.indexOf(__this_value.type) !== -1)
                 {
                     info_log('This type does not support the "length" option!');
 
                     return false;
                 }
 
-                if (!utils.validation.numerics.is_integer(definition_model[__counter].value.length) || 
-                    definition_model[__counter].value.length < 1)
+                if (!utils.validation.numerics.is_integer(__this_value.length) || __this_value.length < 1)
                 {
                     info_log('The "length" option has to be a positive integer!');
 
@@ -124,17 +162,16 @@ function lava()
                 }
             }
 
-            if (definition_model[__counter].value.hasOwnProperty('regex'))
+            if (__this_value.hasOwnProperty('regex'))
             {
-                if (__uncountable_value_types.indexOf(definition_model[__counter].value.type) !== -1 || 
-                    definition_model[__counter].value.type === 'array')
+                if (__uncountable_value_types.indexOf(__this_value.type) !== -1 || __this_value.type === 'array')
                 {
                     info_log('This type does not support the "regex" option!');
 
                     return false;
                 }
 
-                if (utils.validation.misc.is_invalid(definition_model[__counter].value.regex))
+                if (utils.validation.misc.is_invalid(__this_value.regex))
                 {
                     info_log('Invalid "regex" option!');
 
@@ -159,22 +196,25 @@ function lava()
             return false;
         }
 
-        var __keys_found = 0,
-            __keys_optional = false,
-            __this_field = null;
+        var __this_key = null,
+            __this_value = null,
+            __this_field = null,
+            __keys_found = 0,
+            __keys_optional = false;
 
         for (__counter = 0; __counter < __json_def_model.length; __counter++)
         {
-            __this_field = document.getElementById(__json_def_model[__counter].key.id);
+            __this_key = __json_def_model[__counter].key;
+            __this_field = document.getElementById(__this_key.id);
 
             if (__this_field === null)
             {
-                info_log('Element: "' + __json_def_model[__counter].key.id + '" does not exit!');
+                info_log('Element: "' + __this_key.id + '" does not exit!');
 
                 return false;
             }
 
-            if (__json_def_model[__counter].key.optional === true)
+            if (__this_key.optional === true)
                 __keys_optional = true;
 
             __keys_found++;
@@ -189,69 +229,71 @@ function lava()
 
         for (__counter = 0; __counter < __json_def_model.length; __counter++)
         {
-            __this_field = document.getElementById(__json_def_model[__counter].key.id);
+            __this_key = __json_def_model[__counter].key;
+            __this_value = __json_def_model[__counter].value;
+            __this_field = document.getElementById(__this_key.id);
 
             if (__this_field === null && __keys_optional === true)
                 continue;
 
-            if (__json_def_model[__counter].value.type !== '*')
+            if (__this_value.type !== '*')
             {
-                if (__json_def_model[__counter].value.type === 'null')
+                if (__this_value.type === 'null')
                 {
                     if (__this_field.value !== null)
                     {
-                        info_log('Field: "' + __json_def_model[__counter].key.id + '" accepts only "null" values!');
+                        info_log('Field: "' + __this_field.id + '" accepts only "null" values!');
 
                         return false;
                     }
                 }
-                else if (__json_def_model[__counter].value.type === 'array')
+                else if (__this_value.type === 'array')
                 {
                     if (!utils.validation.misc.is_array(__this_field.value))
                     {
-                        info_log('Field: "' + __json_def_model[__counter].key.id + '" accepts only "array" values!');
+                        info_log('Field: "' + __this_field.id + '" accepts only "array" values!');
 
                         return false;
                     }
                 }
                 else
                 {
-                    if (typeof __this_field.value !== __json_def_model[__counter].value.type)
+                    if (typeof __this_field.value !== __this_value.type)
                     {
-                        info_log('Field: "' + __json_def_model[__counter].key.id + '" has a type mismatch!');
+                        info_log('Field: "' + __this_field.id + '" has a type mismatch!');
 
                         return false;
                     }
                 }
             }
 
-            if (__json_def_model[__counter].value.hasOwnProperty('length'))
+            if (__this_value.hasOwnProperty('length'))
             {
-                if (__json_def_model[__counter].value.type === 'array')
+                if (__this_value.type === 'array')
                 {
-                    if (__this_field.value.length > __json_def_model[__counter].value.length)
+                    if (__this_field.value.length > __this_value.length)
                     {
-                        info_log('Field: "' + __json_def_model[__counter].key.id + '" has exceeded the defined length!');
+                        info_log('Field: "' + __this_field.id + '" has exceeded the defined length!');
 
                         return false;
                     }
                 }
                 else
                 {
-                    if (__this_field.value.toString().length > __json_def_model[__counter].value.length)
+                    if (__this_field.value.toString().length > __this_value.length)
                     {
-                        info_log('Field: "' + __json_def_model[__counter].key.id + '" has exceeded the defined length!');
+                        info_log('Field: "' + __this_field.id + '" has exceeded the defined length!');
 
                         return false;
                     }
                 }
             }
 
-            if (__json_def_model[__counter].value.hasOwnProperty('regex'))
+            if (__this_value.hasOwnProperty('regex'))
             {
-                if (!utils.validation.utilities.reg_exp(__json_def_model[__counter].value.regex, __this_field.value))
+                if (!utils.validation.utilities.reg_exp(__this_value.regex, __this_field.value))
                 {
-                    info_log('Field: "' + __json_def_model[__counter].key.id + '" has not matched the specified regex!');
+                    info_log('Field: "' + __this_field.id + '" has not matched the specified regex!');
 
                     return false;
                 }
@@ -264,6 +306,7 @@ function lava()
     var __is_model_defined = false,
         __counter = 0,
         __json_def_model = null,
+        __def_keywords = ['key', 'value', 'id', 'optional', 'type', 'length', 'regex'],
         __all_value_types = ['number', 'string', 'boolean', 'array', 'object', 'function', 'null', '*'],
         __uncountable_value_types = ['boolean', 'object', 'function', 'null', '*'],
         utils = new vulcan();

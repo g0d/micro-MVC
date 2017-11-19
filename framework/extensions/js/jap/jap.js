@@ -23,6 +23,43 @@ function jap()
         console.log('');
     }
 
+    // Scan for unknown keywords
+    function has_unknown_keywords(definition_model)
+    {
+        var __index = null,
+            __array_index = null,
+            __attribute = null,
+            __option = null;
+console.log('MODEL >>> ');
+console.log(definition_model);
+        for (__index in definition_model)
+        {console.log('INDEX: ' + __index);
+            __attribute = definition_model[__index];
+console.log('ATTR: ');
+console.log(__attribute);
+            if (!utils.validation.misc.is_object(__attribute))
+            {
+                if (__def_keywords.indexOf(__index) === -1)
+                    return true;
+
+                continue;
+            }
+
+            for (__option in __attribute)
+            {console.log('OPTION: ' );
+            console.log(__attribute[__option]);
+                for (__option in __attribute)
+                if (__def_keywords.indexOf(__option) === -1)
+                    return true;
+
+                if (has_unknown_keywords(__attribute[__option]))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     // Define the JSON object
     this.define = function(definition_model)
     {
@@ -33,18 +70,33 @@ function jap()
             return false;
         }
 
+        if (definition_model.length === 0)
+        {
+            info_log('The definition model is null!');
+
+            return false;
+        }
+
+        if (has_unknown_keywords(definition_model))
+        {
+            info_log('The definition model contains unknown keywords!');
+
+            return false;
+        }
+
+        var __this_key = null,
+            __this_value = null;
+
         __is_model_defined = false;
 
-        if (definition_model.hasOwnProperty('ignore_keys_num') && 
-            !utils.validation.misc.is_bool(definition_model.ignore_keys_num))
+        if (definition_model.hasOwnProperty('ignore_keys_num') && !utils.validation.misc.is_bool(definition_model.ignore_keys_num))
         {
             info_log('Missing or invalid "ignore_keys_num" attribute!');
 
             return false;
         }
 
-        if (!definition_model.hasOwnProperty('arguments') || 
-            !utils.validation.misc.is_object(definition_model.arguments))
+        if (!definition_model.hasOwnProperty('arguments') || !utils.validation.misc.is_object(definition_model.arguments))
         {
             info_log('Missing or invalid "arguments" attribute!');
 
@@ -62,64 +114,62 @@ function jap()
                 return false;
             }
 
-            if (!__def_model_args[__counter].hasOwnProperty('key') || 
-                !__def_model_args[__counter].hasOwnProperty('value'))
+            if (!__def_model_args[__counter].hasOwnProperty('key') || !__def_model_args[__counter].hasOwnProperty('value'))
             {
                 info_log('Missing "key" or "value" mandatory attributes!');
 
                 return false;
             }
 
-            if (!utils.validation.misc.is_object(__def_model_args[__counter].key) || 
-                !utils.validation.misc.is_object(__def_model_args[__counter].value))
+            __this_key = __def_model_args[__counter].key;
+            __this_value = __def_model_args[__counter].value;
+
+            if (!utils.validation.misc.is_object(__this_key) || !utils.validation.misc.is_object(__this_value))
             {
                 info_log('A "key" or "value" attribute does not point to a JSON object!');
 
                 return false;
             }
 
-            if (!__def_model_args[__counter].key.hasOwnProperty('name') ||
-                !__def_model_args[__counter].key.hasOwnProperty('optional'))
+            if (!__this_key.hasOwnProperty('name') || !__this_key.hasOwnProperty('optional'))
             {
                 info_log('Missing "name" or "optional" mandatory properties!');
 
                 return false;
             }
 
-            if (!utils.validation.alpha.is_string(__def_model_args[__counter].key.name) || 
-                !utils.validation.misc.is_bool(__def_model_args[__counter].key.optional))
+            if (!utils.validation.alpha.is_string(__this_key.name) || !utils.validation.misc.is_bool(__this_key.optional))
             {
                 info_log('Invalid specification for "name" or "optional" property!');
 
                 return false;
             }
 
-            if (!__def_model_args[__counter].value.hasOwnProperty('type'))
+            if (!__this_value.hasOwnProperty('type'))
             {
                 info_log('Missing "type" mandatory property!');
 
                 return false;
             }
 
-            if (!utils.validation.alpha.is_string(__def_model_args[__counter].value.type) || 
-                __all_value_types.indexOf(__def_model_args[__counter].value.type) === -1)
+            if (!utils.validation.alpha.is_string(__this_value.type) || __all_value_types.indexOf(__this_value.type) === -1)
             {
                 info_log('Invalid specification for "type" property!');
 
                 return false;
             }
 
-            if (__def_model_args[__counter].value.hasOwnProperty('length'))
+            if (__this_value.hasOwnProperty('length'))
             {
-                if (__uncountable_value_types.indexOf(__def_model_args[__counter].value.type) !== -1)
+                if (__uncountable_value_types.indexOf(__this_value.type) !== -1)
                 {
                     info_log('This type does not support the "length" option!');
 
                     return false;
                 }
 
-                if (!utils.validation.numerics.is_integer(__def_model_args[__counter].value.length) || 
-                    __def_model_args[__counter].value.length < 1)
+                if (!utils.validation.numerics.is_integer(__this_value.length) || 
+                    __this_value.length < 1)
                 {
                     info_log('The "length" option has to be a positive integer!');
 
@@ -127,18 +177,16 @@ function jap()
                 }
             }
 
-            if (__def_model_args[__counter].value.hasOwnProperty('regex'))
+            if (__this_value.hasOwnProperty('regex'))
             {
-                if (__uncountable_value_types.indexOf(__def_model_args[__counter].value.type) !== -1 || 
-                    __def_model_args[__counter].value.type === 'array')
+                if (__uncountable_value_types.indexOf(__this_value.type) !== -1 || __this_value.type === 'array')
                 {
                     info_log('This type does not support the "regex" option!');
 
                     return false;
                 }
 
-                if (!utils.validation.misc.is_object(__def_model_args[__counter].value.regex) || 
-                    __def_model_args[__counter].value.regex === '')
+                if (!utils.validation.misc.is_object(__this_value.regex) || __this_value.regex === '')
                 {
                     info_log('Invalid "regex" option!');
 
@@ -171,6 +219,8 @@ function jap()
         }
 
         var __json_key = null,
+            __this_key = null,
+            __this_value = null,
             __is_multiple_keys_array = false,
             __keys_exist = 0,
             __def_keys_found = 0,
@@ -194,16 +244,18 @@ function jap()
 
             for (__counter = 0; __counter < __def_model_args.length; __counter++)
             {
-                if (__def_model_args[__counter].key.optional === false)
+                __this_key = __def_model_args[__counter].key;
+
+                if (__this_key.optional === false)
                 {
                     if (__is_multiple_keys_array)
                     {
-                        if (!json_object[__json_key].hasOwnProperty(__def_model_args[__counter].key.name))
+                        if (!json_object[__json_key].hasOwnProperty(__this_key.name))
                             __mandatory_keys_not_found++;
                     }
                     else
                     {
-                        if (!json_object.hasOwnProperty(__def_model_args[__counter].key.name))
+                        if (!json_object.hasOwnProperty(__this_key.name))
                             __mandatory_keys_not_found++;
                     }
                 }
@@ -232,71 +284,74 @@ function jap()
 
         for (__counter = 0; __counter < __def_model_args.length; __counter++)
         {
-            if (json_object[__def_model_args[__counter].key.name] === undefined)
-                continue;
+            __this_key = __def_model_args[__counter].key;
+            __this_value = __def_model_args[__counter].value;
+console.log(__this_key.name);
+console.log(json_object[__counter]);
+            if ((__is_multiple_keys_array && json_object[__counter] === undefined || 
+                 json_object[__counter].hasOwnProperty(__this_key.name) === undefined) || 
+                json_object[__this_key.name] === undefined)
+                    continue;
 
-            if (__def_model_args[__counter].value.type !== '*')
+            if (__this_value.type !== '*')
             {
-                if (__def_model_args[__counter].value.type === 'null')
+                if (__this_value.type === 'null')
                 {
-                    if (json_object[__def_model_args[__counter].key.name] !== null)
+                    if (json_object[__this_key.name] !== null)
                     {
-                        info_log('Field: "' + __def_model_args[__counter].key.name + '" accepts only "null" values!');
+                        info_log('Argument: "' + __this_key.name + '" accepts only "null" values!');
 
                         return false;
                     }
                 }
-                else if (__def_model_args[__counter].value.type === 'array')
+                else if (__this_value.type === 'array')
                 {
-                    if (!utils.validation.misc.is_array(json_object[__def_model_args[__counter].key.name]))
+                    if (!utils.validation.misc.is_array(json_object[__this_key.name]))
                     {
-                        info_log('Field: "' + __def_model_args[__counter].key.id + '" accepts only "array" values!');
+                        info_log('Argument: "' + __this_key.name + '" accepts only "array" values!');
 
                         return false;
                     }
                 }
                 else
                 {
-                    if (typeof json_object[__def_model_args[__counter].key.name] !== 
-                        __def_model_args[__counter].value.type)
+                    if ((__is_multiple_keys_array && typeof json_object[__counter][__this_key.name] !== __this_value.type) || 
+                        typeof json_object[__this_key.name] !== __this_value.type)
                     {
-                        info_log('Field: "' + __def_model_args[__counter].key.id + '" has a type mismatch!');
+                        info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
 
                         return false;
                     }
                 }
             }
 
-            if (__def_model_args[__counter].value.hasOwnProperty('length'))
+            if (__this_value.hasOwnProperty('length'))
             {
-                if (__def_model_args[__counter].value.type === 'array')
+                if (__this_value.type === 'array')
                 {
-                    if (json_object[__def_model_args[__counter].key.name].length > 
-                        __def_model_args[__counter].value.length)
+                    if (json_object[__this_key.name].length > __this_value.length)
                     {
-                        info_log('Field: "' + __def_model_args[__counter].key.name + '" has exceeded the defined length!');
+                        info_log('Argument: "' + __this_key.name + '" has exceeded the defined length!');
 
                         return false;
                     }
                 }
                 else
                 {
-                    if (json_object[__def_model_args[__counter].key.name].toString().length > 
-                        __def_model_args[__counter].value.length)
+                    if (json_object[__this_key.name].toString().length > __this_value.length)
                     {
-                        info_log('Field: "' + __def_model_args[__counter].key.name + '" has exceeded the defined length!');
+                        info_log('Argument: "' + __this_key.name + '" has exceeded the defined length!');
 
                         return false;
                     }
                 }
             }
 
-            if (__def_model_args[__counter].value.hasOwnProperty('regex'))
+            if (__this_value.hasOwnProperty('regex'))
             {
-                if (!utils.validation.utilities.reg_exp(__def_model_args[__counter].value.regex, 
-                                                        json_object[__def_model_args[__counter].key.name]))
+                if (!utils.validation.utilities.reg_exp(__this_value.regex, json_object[__this_key.name]))
                 {
-                    info_log('Argument: "' + __def_model_args[__counter].key.name + '" has not matched the specified regex!');
+                    info_log('Argument: "' + __this_key.name + '" has not matched the specified regex!');
 
                     return false;
                 }
@@ -310,6 +365,7 @@ function jap()
         __counter = 0,
         __json_def_model = null,
         __def_model_args = null,
+        __def_keywords = ['ignore_keys_num', 'arguments', 'key', 'value', 'name', 'optional', 'type', 'length', 'regex'],
         __all_value_types = ['number', 'string', 'boolean', 'array', 'object', 'function', 'null', '*'],
         __uncountable_value_types = ['boolean', 'object', 'function', 'null', '*'],
         utils = new vulcan();

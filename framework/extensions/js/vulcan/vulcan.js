@@ -2,7 +2,7 @@
 
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 0.8)
+    File name: vulcan.js (Version: 0.9)
     Description: This file contains the Vulcan - General JS Programming Utilities.
 
     Coded by George Delaportas (G0D)
@@ -193,21 +193,25 @@ function vulcan()
                 var __counter_i = 0,
                     __counter_j = 0,
                     __callers = __controlling_list.length,
+                    __this_control_list = null,
+                    __objects_num = 0,
                     __func_handler = [];
 
                 for (__counter_i = 0; __counter_i < __callers; __counter_i++)
                 {
-                    if (__controlling_list[__counter_i].caller_id === caller_id)
-                    {
-                        var __objects = __controlling_list[__counter_i].object_events.length;
+                    __this_control_list = __controlling_list[__counter_i];
 
-                        for (__counter_j = 0; __counter_j < __objects; __counter_j++)
+                    if (__this_control_list.caller_id === caller_id)
+                    {
+                        __objects_num = __this_control_list.object_events.length;
+
+                        for (__counter_j = 0; __counter_j < __objects_num; __counter_j++)
                         {
-                            if (__controlling_list[__counter_i].object_events[__counter_j].object === object)
+                            if (__this_control_list.object_events[__counter_j].object === object)
                             {
                                 __func_handler[func] = handler;
 
-                                __controlling_list[__counter_i].object_events[__counter_j].events.push(__func_handler);
+                                __this_control_list.object_events[__counter_j].events.push(__func_handler);
 
                                 return true;
                             }
@@ -236,38 +240,48 @@ function vulcan()
                 var __counter_i = 0,
                     __counter_j = 0,
                     __counter_k = 0,
-                    __callers = __controlling_list.length;
+                    __callers = __controlling_list.length,
+                    __objects_num = 0,
+                    __control_list_i = null,
+                    __control_list_j = null,
+                    __control_list_k = null;
 
                 for (__counter_i = 0; __counter_i < __callers; __counter_i++)
                 {
-                    if (__controlling_list[__counter_i].caller_id === caller_id)
-                    {
-                        var __objects = __controlling_list[__counter_i].object_events.length;
+                    __control_list_i = __controlling_list[__counter_i];
 
-                        for (__counter_j = 0; __counter_j < __objects; __counter_j++)
+                    if (__control_list_i.caller_id === caller_id)
+                    {
+                        __objects_num = __control_list_i.object_events.length;
+
+                        for (__counter_j = 0; __counter_j < __objects_num; __counter_j++)
                         {
-                            if (__controlling_list[__counter_i].object_events[__counter_j].object === object)
+                            __control_list_j = __control_list_i.object_events[__counter_j];
+
+                            if (__control_list_j.object === object)
                             {
-                                var __events = __controlling_list[__counter_i].object_events[__counter_j].events.length;
+                                var __events = __control_list_j.events.length;
 
                                 for (__counter_k = 0; __counter_k < __events; __counter_k++)
                                 {
+                                    __control_list_k = __control_list_j.events[__counter_k];
+
                                     if (self.validation.misc.is_invalid(handler))
                                     {
-                                        if (self.validation.misc.is_undefined(__controlling_list[__counter_i].object_events[__counter_j].events[__counter_k][func]))
+                                        if (self.validation.misc.is_undefined(__control_list_k[func]))
                                             continue;
 
                                         return final_event(__counter_i, __counter_j, __counter_k, func);
                                     }
                                     else
                                     {
-                                        if (self.validation.misc.is_undefined(__controlling_list[__counter_i].object_events[__counter_j].events[__counter_k][func]))
+                                        if (self.validation.misc.is_undefined(__control_list_k[func]))
                                             continue;
 
                                         if (!self.validation.misc.is_function(handler))
                                             return false;
 
-                                        var __this_handler = __controlling_list[__counter_i].object_events[__counter_j].events[__counter_k][func];
+                                        var __this_handler = __control_list_k[func];
 
                                         if (__this_handler.toString() === handler.toString())
                                             return final_event(__counter_i, __counter_j, __counter_k, func);
@@ -369,16 +383,17 @@ function vulcan()
                     if (!self.validation.misc.is_object(attributes))
                         return false;
 
-                    var __final_attributes = null,
+                    var __this_attribute = null,
+                        __final_attributes = null,
                         __valid_attributes = ['id', 'class', 'style', 'title', 'dir', 'lang', 'accesskey', 'tabindex', 
                                               'contenteditable', 'draggable', 'spellcheck', 'target', 'rel'];
 
-                    for (var attr in attributes) 
+                    for (__this_attribute in attributes)
                     {
-                        if (__valid_attributes.indexOf(attr) === -1 && attr.indexOf('data-') !== 0)
+                        if (__valid_attributes.indexOf(__this_attribute) === -1 && __this_attribute.indexOf('data-') !== 0)
                             return false;
 
-                        __final_attributes += attr + '="' + attributes[attr] + '" ';
+                        __final_attributes += __this_attribute + '="' + attributes[__this_attribute] + '" ';
                     }
                 }
             }
@@ -515,7 +530,8 @@ function vulcan()
     {
         this.require = function(js_file_path, js_file_name)
         {
-            if (self.validation.misc.is_invalid(js_file_path) || self.validation.misc.is_invalid(js_file_name) || self.validation.alpha.is_symbol(js_file_name))
+            if (self.validation.misc.is_invalid(js_file_path) || 
+                self.validation.misc.is_invalid(js_file_name) || self.validation.alpha.is_symbol(js_file_name))
                 return false;
 
             var __dynamic_object = null;

@@ -198,15 +198,15 @@ function aether()
         {
             var __index = 0;
 
-            if (!config_parser.define(__config_models['main']) || !config_parser.validate(main_config))
+/*             if (!config_parser.define(__config_models['main']) || !config_parser.validate(main_config))
                 return false;
 
             if (!config_parser.define(__config_models['settings']) || !config_parser.validate(main_config.settings))
                 return false;
-
+ */
             if (!config_parser.define(__config_models['tasks']) || !config_parser.validate(main_config.tasks))
                 return false;
-
+return;
             if (!config_parser.define(__config_models['callbacks']))
                 return false;
 
@@ -267,60 +267,61 @@ function aether()
                                                         ]
                                         };
 
-            __config_models['tasks'] = { arguments :  [
-                                                        {
-                                                            key     :   { name : 'type', optional : false },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'url', optional : false },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'data', optional : false },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'response_timeout', optional : false },
-                                                            value   :   { type : 'number' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'callbacks', optional : false },
-                                                            value   :   { type : 'object' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'ajax_mode', optional : true },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'element_id', optional : true },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'content_mode', optional : true },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'priority', optional : true },
-                                                            value   :   { type : 'number' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'latency', optional : true },
-                                                            value   :   { type : 'object' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'bandwidth', optional : true },
-                                                            value   :   { type : 'object' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'repeat', optional : true },
-                                                            value   :   { type : 'object' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'delay', optional : true },
-                                                            value   :   { type : 'number' }
-                                                        }
-                                                    ]
+            __config_models['tasks'] = { ignore_keys_num    :   false,
+                                         arguments          :   [
+                                                                    {
+                                                                        key     :   { name : 'type', optional : false },
+                                                                        value   :   { type : 'string' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'url', optional : false },
+                                                                        value   :   { type : 'string' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'data', optional : false },
+                                                                        value   :   { type : 'string' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'response_timeout', optional : false },
+                                                                        value   :   { type : 'number' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'callbacks', optional : false },
+                                                                        value   :   { type : 'object' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'ajax_mode', optional : true },
+                                                                        value   :   { type : 'string' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'element_id', optional : true },
+                                                                        value   :   { type : 'string' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'content_mode', optional : true },
+                                                                        value   :   { type : 'string' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'priority', optional : true },
+                                                                        value   :   { type : 'number' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'latency', optional : true },
+                                                                        value   :   { type : 'object' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'bandwidth', optional : true },
+                                                                        value   :   { type : 'object' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'repeat', optional : true },
+                                                                        value   :   { type : 'object' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'delay', optional : true },
+                                                                        value   :   { type : 'number' }
+                                                                    }
+                                                                ]
                                      };
 
             __config_models['callbacks'] = { arguments :  [
