@@ -16,25 +16,25 @@ function stopwatch()
 {
     function instance(interval, callback)
     {
-        if (!is_on)
+        if (!__is_on)
             return;
 
-        clearTimeout(timer_handler);
+        clearTimeout(__timer_handler);
 
         callback.call(this, this);
 
-        if (is_one_shot)
+        if (__is_one_shot)
             return;
 
-        delay += interval;
-        diff = (new Date().getTime() - init_time) - delay;
+        __delay += interval;
+        __diff = (new Date().getTime() - __init_time) - __delay;
 
-        timer_handler = setTimeout(function() { instance(interval, callback); }, (interval - diff));
+        __timer_handler = setTimeout(function() { instance(interval, callback); }, (interval - __diff));
     }
 
     this.start = function(interval, callback, run_once)
     {
-        if (is_on)
+        if (__is_on)
             return false;
 
         if (!utils.validation.numerics.is_integer(interval) || interval < 1 || 
@@ -42,31 +42,31 @@ function stopwatch()
             (!utils.validation.misc.is_undefined(run_once) && !utils.validation.misc.is_bool(run_once)))
             return false;
 
-        timer_handler = setTimeout(function() { instance(interval, callback); }, interval);
+        __timer_handler = setTimeout(function() { instance(interval, callback); }, interval);
 
-        is_on = true;
-        is_one_shot = run_once;
+        __is_on = true;
+        __is_one_shot = run_once;
 
         return true;
     };
 
     this.stop = function()
     {
-        if (!is_on)
+        if (!__is_on)
             return false;
 
-        clearTimeout(timer_handler);
+        clearTimeout(__timer_handler);
 
-        is_on = false;
+        __is_on = false;
 
         return true;
     };
 
-    var is_on = false,
-        is_one_shot = false,
-        init_time = new Date().getTime(),
-        delay = 0,
-        diff = 0,
-        timer_handler = null,
+    var __is_on = false,
+        __is_one_shot = false,
+        __init_time = new Date().getTime(),
+        __delay = 0,
+        __diff = 0,
+        __timer_handler = null,
         utils = new vulcan();
 }

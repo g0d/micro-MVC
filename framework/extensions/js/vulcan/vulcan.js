@@ -2,11 +2,11 @@
 
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 0.7)
+    File name: vulcan.js (Version: 0.8)
     Description: This file contains the Vulcan - General JS Programming Utilities.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2014 - 2017
+    Copyright (C) 2014
     Open Software License (OSL 3.0)
 
 */
@@ -14,13 +14,11 @@
 // Vulcan
 function vulcan()
 {
-    var self = this;
-
     function validation()
     {
         function alpha()
         {
-            var me = this;
+            var __local_self = this;
 
             this.is_string = function(val)
             {
@@ -32,7 +30,7 @@ function vulcan()
 
             this.is_symbol = function(val)
             {
-                if (!me.is_string(val))
+                if (!__local_self.is_string(val))
                     return false;
 
                 if (val.match(/[!$%^&*()+|~=`{}\[\]:";'<>?,\/]/))
@@ -44,7 +42,7 @@ function vulcan()
 
         function numerics()
         {
-            var me = this;
+            var __local_self = this;
 
             this.is_number = function(val)
             {
@@ -56,7 +54,7 @@ function vulcan()
 
             this.is_integer = function(val)
             {
-                if (me.is_number(val) && (val % 1 === 0) && (val.toString().indexOf('.') === -1))
+                if (__local_self.is_number(val) && (val % 1 === 0) && (val.toString().indexOf('.') === -1))
                     return true;
 
                 return false;
@@ -67,7 +65,7 @@ function vulcan()
                 if (val === 0.0)
                     return true;
 
-                if (me.is_number(val) && (val % 1 !== 0))
+                if (__local_self.is_number(val) && (val % 1 !== 0))
                     return true;
 
                 return false;
@@ -137,18 +135,18 @@ function vulcan()
         {
             this.is_email = function(val)
             {
-                var pattern = new RegExp(['^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|', 
-                                          '(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|',
-                                          '(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'].join(''));
+                var __pattern = new RegExp(['^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|', 
+                                            '(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|',
+                                            '(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'].join(''));
 
-                return pattern.test(val);
+                return __pattern.test(val);
             };
 
             this.is_phone = function(val)
             {
-                var pattern = /^\+?\d{2}[- ]?\d{3}[- ]?\d{5}$/;
+                var __pattern = /^\+?\d{2}[- ]?\d{3}[- ]?\d{5}$/;
 
-                return pattern.test(val);
+                return __pattern.test(val);
             };
 
             this.reg_exp = function(pattern, expression)
@@ -192,22 +190,24 @@ function vulcan()
 
             this.insert = function(caller_id, object, func, handler)
             {
-                var __callers = __controlling_list.length,
+                var __counter_i = 0,
+                    __counter_j = 0,
+                    __callers = __controlling_list.length,
                     __func_handler = [];
 
-                for (var i = 0; i < __callers; i++)
+                for (__counter_i = 0; __counter_i < __callers; __counter_i++)
                 {
-                    if (__controlling_list[i].caller_id === caller_id)
+                    if (__controlling_list[__counter_i].caller_id === caller_id)
                     {
-                        var __objects = __controlling_list[i].object_events.length;
+                        var __objects = __controlling_list[__counter_i].object_events.length;
 
-                        for (var j = 0; j < __objects; j++)
+                        for (__counter_j = 0; __counter_j < __objects; __counter_j++)
                         {
-                            if (__controlling_list[i].object_events[j].object === object)
+                            if (__controlling_list[__counter_i].object_events[__counter_j].object === object)
                             {
                                 __func_handler[func] = handler;
 
-                                __controlling_list[i].object_events[j].events.push(__func_handler);
+                                __controlling_list[__counter_i].object_events[__counter_j].events.push(__func_handler);
 
                                 return true;
                             }
@@ -233,41 +233,44 @@ function vulcan()
 
             this.fetch = function(caller_id, object, func, handler)
             {
-                var __callers = __controlling_list.length;
+                var __counter_i = 0,
+                    __counter_j = 0,
+                    __counter_k = 0,
+                    __callers = __controlling_list.length;
 
-                for (var i = 0; i < __callers; i++)
+                for (__counter_i = 0; __counter_i < __callers; __counter_i++)
                 {
-                    if (__controlling_list[i].caller_id === caller_id)
+                    if (__controlling_list[__counter_i].caller_id === caller_id)
                     {
-                        var __objects = __controlling_list[i].object_events.length;
+                        var __objects = __controlling_list[__counter_i].object_events.length;
 
-                        for (var j = 0; j < __objects; j++)
+                        for (__counter_j = 0; __counter_j < __objects; __counter_j++)
                         {
-                            if (__controlling_list[i].object_events[j].object === object)
+                            if (__controlling_list[__counter_i].object_events[__counter_j].object === object)
                             {
-                                var __events = __controlling_list[i].object_events[j].events.length;
+                                var __events = __controlling_list[__counter_i].object_events[__counter_j].events.length;
 
-                                for (var k = 0; k < __events; k++)
+                                for (__counter_k = 0; __counter_k < __events; __counter_k++)
                                 {
                                     if (self.validation.misc.is_invalid(handler))
                                     {
-                                        if (self.validation.misc.is_undefined(__controlling_list[i].object_events[j].events[k][func]))
+                                        if (self.validation.misc.is_undefined(__controlling_list[__counter_i].object_events[__counter_j].events[__counter_k][func]))
                                             continue;
 
-                                        return final_event(i, j, k, func);
+                                        return final_event(__counter_i, __counter_j, __counter_k, func);
                                     }
                                     else
                                     {
-                                        if (self.validation.misc.is_undefined(__controlling_list[i].object_events[j].events[k][func]))
+                                        if (self.validation.misc.is_undefined(__controlling_list[__counter_i].object_events[__counter_j].events[__counter_k][func]))
                                             continue;
 
                                         if (!self.validation.misc.is_function(handler))
                                             return false;
 
-                                        var __this_handler = __controlling_list[i].object_events[j].events[k][func];
+                                        var __this_handler = __controlling_list[__counter_i].object_events[__counter_j].events[__counter_k][func];
 
                                         if (__this_handler.toString() === handler.toString())
-                                            return final_event(i, j, k, func);
+                                            return final_event(__counter_i, __counter_j, __counter_k, func);
                                     }
                                 }
                             }
@@ -296,14 +299,15 @@ function vulcan()
             }
             else // Multiple elements
             {
-                var __object_length = object.length;
+                var __counter_i = 0,
+                    __object_length = object.length;
 
-                for (var i = 0; i < __object_length; i++)
+                for (__counter_i = 0; __counter_i < __object_length; __counter_i++)
                 {
-                    if (!__controller.insert(caller_id, object[i], func, handler))
+                    if (!__controller.insert(caller_id, object[__counter_i], func, handler))
                         return false;
 
-                    object[i].addEventListener(func, handler, false);
+                    object[__counter_i].addEventListener(func, handler, false);
                 }
             }
 
@@ -331,16 +335,17 @@ function vulcan()
             }
             else // Multiple elements
             {
-                var __object_length = object.length;
+                var __counter_i = 0,
+                    __object_length = object.length;
 
-                for (var i = 0; i < __object_length; i++)
+                for (__counter_i = 0; __counter_i < __object_length; __counter_i++)
                 {
-                    __handler = __controller.fetch(caller_id, object[i], func, handler);
+                    __handler = __controller.fetch(caller_id, object[__counter_i], func, handler);
 
                     if (!__handler)
                         return false;
 
-                    object[i].removeEventListener(func, __handler, false);
+                    object[__counter_i].removeEventListener(func, __handler, false);
                 }
             }
 
@@ -392,22 +397,26 @@ function vulcan()
                 if (self.validation.misc.is_undefined(url_info) || !self.validation.misc.is_object(url_info))
                     return false;
 
-                var __url_info_length = url_info.length;
+                var __counter_i = 0,
+                    __url_info_length = url_info.length;
 
-                for (var i = 0; i < __url_info_length; i++ )
+                for (__counter_i = 0; __counter_i < __url_info_length; __counter_i++ )
                 {   
-                    if (!self.validation.misc.is_object(url_info[i]))
+                    if (!self.validation.misc.is_object(url_info[__counter_i]))
                         return false;
 
                     if (self.validation.misc.is_undefined(__final_attributes))
                     {
-                        text = text.replace(url_info[i].expanded_url, 
-                                            '<a href="' + url_info[i].expanded_url + '">' + url_info[i].display_url + '</a>');
+                        text = text.replace(url_info[__counter_i].expanded_url, 
+                                            '<a href="' + url_info[__counter_i].expanded_url + '">' + 
+                                            url_info[__counter_i].display_url + '</a>');
                     }
                     else
                     {
-                        text = text.replace(url_info[i].expanded_url, 
-                                            '<a ' + __final_attributes + 'href="' + url_info[i].expanded_url + '">' + url_info[i].display_url + '</a>');
+                        text = text.replace(url_info[__counter_i].expanded_url, 
+                                            '<a ' + __final_attributes + 'href="' + 
+                                            url_info[__counter_i].expanded_url + '">' + 
+                                            url_info[__counter_i].display_url + '</a>');
                     }
                 }
 
@@ -521,10 +530,18 @@ function vulcan()
         };
     }
 
-    this.validation = new validation();
-    this.events = new events();
-    this.conversions = new conversions();
-    this.graphics = new graphics();
-    this.objects = new objects();
-    this.system = new system();
+    function init()
+    {
+        self.validation = new validation();
+        self.events = new events();
+        self.conversions = new conversions();
+        self.graphics = new graphics();
+        self.objects = new objects();
+        self.system = new system();
+    }
+
+    var self = this;
+
+	// Intialize
+	init();
 }

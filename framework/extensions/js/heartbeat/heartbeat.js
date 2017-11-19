@@ -1,10 +1,10 @@
 /*
 
     Heartbeat
-    
-    File name: heartbeat.js (Version: 0.1)
+
+    File name: heartbeat.js (Version: 0.3)
     Description: This file contains the Heartbeat extension (Ping services).
-    
+
     Coded by George Delaportas (G0D)
     Copyright (C) 2017
     Open Software License (OSL 3.0)
@@ -12,15 +12,18 @@
 */
 
 // Heartbeat
-function heartbeat(interval, time_out_callback, fail_callback)
+function heartbeat(interval, url, service_name, success_callback, fail_callback, time_out_callback)
 {
-    var my_vulcan = new vulcan();
-    var my_bull = new bull();
-    var is_service_up = true;
+    var utils = new vulcan(),
+        timer = new stopwatch(),
+        ajax = new bull();
 
-    if (!my_vulcan.validation.numerics.is_integer(interval) || interval < 1 || 
-        !my_vulcan.validation.misc.is_function(time_out_callback) || 
-        !my_vulcan.validation.misc.is_function(fail_callback))
+    if (!utils.validation.numerics.is_integer(interval) || interval < 1 || 
+        utils.validation.misc.is_invalid(url) || !utils.validation.alpha.is_string(url) || 
+        utils.validation.misc.is_invalid(service_name) || !utils.validation.alpha.is_string(service_name) || 
+        !utils.validation.misc.is_function(success_callback) || 
+        !utils.validation.misc.is_function(fail_callback) || 
+        !utils.validation.misc.is_function(time_out_callback))
         return false;
 
     function message(service, status, callback)
@@ -30,26 +33,26 @@ function heartbeat(interval, time_out_callback, fail_callback)
         console.log('-------- *** --------');
         console.log('');
 
-        if (my_vulcan.validation.misc.is_function(callback))
-            callback.call(this, service);
+        callback.call(this);
     }
 
-    setInterval(function()
+    timer.start(interval, function()
                 {
-                    my_bull.request('yourdomain.com', '1', 1, 
+                    ajax.request(url, '1', 1, 
                     function()
                     {
-                        message('Your message here...', 'SUCCESS');
-                    }, 5000, 
+                        message(service_name, 'SUCCESS', success_callback);
+                    }, 
                     function()
                     {
-                        message('Your message here...', 'TIME OUT', time_out_callback);
+                        message(service_name, 'FAIL', fail_callback);
                     },
+                    5000,
                     function()
                     {
-                        message('Your message here...', 'FAIL', fail_callback);
+                        message(service_name, 'TIME OUT', time_out_callback);
                     });
-                }, interval);
+                });
 
     return true;
 }

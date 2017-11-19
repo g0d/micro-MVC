@@ -1,12 +1,12 @@
 /*
 
     BULL (AJAX System/Framework)
-    
+
     File name: bull.js (Version: 16.0)
     Description: This file contains the BULL - AJAX System/Framework.
-    
+
     Coded by George Delaportas (G0D) / Contributions by Catalin Maftei
-    Copyright (C) 2013 - 2017
+    Copyright (C) 2013
     Open Software License (OSL 3.0)
 
 */
@@ -21,11 +21,6 @@ function bull()
         {
             this.http_session = function(url, data, mode)
             {
-                if (utils.validation.misc.is_undefined(url) || 
-                    utils.validation.misc.is_undefined(data) || 
-                    !utils.validation.misc.is_bool(mode))
-                    return false;
-                
                 __xml_http.open('POST', url, mode);
                 __xml_http.setRequestHeader('Access-Control-Allow-Origin', '*');
                 
@@ -42,19 +37,19 @@ function bull()
                 if (mode === false)
                     state_changed();
                 
-                return true;
+                return;
             };
             
             this.create_object = function()
             {
-                var xml_http = null;
+                var __xml_http_obj = null;
                 
                 if (window.XMLHttpRequest)
-                    xml_http = new XMLHttpRequest();
+                    __xml_http_obj = new XMLHttpRequest();
                 else
-                    xml_http = new ActiveXObject("Microsoft.XMLHTTP");
+                    __xml_http_obj = new ActiveXObject("Microsoft.XMLHTTP");
                 
-                return xml_http;
+                return __xml_http_obj;
             };
         }
         
@@ -118,15 +113,15 @@ function bull()
         {
             __xml_http = ajax.create_object();
             
-            return true;
+            return;
         }
         
-        function set_callbacks(success_callback, timeout_callback, fail_callback)
+        function set_callbacks(success_callback, fail_callback, timeout_callback)
         {
             __success_callback = success_callback;
-            __timeout_callback = timeout_callback;
             __fail_callback = fail_callback;
-            
+            __timeout_callback = timeout_callback;
+
             return null;
         }
         
@@ -138,18 +133,16 @@ function bull()
             return null;
         }
         
-        this.data = function(url, data, element_id, content_fill_mode, success_callback, response_timeout, timeout_callback, fail_callback)
+        this.data = function(url, data, element_id, content_fill_mode, success_callback, fail_callback, response_timeout, timeout_callback)
         {
-            if (utils.validation.misc.is_invalid(url) || (utils.validation.misc.is_invalid(data) && data !== '') || 
+            if (utils.validation.misc.is_invalid(url) || utils.validation.misc.is_invalid(data) || 
                 utils.validation.misc.is_invalid(element_id) || 
                 (!utils.validation.misc.is_invalid(content_fill_mode) && !utils.validation.misc.is_bool(content_fill_mode)) || 
                 (!utils.validation.misc.is_invalid(success_callback) && !utils.validation.misc.is_function(success_callback)) || 
                 (!utils.validation.misc.is_invalid(fail_callback) && !utils.validation.misc.is_function(fail_callback)) || 
                 (!utils.validation.misc.is_invalid(response_timeout) && 
                  (!utils.validation.numerics.is_integer(response_timeout) || response_timeout < 1)) || 
-                (!utils.validation.misc.is_invalid(timeout_callback) && 
-                (!utils.validation.misc.is_function(timeout_callback) || 
-                 !utils.validation.numerics.is_integer(response_timeout) || response_timeout < 1)))
+                (!utils.validation.misc.is_invalid(timeout_callback) && !utils.validation.misc.is_function(timeout_callback)))
                 return false;
             
             __data_div_id = element_id;
@@ -157,7 +150,7 @@ function bull()
             if (utils.validation.misc.is_bool(content_fill_mode))
                 __content_fill_mode = content_fill_mode;
             
-            set_callbacks(success_callback, timeout_callback, fail_callback);
+            set_callbacks(success_callback, fail_callback, timeout_callback);
             
             run_timer(response_timeout);
             
@@ -166,21 +159,20 @@ function bull()
             return null;
         };
         
-        this.request = function(url, data, ajax_mode, success_callback, response_timeout, timeout_callback, fail_callback)
+        this.request = function(url, data, ajax_mode, success_callback, fail_callback, response_timeout, timeout_callback)
         {
-            if (utils.validation.misc.is_invalid(url) || (utils.validation.misc.is_invalid(data) && data !== '') || 
+            if (utils.validation.misc.is_invalid(url) || utils.validation.misc.is_invalid(data) || 
                 (!utils.validation.numerics.is_integer(ajax_mode) || ajax_mode < 1 || ajax_mode > 2) || 
                 (!utils.validation.misc.is_invalid(success_callback) && !utils.validation.misc.is_function(success_callback)) || 
                 (!utils.validation.misc.is_invalid(fail_callback) && !utils.validation.misc.is_function(fail_callback)) || 
                 (!utils.validation.misc.is_invalid(response_timeout) && 
                  (!utils.validation.numerics.is_integer(response_timeout) || response_timeout < 1)) || 
-                (!utils.validation.misc.is_invalid(timeout_callback) && (!utils.validation.misc.is_function(timeout_callback) || 
-                 !utils.validation.numerics.is_integer(response_timeout) || response_timeout < 1)))
+                (!utils.validation.misc.is_invalid(timeout_callback) && !utils.validation.misc.is_function(timeout_callback)))
                 return false;
             
             __data_div_id = null;
             
-            set_callbacks(success_callback, timeout_callback, fail_callback);
+            set_callbacks(success_callback, fail_callback, timeout_callback);
             
             run_timer(response_timeout);
             
@@ -212,18 +204,18 @@ function bull()
     
     // AJAX data (Asynchronous)
     this.data = function(url, data, element_id, content_fill_mode, 
-                         success_callback, response_timeout, timeout_callback, fail_callback)
+                         success_callback, fail_callback, response_timeout, timeout_callback)
     {
         return new core().data(url, data, element_id, content_fill_mode, 
-                              success_callback, response_timeout, timeout_callback, fail_callback);
+                              success_callback, fail_callback, response_timeout, timeout_callback);
     };
     
     // AJAX request (Asynchronous [1] / Synchronous [2])
-    this.request = function(url, data, ajax_mode, success_callback, response_timeout, 
-                            timeout_callback, fail_callback)
+    this.request = function(url, data, ajax_mode, success_callback, fail_callback, 
+                            response_timeout, timeout_callback)
     {
-        return new core().request(url, data, ajax_mode, success_callback, response_timeout, 
-                                 timeout_callback, fail_callback);
+        return new core().request(url, data, ajax_mode, success_callback, fail_callback, 
+                                  response_timeout, timeout_callback);
     };
     
     var utils = new vulcan();

@@ -2,11 +2,11 @@
 
     Centurion (Benchmarking facility)
 
-    File name: centurion.js (Version: 1.5)
+    File name: centurion.js (Version: 1.6)
     Description: This file contains the Centution - Benchmarking facility extension.
 
     Coded by George Delaportas (G0D)
-    Copyright (c) 2014 - 2017
+    Copyright (c) 2014
     Open Software License (OSL 3.0)
 
 */
@@ -118,9 +118,16 @@ function centurion()
         this.results = new results();
     }
 
-    this.benchmark = new benchmark();
-    this.status = new status();
+    function init()
+    {
+        self.benchmark = new benchmark();
+        self.status = new status();
+    }
 
-    var actions_list = new actions_model(),
+    var self = this,
+        actions_list = new actions_model(),
         results_list = new results_model();
+
+    // Initialize
+    init();
 }

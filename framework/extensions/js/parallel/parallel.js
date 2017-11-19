@@ -2,11 +2,11 @@
 
     Parallel programming (Task parallelism)
 
-    File name: parallel.js (Version: 1.5)
+    File name: parallel.js (Version: 1.6)
     Description: This file contains the Parallel framework for JS.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2015 - 2017
+    Copyright (C) 2015
     Open Software License (OSL 3.0)
 
 */
@@ -66,15 +66,15 @@ function parallel()
             if (!utils.validation.misc.is_undefined(delay))
             {
                 __new_task.delay = delay;
-                __new_task.status = tasks_status[2];
+                __new_task.status = __tasks_status[2];
 
-                clearTimeout(timer_handler);
+                clearTimeout(__timer_handler);
 
-                timer_handler = setTimeout(function() { __new_worker.postMessage(data); }, delay);
+                __timer_handler = setTimeout(function() { __new_worker.postMessage(data); }, delay);
             }
             else
             {
-                __new_task.status = tasks_status[0];
+                __new_task.status = __tasks_status[0];
 
                 __new_worker.postMessage(data);
             }
@@ -86,8 +86,7 @@ function parallel()
 
         this.destroy = function(task_id)
         {
-            var __index = 0,
-                __task = null;
+            var __task = null;
 
             for (__index = 0; __index < tasks_list.num; __index++)
             {
@@ -96,7 +95,7 @@ function parallel()
                 if (__task.id === task_id)
                 {
                     tasks_list.workers[__index].terminate();
-                    tasks_list.tasks[__index].status = tasks_status[1];
+                    tasks_list.tasks[__index].status = __tasks_status[1];
 
                     return true;
                 }
@@ -107,8 +106,6 @@ function parallel()
 
         this.kill = function()
         {
-            var __index = 0;
-
             for (__index = 0; __index < tasks_list.num; __index++)
                 tasks_list.workers[__index].terminate();
 
@@ -119,76 +116,77 @@ function parallel()
 
         this.tasks = new tasks();
 
-        var tasks_list = new tasks_list_model(),
-            timer_handler = null;
+        var __index = 0,
+            __timer_handler = null,
+            tasks_list = new tasks_list_model();
     }
 
     function status()
     {
         this.running = function()
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
-            list = [];
+            __list = [];
 
-            for (index = 0; index < tasks_manager.tasks.num(); index++)
+            for (__index = 0; __index < tasks_manager.tasks.num(); __index++)
             {
-                task = tasks_manager.tasks.list(index);
+                __task = tasks_manager.tasks.list(__index);
 
-                if (task.status === tasks_status[0])
-                    list.push(task);
+                if (__task.status === __tasks_status[0])
+                    __list.push(__task);
             }
 
-            return list;
+            return __list;
         };
 
         this.ended = function()
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
-            list = [];
+            __list = [];
 
-            for (index = 0; index < tasks_manager.tasks.num(); index++)
+            for (__index = 0; __index < tasks_manager.tasks.num(); __index++)
             {
-                task = tasks_manager.tasks.list(index);
+                __task = tasks_manager.tasks.list(__index);
 
-                if (task.status === tasks_status[1])
-                    list.push(task);
+                if (__task.status === __tasks_status[1])
+                    __list.push(__task);
             }
 
-            return list;
+            return __list;
         };
 
         this.delayed = function()
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
-            list = [];
+            __list = [];
 
-            for (index = 0; index < tasks_manager.tasks.num(); index++)
+            for (__index = 0; __index < tasks_manager.tasks.num(); __index++)
             {
-                task = tasks_manager.tasks.list(index);
+                __task = tasks_manager.tasks.list(__index);
 
-                if (task.status === tasks_status[2])
-                    list.push(task);
+                if (__task.status === __tasks_status[2])
+                    __list.push(__task);
             }
 
-            return list;
+            return __list;
         };
 
-        var index = 0, 
-            list = [],
-            task = null;
+        var __index = 0, 
+            __list = [],
+            __task = null;
     }
 
     function tasks()
     {
         this.num = function()
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
             return tasks_manager.tasks.num();
@@ -196,7 +194,7 @@ function parallel()
 
         this.list = function(index)
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
             if (utils.validation.misc.is_undefined(index))
@@ -210,12 +208,13 @@ function parallel()
 
         this.create = function(worker_file, data, delay)
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
-            if (!utils.validation.alpha.is_string(worker_file) || utils.validation.misc.is_undefined(data) || 
-                (!utils.validation.misc.is_undefined(delay) && !utils.validation.numerics.is_integer(delay) || 
-                 delay < 1 || delay > 86400000))
+            if (utils.validation.misc.is_invalid(worker_file) || !utils.validation.alpha.is_string(worker_file) || 
+                utils.validation.misc.is_invalid(data) || 
+                (!utils.validation.misc.is_undefined(delay) && (!utils.validation.numerics.is_integer(delay) || 
+                 delay < 1 || delay > 86400000)))
                 return false;
 
             return tasks_manager.create(worker_file, data, delay);
@@ -223,7 +222,7 @@ function parallel()
 
         this.destroy = function(task_id)
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
             if (!utils.validation.numerics.is_integer(task_id))
@@ -234,7 +233,7 @@ function parallel()
 
         this.kill = function()
         {
-            if (!init_ok)
+            if (!__init_ok)
                 return false;
 
             tasks_manager.kill();
@@ -248,18 +247,19 @@ function parallel()
         if (utils.validation.misc.is_undefined(Worker))
             return;
 
-        init_ok = true;
+        self.tasks = new tasks();
+        self.status = new status();
+
+        __init_ok = true;
     }
 
-    var init_ok = false,
-        tasks_status = ['RUN', 'END', 'DELAY'],
-        task_max_id = 9007199254740992,
+    var self = this,
+        __init_ok = false,
+        __tasks_status = ['RUN', 'END', 'DELAY'],
         tasks_manager = new task_manager_model(),
         rnd_gen = new pythia(),
         utils = new vulcan();
 
-    this.tasks = new tasks();
-    this.status = new status();
-
+    // Initialize
     init();
 }

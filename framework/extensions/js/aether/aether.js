@@ -1,12 +1,12 @@
 /*
 
-    Aether (AJAX Traffic Controller [ATC] / QoS for web apps)
+    Aether (AJAX Traffic Controller [TC] / QoS for web apps)
 
     File name: aether.js (Version: 2.0)
-    Description: This file contains the Aether - ATC/QoS extension.
+    Description: This file contains the Aether - TC & QoS extension.
 
     Coded by George Delaportas (G0D) 
-    Copyright (C) 2014 - 2017
+    Copyright (C) 2014
     Open Software License (OSL 3.0)
 
 */
@@ -165,7 +165,7 @@ function aether()
 
                 if (tasks_config[index].hasOwnProperty('repeat'))
                 {
-                    if (tasks_config[index].repeat < -1 || tasks_config[index].repeat > 100000)
+                    if (tasks_config[index].repeat < -1 || tasks_config[index].repeat > 1000000)
                     {
                         system_tools.reset();
     

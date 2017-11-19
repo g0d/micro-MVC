@@ -1,7 +1,7 @@
 /*
 	Browser DB
 
-	File: browser_db.js (Version: 0.3)
+	File: browser_db.js (Version: 0.5)
 	Description: This is the browser DB JS file.
 
 	Coded by George Delaportas (G0D)
@@ -12,14 +12,11 @@
 // Browser DB
 function browser_db()
 {
-	var bdb = this;
-	var selected_record = null;
-
 	// Model
 	function model_class()
 	{
-		// Initialize records
-		this.db_records = [];
+		this.db_records = []; 			// Initialize DB records
+		this.selected_record = null;	// Selected record
 	}
 
 	// View
@@ -28,13 +25,13 @@ function browser_db()
 		// Reload data inside the records list if local storage has previously saved data
 		this.reload_data = function()
 		{
-			var records = localStorage.getItem('db_records');
+			var __records = localStorage.getItem('db_records');
 
-			if (!records)
+			if (!__records)
 				return false;
 
 			// Populate records DB
-			bdb.model.db_records = JSON.parse(records);
+			bdb.model.db_records = JSON.parse(__records);
 
 			return true;
 		};
@@ -54,13 +51,13 @@ function browser_db()
 			if (me.check_duplicates(record.id))
 				return false;
 
-			var new_record_id = 1;
-			var max_record_id = bdb.model.db_records.length - 1;
+			var __new_record_id = 1,
+				__max_record_id = bdb.model.db_records.length - 1;
 
 			if (bdb.model.db_records.length > 0)
-				new_record_id = bdb.model.db_records[max_record_id].id + 1;
+				__new_record_id = bdb.model.db_records[__max_record_id].id + 1;
 
-			record.id = new_record_id;
+			record.id = __new_record_id;
 
 			bdb.model.db_records.push(record);
 
@@ -78,18 +75,18 @@ function browser_db()
 			if (!utils.validation.numerics.is_number(record_id))
 				return false;
 
-			var i = 0;
-
 			if (!bdb.view.reload_data())
 				return false;
 
-			for (i = 0; i < bdb.model.db_records.length; i++)
-			{
-				if (bdb.model.db_records[i].id == record_id)
-				{
-					bdb.selected_record = bdb.model.db_records[i];
+			var __index = 0;
 
-					return bdb.selected_record;
+			for (__index = 0; __index < bdb.model.db_records.length; __index++)
+			{
+				if (bdb.model.db_records[__index].id == record_id)
+				{
+					bd.model.selected_record = bdb.model.db_records[__index];
+
+					return bdb.model.selected_record;
 				}
 			}
 
@@ -105,14 +102,13 @@ function browser_db()
 			if (!me.check_duplicates(record.id))
 				return false;	
 
-			var i = 0;
-			var updated_record = null;
+			var __index = 0;
 
-			for (i = 0; i < bdb.model.db_records.length; i++)
+			for (__index = 0; __index < bdb.model.db_records.length; __index++)
 			{
-				if (bdb.model.db_records[i].id == record.id)
+				if (bdb.model.db_records[__index].id == record.id)
 				{
-					bdb.model.db_records[i] = record;
+					bdb.model.db_records[__index] = record;
 					
 					localStorage.setItem('db_records', JSON.stringify(bdb.model.db_records));
 
@@ -132,15 +128,15 @@ function browser_db()
 			if (!utils.validation.numerics.is_number(record_id))
 				return false;
 
-			var i = 0;
+			var __index = 0;
 
-			for (i = 0; i < bdb.model.db_records.length; i++)
+			for (__index = 0; __index < bdb.model.db_records.length; __index++)
 			{
-				if (bdb.model.db_records[i].id == record_id)
+				if (bdb.model.db_records[__index].id == record_id)
 				{
 					localStorage.clear();
 
-					bdb.model.db_records.splice(i, 1);
+					bdb.model.db_records.splice(__index, 1);
 
 					localStorage.setItem('db_records', JSON.stringify(bdb.model.db_records));
 
@@ -170,14 +166,14 @@ function browser_db()
 			if (!utils.validation.numerics.is_number(record_id))
 				return false;
 
-			var i = 0;
-
 			if (!bdb.view.reload_data())
 				return false;
 
-			for (i = 0; i < bdb.model.db_records.length; i++)
+			var __index = 0;
+
+			for (__index = 0; __index < bdb.model.db_records.length; __index++)
 			{
-				if (bdb.model.db_records[i].id == record_id)
+				if (bdb.model.db_records[__index].id == record_id)
 					return true;
 			}
 
@@ -202,7 +198,8 @@ function browser_db()
 		return bdb;
 	}
 
-	var utils = new vulcan();
+	var bdb = this,
+		utils = new vulcan();
 
 	// Intialize
 	init();

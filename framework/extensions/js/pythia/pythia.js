@@ -2,7 +2,7 @@
 
     Pythia (Fast pseudo random number generator / shuffler)
 
-    File name: pythia.js (Version: 0.3)
+    File name: pythia.js (Version: 0.4)
     Description: This file contains the Pythia - Pseudo random / shuffling number generator.
 
     Coded by George Delaportas (G0D) 
@@ -14,23 +14,21 @@
 // Pythia
 function pythia()
 {
-    var self = this;
-
     function loop(rnd_num)
     {
-        var __results_length = results.length,
+        var __results_length = __results.length,
             __index = 0;
 
-        if (__results_length === 0 || rnd_num >= results[__results_length - 1])
+        if (__results_length === 0 || rnd_num >= __results[__results_length - 1])
         {
-            if (rnd_num === max_random_num)
+            if (rnd_num === __max_random_num)
                 return rnd_num;
             else
             {
-                if (rnd_num === results[__results_length - 1])
+                if (rnd_num === __results[__results_length - 1])
                     rnd_num++;
 
-                results.push(rnd_num);
+                __results.push(rnd_num);
 
                 return rnd_num;
             }
@@ -38,13 +36,13 @@ function pythia()
 
         for (__index = 0; __index < __results_length; __index++)
         {
-            if (rnd_num === results[__index])
+            if (rnd_num === __results[__index])
                 rnd_num++;
             else
             {
-                if (rnd_num < results[__index])
+                if (rnd_num < __results[__index])
                 {
-                    results.splice(__index, 0, rnd_num);
+                    __results.splice(__index, 0, rnd_num);
 
                     break;
                 }
@@ -56,18 +54,18 @@ function pythia()
 
     this.generate = function()
     {
-        var __this_rnd_num = Math.floor((Math.random() * max_random_num) + 1);
+        var __this_rnd_num = Math.floor((Math.random() * __max_random_num) + 1);
 
         return loop(__this_rnd_num);
     };
 
     this.reset = function()
     {
-        results = [];
+        __results = [];
 
-        return null;
+        return;
     };
 
-    var max_random_num = 9007199254740992,
-        results = [];
+    var __max_random_num = 9007199254740992,
+        __results = [];
 }
