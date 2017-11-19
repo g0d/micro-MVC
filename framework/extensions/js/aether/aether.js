@@ -14,7 +14,7 @@
 // Aether
 function aether()
 {
-    function models_group()
+    function sys_models_class()
     {
         function settings_model()
         {
@@ -36,9 +36,9 @@ function aether()
             this.element_id = null;
             this.content_mode = null;
             this.priority = 999999;
-            this.latency = [];
-            this.bandwidth = [];
-            this.repeat = 0;
+            this.latency = null;
+            this.bandwidth = null;
+            this.repeat = null;
             this.delay = -1;
         }
 
@@ -57,11 +57,11 @@ function aether()
         this.tasks = new tasks_list_model();
     }
 
-    function tools_group()
+    function sys_tools_class()
     {
         this.load_settings = function(settings_config)
         {
-            if (chain_modes.indexOf(settings_config.chain_mode) === -1)
+            if (system_modes.chain.indexOf(settings_config.chain_mode) === -1)
                 return false;
 
             system_models.settings.chain_mode = settings_config.chain_mode;
@@ -80,11 +80,11 @@ function aether()
 
         this.load_tasks = function(tasks_config)
         {
-            var index;
+            var __index = 0;
 
-            for (index = 0; index < tasks_config.length; index++)
+            for (__index = 0; __index < tasks_config.length; __index++)
             {
-                if (ajax_types.indexOf(tasks_config[index].type) === -1)
+                if (system_modes.bull.indexOf(tasks_config[__index].type) === -1)
                 {
                     system_tools.reset();
 
@@ -94,97 +94,97 @@ function aether()
                 var new_task = system_models.generate_task();
 
                 new_task.id = prng.generate();
-                new_task.type = tasks_config[index].type;
-                new_task.url = tasks_config[index].url;
-                new_task.data = tasks_config[index].data;
-                new_task.response_timeout = tasks_config[index].response_timeout;
-                new_task.callbacks = tasks_config[index].callbacks;
+                new_task.type = tasks_config[__index].type;
+                new_task.url = tasks_config[__index].url;
+                new_task.data = tasks_config[__index].data;
+                new_task.response_timeout = tasks_config[__index].response_timeout;
+                new_task.callbacks = tasks_config[__index].callbacks;
 
-                if (tasks_config[index].hasOwnProperty('ajax_mode'))
+                if (tasks_config[__index].hasOwnProperty('ajax_mode'))
                 {
-                    if (ajax_modes.indexOf(tasks_config[index].ajax_mode) === -1)
+                    if (system_modes.ajax.indexOf(tasks_config[__index].ajax_mode) === -1)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.ajax_mode = tasks_config[index].ajax_mode;
+                    new_task.ajax_mode = tasks_config[__index].ajax_mode;
                 }
 
-                if (tasks_config[index].hasOwnProperty('element_id'))
-                    new_task.element_id = tasks_config[index].element_id;
+                if (tasks_config[__index].hasOwnProperty('element_id'))
+                    new_task.element_id = tasks_config[__index].element_id;
 
-                if (tasks_config[index].hasOwnProperty('content_mode'))
+                if (tasks_config[__index].hasOwnProperty('content_mode'))
                 {
-                    if (content_modes.indexOf(tasks_config[index].content_mode) === -1)
+                    if (system_modes.content.indexOf(tasks_config[__index].content_mode) === -1)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.content_mode = tasks_config[index].content_mode;
+                    new_task.content_mode = tasks_config[__index].content_mode;
                 }
 
-                if (tasks_config[index].hasOwnProperty('priority'))
+                if (tasks_config[__index].hasOwnProperty('priority'))
                 {
-                    if (tasks_config[index].priority < 1 || tasks_config[index].priority > 999999)
+                    if (tasks_config[__index].priority < 1 || tasks_config[__index].priority > 999999)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.priority = tasks_config[index].priority;
+                    new_task.priority = tasks_config[__index].priority;
                 }
 
-                if (tasks_config[index].hasOwnProperty('latency'))
+                if (tasks_config[__index].hasOwnProperty('latency'))
                 {
-                    if (tasks_config[index].latency.length < 1 || tasks_config[index].latency.length > 2)
+                    if (tasks_config[__index].latency.length < 1 || tasks_config[__index].latency.length > 2)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.latency = tasks_config[index].latency;
+                    new_task.latency = tasks_config[__index].latency;
                 }
 
-                if (tasks_config[index].hasOwnProperty('bandwidth'))
+                if (tasks_config[__index].hasOwnProperty('bandwidth'))
                 {
-                    if (tasks_config[index].bandwidth.length < 1 || tasks_config[index].bandwidth.length > 2)
+                    if (tasks_config[__index].bandwidth.length < 1 || tasks_config[__index].bandwidth.length > 2)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.bandwidth = tasks_config[index].bandwidth;
+                    new_task.bandwidth = tasks_config[__index].bandwidth;
                 }
 
-                if (tasks_config[index].hasOwnProperty('repeat'))
+                if (tasks_config[__index].hasOwnProperty('repeat'))
                 {
-                    if (tasks_config[index].repeat < -1 || tasks_config[index].repeat > 1000000)
+                    if (tasks_config[__index].repeat < -1 || tasks_config[__index].repeat > 1000000)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.delay = tasks_config[index].delay;
+                    new_task.delay = tasks_config[__index].delay;
                 }
 
-                if (tasks_config[index].hasOwnProperty('delay'))
+                if (tasks_config[__index].hasOwnProperty('delay'))
                 {
-                    if (tasks_config[index].delay < 1 || tasks_config[index].delay > 86400000)
+                    if (tasks_config[__index].delay < 1 || tasks_config[__index].delay > 86400000)
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    new_task.delay = tasks_config[index].delay;
+                    new_task.delay = tasks_config[__index].delay;
                 }
 
                 system_models.tasks.list.push(new_task);
@@ -196,23 +196,23 @@ function aether()
 
         this.verify_config_model = function(main_config)
         {
-            var index;
+            var __index = 0;
 
-            if (!config_parser.define(config_models['main']) || !config_parser.validate(main_config))
+            if (!config_parser.define(__config_models['main']) || !config_parser.validate(main_config))
                 return false;
 
-            if (!config_parser.define(config_models['settings']) || !config_parser.validate(main_config.settings))
+            if (!config_parser.define(__config_models['settings']) || !config_parser.validate(main_config.settings))
                 return false;
 
-            if (!config_parser.define(config_models['tasks']) || !config_parser.validate(main_config.tasks))
+            if (!config_parser.define(__config_models['tasks']) || !config_parser.validate(main_config.tasks))
                 return false;
 
-            if (!config_parser.define(config_models['callbacks']) || main_config.tasks.length < 1)
+            if (!config_parser.define(__config_models['callbacks']) || main_config.tasks.length < 1)
                 return false;
 
-            for (index = 0; index < main_config.tasks.length; index++)
+            for (__index = 0; __index < main_config.tasks.length; __index++)
             {
-                if (!config_parser.validate(main_config.tasks[index].callbacks))
+                if (!config_parser.validate(main_config.tasks[__index].callbacks))
                     return false;
             }
 
@@ -228,7 +228,7 @@ function aether()
     
         this.init_config_models = function()
         {
-            config_models['main'] = { arguments :   [
+            __config_models['main'] = { arguments :   [
                                                         {
                                                             key     :   { name : 'settings', optional : false },
                                                             value   :   { type : 'object' }
@@ -240,7 +240,7 @@ function aether()
                                                     ]
                                     };
 
-            config_models['settings'] = { arguments :   [
+            __config_models['settings'] = { arguments :   [
                                                             {
                                                                 key     :   { name : 'chain_mode', optional : false },
                                                                 value   :   { type : 'string' }
@@ -254,23 +254,19 @@ function aether()
                                                                 value   :   { type : 'number' }
                                                             },
                                                             {
+                                                                key     :   { name : 'optional_task_callbacks', optional : true },
+                                                                value   :   { type : 'boolean' }
+                                                            },
+                                                            {
                                                                 key     :   { name : 'final_callback', optional : true },
                                                                 value   :   { type : 'function' }
                                                             }
                                                         ]
                                         };
 
-            config_models['tasks'] = { arguments :  [
+            __config_models['tasks'] = { arguments :  [
                                                         {
                                                             key     :   { name : 'type', optional : false },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'element_id', optional : false },
-                                                            value   :   { type : 'string' }
-                                                        },
-                                                        {
-                                                            key     :   { name : 'content_mode', optional : false },
                                                             value   :   { type : 'string' }
                                                         },
                                                         {
@@ -290,20 +286,32 @@ function aether()
                                                             value   :   { type : 'object' }
                                                         },
                                                         {
+                                                            key     :   { name : 'ajax_mode', optional : true },
+                                                            value   :   { type : 'string' }
+                                                        },
+                                                        {
+                                                            key     :   { name : 'element_id', optional : true },
+                                                            value   :   { type : 'string' }
+                                                        },
+                                                        {
+                                                            key     :   { name : 'content_mode', optional : true },
+                                                            value   :   { type : 'string' }
+                                                        },
+                                                        {
                                                             key     :   { name : 'priority', optional : true },
                                                             value   :   { type : 'number' }
                                                         },
                                                         {
                                                             key     :   { name : 'latency', optional : true },
-                                                            value   :   { type : 'array' }
+                                                            value   :   { type : 'object' }
                                                         },
                                                         {
                                                             key     :   { name : 'bandwidth', optional : true },
-                                                            value   :   { type : 'array' }
+                                                            value   :   { type : 'object' }
                                                         },
                                                         {
                                                             key     :   { name : 'repeat', optional : true },
-                                                            value   :   { type : 'number' }
+                                                            value   :   { type : 'object' }
                                                         },
                                                         {
                                                             key     :   { name : 'delay', optional : true },
@@ -312,7 +320,7 @@ function aether()
                                                     ]
                                      };
 
-            config_models['callbacks'] = { arguments :  [
+            __config_models['callbacks'] = { arguments :  [
                                                             {
                                                                 key     :   { name : 'success', optional : false },
                                                                 value   :   { type : 'function' }
@@ -327,19 +335,69 @@ function aether()
                                                             }
                                                         ]
                                          };
+
+            __config_models['latency'] = { arguments :  [
+                                                            {
+                                                                key     :   { name : 'min', optional : false },
+                                                                value   :   { type : 'number' }
+                                                            },
+                                                            {
+                                                                key     :   { name : 'max', optional : false },
+                                                                value   :   { type : 'number' }
+                                                            }
+                                                      ]
+                                       };
+
+            __config_models['bandwidth'] = { arguments :  [
+                                                            {
+                                                                key     :   { name : 'min', optional : false },
+                                                                value   :   { type : 'number' }
+                                                            },
+                                                            {
+                                                                key     :   { name : 'max', optional : false },
+                                                                value   :   { type : 'number' }
+                                                            }
+                                                        ]
+                                         };
+
+            __config_models['repeat'] = { arguments :  [
+                                                            {
+                                                                key     :   { name : 'times', optional : false },
+                                                                value   :   { type : 'number' }
+                                                            },
+                                                            {
+                                                                key     :   { name : 'mode', optional : false },
+                                                                value   :   { type : 'string' }
+                                                            }
+                                                      ]
+                                      };
         };
 
         this.reset = function()
         {
-            is_init = false;
-            config_models = [];
-            system_models = new models_group();
+            __is_init = false;
+            __config_models = [];
+            system_models = new sys_models_class();
         };
+    }
+
+    function sys_modes_class()
+    {
+        this.chain = ['serial', 'parallel', 'delay', 'callback'];
+        this.bull = ['data', 'request'];
+        this.ajax = ['asynchronous', 'synchronous'];
+        this.content = ['replace', 'append'];
+        this.repeat = ['serial', 'parallel'];
+    }
+
+    function init()
+    {
+        system_tools.init_config_models();
     }
 
     this.schedule = function(json_config)
     {
-        if (is_init === true)
+        if (__is_init === true)
             return false;
 
         if (!system_tools.verify_config_model(json_config))
@@ -354,39 +412,36 @@ function aether()
         if (!system_tools.run_tasks())
             return false;
 
-        is_init = true;
+        __is_init = true;
 
         return true;
     };
 
     this.cancel = function()
     {
-        if (is_init === false)
+        if (__is_init === false)
             return false;
 
         
 
-        is_init = false;
+        __is_init = false;
 
         return true;
     };
 
     this.status = function()
     {
-        if (is_init === false)
+        if (__is_init === false)
             return false;
 
         return system_models.tasks;
     };
 
-    var is_init = false,
-        config_models = [],
-        chain_modes = ['serial', 'parallel', 'delay', 'callback'],
-        ajax_types = ['data', 'request'],
-        ajax_modes = ['asynchronous', 'synchronous'],
-        content_modes = ['replace', 'append'],
-        system_models = new models_group(),
-        system_tools = new tools_group(),
+    var __is_init = false,
+        __config_models = [],
+        system_models = new sys_models_class(),
+        system_tools = new sys_tools_class(),
+        system_modes = new sys_modes_class(),
         prng = new pythia(),
         multi_proc = new parallel(),
         performance = new centurion(),
@@ -395,5 +450,6 @@ function aether()
         utils = new vulcan(),
         config_parser = new jap();
 
-	system_tools.init_config_models();
+    // Initialize
+    init();
 }
