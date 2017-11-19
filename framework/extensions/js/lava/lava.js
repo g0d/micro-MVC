@@ -60,7 +60,7 @@ function lava()
     {
         if (!utils.validation.misc.is_array(definition_model))
         {
-            info_log('Not a valid definition model!');
+            info_log('Invalid definition model!');
 
             return false;
         }

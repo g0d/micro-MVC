@@ -212,13 +212,16 @@ function aether()
                 if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
                     return false;
 
-                if (!config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
+                if (main_config.tasks[__index].hasOwnProperty('latency') && 
+                    !config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
                     return false;
 
-                if (!config_parser.verify(__config_models['bandwidth'], main_config.tasks[__index].bandwidth))
+                if (main_config.tasks[__index].hasOwnProperty('bandwidth') && 
+                    !config_parser.verify(__config_models['bandwidth'], main_config.tasks[__index].bandwidth))
                     return false;
 
-                if (!config_parser.verify(__config_models['repeat'], main_config.tasks[__index].repeat))
+                if (main_config.tasks[__index].hasOwnProperty('repeat') && 
+                    !config_parser.verify(__config_models['repeat'], main_config.tasks[__index].repeat))
                     return false;
             }
 

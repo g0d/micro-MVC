@@ -78,7 +78,7 @@ function jap()
     {
         if (!utils.validation.misc.is_object(definition_model))
         {
-            info_log('Not a valid definition model!');
+            info_log('Invalid definition model!');
 
             return false;
         }
@@ -226,7 +226,7 @@ function jap()
 
         if (!utils.validation.misc.is_object(json_object))
         {
-            info_log('Not a valid JSON object!');
+            info_log('Invalid JSON object!');
 
             return false;
         }
@@ -299,9 +299,9 @@ function jap()
         {
             __this_key = __def_model_args[__counter].key;
             __this_value = __def_model_args[__counter].value;
-/* console.log(__this_key.name);
+console.log(__this_key.name);
 console.log(json_object[__counter]);
-console.log(''); */
+console.log('');
             if ((json_object[__counter] === undefined || 
                  json_object[__counter].hasOwnProperty(__this_key.name) === undefined) || 
                 json_object[__this_key.name] === undefined)
