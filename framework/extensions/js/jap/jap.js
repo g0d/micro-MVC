@@ -171,7 +171,9 @@ function jap()
         }
 
         var __json_key = null,
+            __is_multiple_keys_array = false,
             __keys_exist = 0,
+            __def_keys_found = 0,
             __mandatory_keys_not_found = 0;
 
         __def_model_args = __json_def_model.arguments;
@@ -179,42 +181,51 @@ function jap()
         for (__counter = 0; __counter < __def_model_args.length; __counter++)
         {
             if (__def_model_args[__counter].key.optional === false)
-                __mandatory_keys_not_found++;
+                __def_keys_found++;
         }
+
+        if (utils.validation.misc.is_array(json_object))
+            __is_multiple_keys_array = true;
 
         for (__json_key in json_object)
         {
+            if (__is_multiple_keys_array)
+                __mandatory_keys_not_found = 0;
+
             for (__counter = 0; __counter < __def_model_args.length; __counter++)
             {
                 if (__def_model_args[__counter].key.optional === false)
                 {
-                    if (utils.validation.misc.is_array(json_object))
+                    if (__is_multiple_keys_array)
                     {
-                        if (json_object[__json_key].hasOwnProperty(__def_model_args[__counter].key.name))
-                            __mandatory_keys_not_found--;
+                        if (!json_object[__json_key].hasOwnProperty(__def_model_args[__counter].key.name))
+                            __mandatory_keys_not_found++;
                     }
                     else
                     {
-                        if (__def_model_args[__counter].key.name === __json_key)
-                            __mandatory_keys_not_found--;
+                        if (!json_object.hasOwnProperty(__def_model_args[__counter].key.name))
+                            __mandatory_keys_not_found++;
                     }
                 }
             }
 
+            if (__is_multiple_keys_array && __mandatory_keys_not_found > 0)
+                break;
+
             __keys_exist++;
-        }
-
-        if (__keys_exist === 0)
-        {
-            info_log('The JSON object is null!');
-
-            return false;
         }
 
         if ((!__json_def_model.hasOwnProperty('ignore_keys_num') || __json_def_model.ignore_keys_num === false) && 
             __mandatory_keys_not_found > 0)
         {
             info_log('Mandatory properties are missing!');
+
+            return false;
+        }
+
+        if (__keys_exist === 0)
+        {
+            info_log('The JSON object is null!');
 
             return false;
         }
