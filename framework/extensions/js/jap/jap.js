@@ -172,35 +172,32 @@ function jap()
 
         var __json_key = null,
             __keys_exist = 0,
-            __keys_found = 0,
-            __keys_optional = false;
+            __mandatory_keys_not_found = 0;
 
         __def_model_args = __json_def_model.arguments;
+
+        for (__counter = 0; __counter < __def_model_args.length; __counter++)
+        {
+            if (__def_model_args[__counter].key.optional === false)
+                __mandatory_keys_not_found++;
+        }
 
         for (__json_key in json_object)
         {
             for (__counter = 0; __counter < __def_model_args.length; __counter++)
             {
-                if (typeof parseInt(__json_key) === 'number')
-                {/*
-                    console.log(json_object[__json_key].hasOwnProperty(__def_model_args[__counter].key.name));
-                    if (json_object[__json_key].hasOwnProperty(__def_model_args[__counter].key.name))
-                    {
-                        __keys_found++;
-
-                        break;
-                    }*/
-                }
-                else
+                if (__def_model_args[__counter].key.optional === false)
                 {
-                    if (__def_model_args[__counter].key.optional === true && __keys_optional === false)
+                    if (utils.validation.misc.is_array(json_object))
                     {
-                        if (json_object[__def_model_args[__counter].key.name] === undefined)
-                            __keys_optional = true;
+                        if (json_object[__json_key].hasOwnProperty(__def_model_args[__counter].key.name))
+                            __mandatory_keys_not_found--;
                     }
-
-                    if (__def_model_args[__counter].key.name === __json_key)
-                        __keys_found++;
+                    else
+                    {
+                        if (__def_model_args[__counter].key.name === __json_key)
+                            __mandatory_keys_not_found--;
+                    }
                 }
             }
 
@@ -214,16 +211,14 @@ function jap()
             return false;
         }
 
-/*
-        if (__keys_found < __def_model_args.length && __keys_optional === false)
-            return false;
-
-        if (!__json_def_model.hasOwnProperty('ignore_keys_num') || __json_def_model.ignore_keys_num === false)
+        if ((!__json_def_model.hasOwnProperty('ignore_keys_num') || __json_def_model.ignore_keys_num === false) && 
+            __mandatory_keys_not_found > 0)
         {
-            if (__keys_found !== __keys_exist)
-                return false;
+            info_log('Mandatory properties are missing!');
+
+            return false;
         }
-*/
+
         for (__counter = 0; __counter < __def_model_args.length; __counter++)
         {
             if (json_object[__def_model_args[__counter].key.name] === undefined)
