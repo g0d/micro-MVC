@@ -42,6 +42,10 @@ function lava()
                 continue;
             }
 
+            if ((utils.validation.misc.is_object(__attribute) && Object.getOwnPropertyNames(__attribute).length === 0) || 
+                (utils.validation.misc.is_array(__attribute) && __attribute.length === 0))
+                return true;
+
             for (__option in __attribute)
             {
                 if (__def_keywords.indexOf(__option) === -1)
