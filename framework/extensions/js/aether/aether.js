@@ -21,6 +21,7 @@ function aether()
             this.chain_mode = null;
             this.init_delay = -1;
             this.interval = -1;
+            this.optional_task_callbacks = true;
             this.final_callback = null;
         }
 
@@ -57,183 +58,64 @@ function aether()
         this.tasks = new tasks_list_model();
     }
 
+    function sys_modes_class()
+    {
+        function mandatory_model()
+        {
+            function settings_group()
+            {
+                this.chain = ['serial', 'parallel', 'delay', 'callback'];
+            }
+
+            function tasks_group()
+            {
+                this.bull = ['data', 'request'];
+            }
+
+            this.settings = new settings_group();
+            this.tasks = new tasks_group();
+        }
+
+        function optional_model()
+        {
+            function tasks_group()
+            {
+                this.main = ['priority', 'latency', 'bandwidth', 'repeat', 'delay'];
+                this.ajax = ['asynchronous', 'synchronous'];
+                this.content = ['replace', 'append'];
+                this.repeat = ['serial', 'parallel'];
+            }
+
+            this.tasks = new tasks_group();
+        }
+
+        function mixed_group()
+        {
+            function tasks_group()
+            {
+                this.callbacks = ['success', 'fail', 'timeout'];
+            }
+
+            this.tasks = new tasks_group();
+        }
+
+        this.mandatory = new mandatory_model();
+        this.optional = new optional_model();
+        this.mixed = new mixed_group();
+    }
+
+    function config_keywords_class()
+    {
+        return ['settings', 'tasks', 'chain_mode', 'init_delay', 'interval', 'optional_task_callbacks', 'final_callback', 
+                'type', 'url', 'data', 'response_timeout', 'callbacks', 'ajax_mode', 'element_id', 'content_mode', 
+                'priority', 'latency', 'bandwidth', 'repeat', 'delay', 'success', 'fail', 'timeout', 'min', 'max', 
+                'times', 'mode'];
+    }
+
     function sys_tools_class()
     {
-        this.load_settings = function(settings_config)
-        {
-            if (system_modes.chain.indexOf(settings_config.chain_mode) === -1)
-                return false;
-
-            system_models.settings.chain_mode = settings_config.chain_mode;
-
-            if (settings_config.hasOwnProperty('init_delay'))
-                system_models.settings.init_delay = settings_config.init_delay;
-
-            if (settings_config.hasOwnProperty('interval'))
-                system_models.settings.interval = settings_config.interval;
-
-            if (settings_config.hasOwnProperty('final_callback'))
-                system_models.settings.final_callback = settings_config.final_callback;
-
-            return true;
-        };
-
-        this.load_tasks = function(tasks_config)
-        {
-            var __index = 0;
-
-            for (__index = 0; __index < tasks_config.length; __index++)
-            {
-                if (system_modes.bull.indexOf(tasks_config[__index].type) === -1)
-                {
-                    system_tools.reset();
-
-                    return false;
-                }
-
-                var new_task = system_models.generate_task();
-
-                new_task.id = prng.generate();
-                new_task.type = tasks_config[__index].type;
-                new_task.url = tasks_config[__index].url;
-                new_task.data = tasks_config[__index].data;
-                new_task.response_timeout = tasks_config[__index].response_timeout;
-                new_task.callbacks = tasks_config[__index].callbacks;
-
-                if (tasks_config[__index].hasOwnProperty('ajax_mode'))
-                {
-                    if (system_modes.ajax.indexOf(tasks_config[__index].ajax_mode) === -1)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.ajax_mode = tasks_config[__index].ajax_mode;
-                }
-
-                if (tasks_config[__index].hasOwnProperty('element_id'))
-                    new_task.element_id = tasks_config[__index].element_id;
-
-                if (tasks_config[__index].hasOwnProperty('content_mode'))
-                {
-                    if (system_modes.content.indexOf(tasks_config[__index].content_mode) === -1)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.content_mode = tasks_config[__index].content_mode;
-                }
-
-                if (tasks_config[__index].hasOwnProperty('priority'))
-                {
-                    if (tasks_config[__index].priority < 1 || tasks_config[__index].priority > 999999)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.priority = tasks_config[__index].priority;
-                }
-
-                if (tasks_config[__index].hasOwnProperty('latency'))
-                {
-                    if (tasks_config[__index].latency.length < 1 || tasks_config[__index].latency.length > 2)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.latency = tasks_config[__index].latency;
-                }
-
-                if (tasks_config[__index].hasOwnProperty('bandwidth'))
-                {
-                    if (tasks_config[__index].bandwidth.length < 1 || tasks_config[__index].bandwidth.length > 2)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.bandwidth = tasks_config[__index].bandwidth;
-                }
-
-                if (tasks_config[__index].hasOwnProperty('repeat'))
-                {
-                    if (tasks_config[__index].repeat < -1 || tasks_config[__index].repeat > 1000000)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.delay = tasks_config[__index].delay;
-                }
-
-                if (tasks_config[__index].hasOwnProperty('delay'))
-                {
-                    if (tasks_config[__index].delay < 1 || tasks_config[__index].delay > 86400000)
-                    {
-                        system_tools.reset();
-    
-                        return false;
-                    }
-
-                    new_task.delay = tasks_config[__index].delay;
-                }
-
-                system_models.tasks.list.push(new_task);
-                system_models.tasks.num++;
-            }
-
-            return true;
-        };
-
-        this.verify_config = function(main_config)
-        {
-            var __index = 0;
-
-            if (!config_parser.verify(__config_models['main'], main_config))
-                return false;
-
-            if (!config_parser.verify(__config_models['settings'], main_config.settings))
-                return false;
-
-            if (!config_parser.verify(__config_models['tasks'], main_config.tasks))
-                return false;
-
-            for (__index = 0; __index < main_config.tasks.length; __index++)
-            {
-                if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
-                    return false;
-
-                if (main_config.tasks[__index].hasOwnProperty('latency') && 
-                    !config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
-                    return false;
-
-                if (main_config.tasks[__index].hasOwnProperty('bandwidth') && 
-                    !config_parser.verify(__config_models['bandwidth'], main_config.tasks[__index].bandwidth))
-                    return false;
-
-                if (main_config.tasks[__index].hasOwnProperty('repeat') && 
-                    !config_parser.verify(__config_models['repeat'], main_config.tasks[__index].repeat))
-                    return false;
-            }
-
-            return true;
-        };
-
-        this.run_tasks = function()
-        {
-            
-
-            return true;
-        };
+        var __index = 0,
+            __entry = null;
 
         this.init_config_models = function()
         {
@@ -382,21 +264,204 @@ function aether()
                                         };
         };
 
+        this.verify_config = function(main_config)
+        {
+            if (!config_parser.verify(__config_models['main'], main_config))
+                return false;
+
+            for (__entry in main_config)
+            {
+                if (config_keywords.indexOf(__entry) === -1)
+                    return false;
+            }
+
+            if (!config_parser.verify(__config_models['settings'], main_config.settings))
+                return false;
+
+            for (__entry in main_config.settings)
+            {
+                if (config_keywords.indexOf(__entry) === -1)
+                    return false;
+            }
+
+            if (!config_parser.verify(__config_models['tasks'], main_config.tasks))
+                return false;
+
+            for (__index = 0; __index < main_config.tasks.length; __index++)
+            {
+                for (__entry in main_config.tasks[__index])
+                {
+                    if (config_keywords.indexOf(__entry) === -1)
+                        return false;
+                }
+            }
+
+            for (__index = 0; __index < main_config.tasks.length; __index++)
+            {
+                if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
+                    return false;
+
+                if (main_config.tasks[__index].hasOwnProperty('latency') && 
+                    !config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
+                    return false;
+
+                if (main_config.tasks[__index].hasOwnProperty('bandwidth') && 
+                    !config_parser.verify(__config_models['bandwidth'], main_config.tasks[__index].bandwidth))
+                    return false;
+
+                if (main_config.tasks[__index].hasOwnProperty('repeat') && 
+                    !config_parser.verify(__config_models['repeat'], main_config.tasks[__index].repeat))
+                    return false;
+            }
+
+            return true;
+        };
+
+        this.load_settings = function(settings_config)
+        {
+            if (system_modes.mandatory.settings.chain.indexOf(settings_config.chain_mode) === -1)
+                return false;
+
+            system_models.settings.chain_mode = settings_config.chain_mode;
+
+            if (settings_config.hasOwnProperty('init_delay'))
+                system_models.settings.init_delay = settings_config.init_delay;
+
+            if (settings_config.hasOwnProperty('interval'))
+                system_models.settings.interval = settings_config.interval;
+
+            if (settings_config.hasOwnProperty('optional_task_callbacks'))
+                system_models.settings.optional_task_callbacks = settings_config.optional_task_callbacks;
+
+            if (settings_config.hasOwnProperty('final_callback'))
+                system_models.settings.final_callback = settings_config.final_callback;
+
+            return true;
+        };
+
+        this.load_tasks = function(tasks_config)
+        {
+            for (__index = 0; __index < tasks_config.length; __index++)
+            {
+                if (system_modes.mandatory.tasks.bull.indexOf(tasks_config[__index].type) === -1)
+                {
+                    system_tools.reset();
+
+                    return false;
+                }
+
+                var new_task = system_models.generate_task();
+
+                new_task.id = prng.generate();
+                new_task.type = tasks_config[__index].type;
+                new_task.url = tasks_config[__index].url;
+                new_task.data = tasks_config[__index].data;
+                new_task.response_timeout = tasks_config[__index].response_timeout;
+
+                for (__entry in tasks_config[__index].callbacks)
+                {
+                    if (system_modes.mixed.tasks.callbacks.indexOf(__entry) === -1)
+                    {
+                        system_tools.reset();
+
+                        return false;
+                    }
+                }
+
+                new_task.callbacks = tasks_config[__index].callbacks;
+
+                if (tasks_config[__index].hasOwnProperty('ajax_mode'))
+                {
+                    if (system_modes.optional.tasks.ajax.indexOf(tasks_config[__index].ajax_mode) === -1)
+                    {
+                        system_tools.reset();
+    
+                        return false;
+                    }
+
+                    new_task.ajax_mode = tasks_config[__index].ajax_mode;
+                }
+
+                if (tasks_config[__index].hasOwnProperty('element_id'))
+                    new_task.element_id = tasks_config[__index].element_id;
+
+                if (tasks_config[__index].hasOwnProperty('content_mode'))
+                {
+                    if (system_modes.optional.tasks.content.indexOf(tasks_config[__index].content_mode) === -1)
+                    {
+                        system_tools.reset();
+    
+                        return false;
+                    }
+
+                    new_task.content_mode = tasks_config[__index].content_mode;
+                }
+
+                if (tasks_config[__index].hasOwnProperty('priority'))
+                {
+                    if (tasks_config[__index].priority < 1 || tasks_config[__index].priority > 999999)
+                    {
+                        system_tools.reset();
+    
+                        return false;
+                    }
+
+                    new_task.priority = tasks_config[__index].priority;
+                }
+
+                if (tasks_config[__index].hasOwnProperty('latency'))
+                {
+                    //TODO
+
+                    new_task.latency = tasks_config[__index].latency;
+                }
+
+                if (tasks_config[__index].hasOwnProperty('bandwidth'))
+                {
+                    //TODO
+
+                    new_task.bandwidth = tasks_config[__index].bandwidth;
+                }
+
+                if (tasks_config[__index].hasOwnProperty('repeat'))
+                {
+                    //TODO
+
+                    new_task.delay = tasks_config[__index].delay;
+                }
+
+                if (tasks_config[__index].hasOwnProperty('delay'))
+                {
+                    if (tasks_config[__index].delay < 1 || tasks_config[__index].delay > 86400000)
+                    {
+                        system_tools.reset();
+    
+                        return false;
+                    }
+
+                    new_task.delay = tasks_config[__index].delay;
+                }
+
+                system_models.tasks.list.push(new_task);
+                system_models.tasks.num++;
+            }
+
+            return true;
+        };
+
+        this.run_tasks = function()
+        {
+            
+
+            return true;
+        };
+
         this.reset = function()
         {
             __is_init = false;
             __config_models = [];
             system_models = new sys_models_class();
         };
-    }
-
-    function sys_modes_class()
-    {
-        this.chain = ['serial', 'parallel', 'delay', 'callback'];
-        this.bull = ['data', 'request'];
-        this.ajax = ['asynchronous', 'synchronous'];
-        this.content = ['replace', 'append'];
-        this.repeat = ['serial', 'parallel'];
     }
 
     function init()
@@ -449,8 +514,9 @@ function aether()
     var __is_init = false,
         __config_models = [],
         system_models = new sys_models_class(),
-        system_tools = new sys_tools_class(),
         system_modes = new sys_modes_class(),
+        system_tools = new sys_tools_class(),
+        config_keywords = new config_keywords_class(),
         prng = new pythia(),
         multi_proc = new parallel(),
         performance = new centurion(),

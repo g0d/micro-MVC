@@ -2,7 +2,7 @@
 
     Heartbeat
 
-    File name: heartbeat.js (Version: 0.3)
+    File name: heartbeat.js (Version: 0.4)
     Description: This file contains the Heartbeat extension (Ping services).
 
     Coded by George Delaportas (G0D)
@@ -12,7 +12,7 @@
 */
 
 // Heartbeat
-function heartbeat(interval, url, service_name, success_callback, fail_callback, time_out_callback)
+function heartbeat(interval, url, service_name, response_timeout, success_callback, fail_callback, time_out_callback)
 {
     var utils = new vulcan(),
         timer = new stopwatch(),
@@ -21,6 +21,7 @@ function heartbeat(interval, url, service_name, success_callback, fail_callback,
     if (!utils.validation.numerics.is_integer(interval) || interval < 1 || 
         utils.validation.misc.is_invalid(url) || !utils.validation.alpha.is_string(url) || 
         utils.validation.misc.is_invalid(service_name) || !utils.validation.alpha.is_string(service_name) || 
+        !utils.validation.numerics.is_integer(response_timeout) || response_timeout < 1 || 
         !utils.validation.misc.is_function(success_callback) || 
         !utils.validation.misc.is_function(fail_callback) || 
         !utils.validation.misc.is_function(time_out_callback))
@@ -47,7 +48,7 @@ function heartbeat(interval, url, service_name, success_callback, fail_callback,
                     {
                         message(service_name, 'FAIL', fail_callback);
                     },
-                    5000,
+                    response_timeout,
                     function()
                     {
                         message(service_name, 'TIME OUT', time_out_callback);

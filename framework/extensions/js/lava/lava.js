@@ -59,7 +59,7 @@ function lava()
         return false;
     }
 
-    // Define the JSON object
+    // Define the configuration
     this.define = function(definition_model)
     {
         if (!utils.validation.misc.is_array(definition_model))

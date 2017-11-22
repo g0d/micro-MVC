@@ -6,7 +6,7 @@
     Description: This file contains the J.A.P - JSON Argument Parser.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2016 - 2017
+    Copyright (C) 2016
     Open Software License (OSL 3.0)
 
 */
@@ -77,7 +77,7 @@ function jap()
         return false;
     }
 
-    // Define the JSON object
+    // Define the configuration
     this.define = function(definition_model)
     {
         if (!utils.validation.misc.is_object(definition_model))
@@ -218,8 +218,8 @@ function jap()
         return true;
     };
 
-    // Validate the JSON object based on the definition model
-    this.validate = function(json_object)
+    // Validate configuration based on the definition model
+    this.validate = function(config)
     {
         if (!__is_model_defined)
         {
@@ -228,7 +228,7 @@ function jap()
             return false;
         }
 
-        if (!utils.validation.misc.is_object(json_object))
+        if (!utils.validation.misc.is_object(config))
         {
             info_log('Invalid JSON object!');
 
@@ -251,10 +251,10 @@ function jap()
                 __def_keys_found++;
         }
 
-        if (utils.validation.misc.is_array(json_object))
+        if (utils.validation.misc.is_array(config))
             __is_multiple_keys_array = true;
 
-        for (__json_key in json_object)
+        for (__json_key in config)
         {
             if (__is_multiple_keys_array)
                 __mandatory_keys_not_found = 0;
@@ -267,12 +267,12 @@ function jap()
                 {
                     if (__is_multiple_keys_array)
                     {
-                        if (!json_object[__json_key].hasOwnProperty(__this_key.name))
+                        if (!config[__json_key].hasOwnProperty(__this_key.name))
                             __mandatory_keys_not_found++;
                     }
                     else
                     {
-                        if (!json_object.hasOwnProperty(__this_key.name))
+                        if (!config.hasOwnProperty(__this_key.name))
                             __mandatory_keys_not_found++;
                     }
                 }
@@ -303,19 +303,17 @@ function jap()
         {
             __this_key = __def_model_args[__counter].key;
             __this_value = __def_model_args[__counter].value;
-console.log(__this_key.name);
-console.log(json_object[__counter]);
-console.log('');
-            if ((json_object[__counter] === undefined || 
-                 json_object[__counter].hasOwnProperty(__this_key.name) === undefined) || 
-                json_object[__this_key.name] === undefined)
+
+            if ((config[__counter] === undefined || 
+                 config[__counter].hasOwnProperty(__this_key.name) === undefined) || 
+                config[__this_key.name] === undefined)
                     continue;
 
             if (__this_value.type !== '*')
             {
                 if (__this_value.type === 'null')
                 {
-                    if (json_object[__this_key.name] !== null)
+                    if (config[__this_key.name] !== null)
                     {
                         info_log('Argument: "' + __this_key.name + '" accepts only "null" values!');
 
@@ -324,7 +322,7 @@ console.log('');
                 }
                 else if (__this_value.type === 'array')
                 {
-                    if (!utils.validation.misc.is_array(json_object[__this_key.name]))
+                    if (!utils.validation.misc.is_array(config[__this_key.name]))
                     {
                         info_log('Argument: "' + __this_key.name + '" accepts only "array" values!');
 
@@ -333,8 +331,8 @@ console.log('');
                 }
                 else
                 {
-                    if ((__is_multiple_keys_array && typeof json_object[__counter][__this_key.name] !== __this_value.type) || 
-                        typeof json_object[__this_key.name] !== __this_value.type)
+                    if ((__is_multiple_keys_array && typeof config[__counter][__this_key.name] !== __this_value.type) || 
+                        typeof config[__this_key.name] !== __this_value.type)
                     {
                         info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
 
@@ -347,7 +345,7 @@ console.log('');
             {
                 if (__this_value.type === 'array')
                 {
-                    if (json_object[__this_key.name].length > __this_value.length)
+                    if (config[__this_key.name].length > __this_value.length)
                     {
                         info_log('Argument: "' + __this_key.name + '" has exceeded the defined length!');
 
@@ -356,7 +354,7 @@ console.log('');
                 }
                 else
                 {
-                    if (json_object[__this_key.name].toString().length > __this_value.length)
+                    if (config[__this_key.name].toString().length > __this_value.length)
                     {
                         info_log('Argument: "' + __this_key.name + '" has exceeded the defined length!');
 
@@ -367,7 +365,7 @@ console.log('');
 
             if (__this_value.hasOwnProperty('regex'))
             {
-                if (!utils.validation.utilities.reg_exp(__this_value.regex, json_object[__this_key.name]))
+                if (!utils.validation.utilities.reg_exp(__this_value.regex, config[__this_key.name]))
                 {
                     info_log('Argument: "' + __this_key.name + '" has not matched the specified regex!');
 
@@ -380,10 +378,10 @@ console.log('');
     };
 
     // Define and validate at once
-    this.verify = function(definition_model, json_object)
+    this.verify = function(definition_model, config)
     {
         if (self.define(definition_model))
-            return self.validate(json_object);
+            return self.validate(config);
 
         return false;
     };
