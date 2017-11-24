@@ -195,17 +195,6 @@ function aether()
                 };
             }
 
-            this.object_to_array = function(conversion_mode, model)
-            {
-                return Object.keys(model).map(function(key)
-                                              {
-                                                if (conversion_mode === true)
-                                                    return [key, model[key]];
-                                                else
-                                                    return model[key];
-                                              });
-            };
-
             this.factory = new factory_model();
         }
 
@@ -430,7 +419,7 @@ function aether()
         {
             //system_tools.utilities.factory.config_settings_loader(settings_config);
 
-            __modes = system_tools.utilities.object_to_array(false, system_constants.settings.chain_mode);
+            __modes = utils.conversions.object_to_array(false, system_constants.settings.chain_mode);
 
             if (__modes.indexOf(settings_config.chain_mode) === -1)
                 return false;
@@ -459,7 +448,7 @@ function aether()
             for (__index = 0; __index < tasks_config.length; __index++)
             {
                 __this_task = tasks_config[__index];
-                __modes = system_tools.utilities.object_to_array(false, system_constants.tasks.type);
+                __modes = utils.conversions.object_to_array(false, system_constants.tasks.type);
 
                 if (__modes.indexOf(__this_task.type) === -1)
                 {
@@ -479,7 +468,7 @@ function aether()
 
                 if (__this_task.hasOwnProperty('ajax_mode'))
                 {
-                    __modes = system_tools.utilities.object_to_array(false, system_constants.tasks.ajax_mode);
+                    __modes = utils.conversions.object_to_array(false, system_constants.tasks.ajax_mode);
 
                     if (__modes.indexOf(__this_task.ajax_mode) === -1)
                     {
@@ -496,7 +485,7 @@ function aether()
 
                 if (__this_task.hasOwnProperty('content_mode'))
                 {
-                    __modes = system_tools.utilities.object_to_array(false, system_constants.tasks.content_mode);
+                    __modes = utils.conversions.object_to_array(false, system_constants.tasks.content_mode);
 
                     if (__modes.indexOf(__this_task.content_mode) === -1)
                     {
@@ -544,7 +533,7 @@ function aether()
 
                 if (__this_task.hasOwnProperty('repeat'))
                 {
-                    __modes = system_tools.utilities.object_to_array(false, system_constants.tasks.repeat);
+                    __modes = utils.conversions.object_to_array(false, system_constants.tasks.repeat);
 
                     for (__entry in __this_task.repeat)
                     {
@@ -591,7 +580,7 @@ function aether()
                 task_a = system_models.tasks.list[__index];
                 task_b = system_models.tasks.list[__index + 1];
 
-                system_models.tasks.list.sort(function(task_a, task_b) { return task_a.priority - task_b.priority; });
+                utils.misc.sort(system_models.tasks.list, 'asc', 'priority');
             }
 
             ajax.request();

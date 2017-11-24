@@ -103,7 +103,7 @@ ultron(function(event)
 
     console.log(my_aether.schedule(aether_config)); // Schedule and run AJAX tasks
     //console.log(my_aether.constants());
-    //console.log(my_aether.status()); // All AJAX tasks
+    console.log(my_aether.status()); // All AJAX tasks
     //console.log(my_aether.status(task_list[3])); // Only a specified AJAX task
     //console.log(my_aether.cancel()); // All tasks
     //console.log(my_aether.cancel(task_list[1])); // Only a specified AJAX task

@@ -2,7 +2,7 @@
 
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 0.9)
+    File name: vulcan.js (Version: 1.0)
     Description: This file contains the Vulcan - General JS Programming Utilities.
 
     Coded by George Delaportas (G0D)
@@ -371,6 +371,17 @@ function vulcan()
 
     function conversions()
     {
+        this.object_to_array = function(conversion_mode, model)
+        {
+            return Object.keys(model).map(function(key)
+                                          {
+                                            if (conversion_mode === true)
+                                                return [key, model[key]];
+                                            else
+                                                return model[key];
+                                          });
+        };
+
         this.replace_link = function(mode, text, attributes, url_info)
         {
             if (!self.validation.numerics.is_integer(mode) || mode < 0 || mode > 2 || !self.validation.alpha.is_string(text))
@@ -478,6 +489,32 @@ function vulcan()
         };
     }
 
+    function misc()
+    {
+        this.sort = function(array, mode, by_property)
+        {
+            var __modes = ['asc', 'desc'],
+                __order = null,
+                __result = null;
+
+            if (!self.validation.misc.is_array(array) || __modes.indexOf(mode) === -1 || 
+                (!self.validation.misc.is_invalid(by_property) && !self.validation.alpha.is_string(by_property)))
+                return false;
+
+            if (mode === 'asc')
+                __order = 1;
+            else
+                __order = -1;
+
+            if (self.validation.misc.is_invalid(by_property))
+                __result = array.sort(function(a, b) { return __order * (a - b); });
+            else
+                __result = array.sort(function(a, b) { return __order * (a[by_property] - b[by_property]); });
+
+            return __result;
+        };
+    }
+
     function objects()
     {
         this.by_tag = function(html_tag)
@@ -552,6 +589,7 @@ function vulcan()
         self.events = new events();
         self.conversions = new conversions();
         self.graphics = new graphics();
+        self.misc = new misc();
         self.objects = new objects();
         self.system = new system();
     }
