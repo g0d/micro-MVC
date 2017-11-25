@@ -170,14 +170,81 @@ function aether()
         {
             function factory_model()
             {
+                var __factory_map = [];
+
                 this.config_objects_verification = function(main_config)
                 {
-                    
+                    __factory_map.push(['main', __config_models['main'], main_config]);
+                    __factory_map.push(['settings', __config_models['settings'], main_config.settings]);
+                    __factory_map.push(['tasks', __config_models['tasks'], main_config.tasks]);
+
+                    for (__index = 0; __index < __factory_map.length; __index++)
+                    {
+                        if (!config_parser.verify(__factory_map[__index][1], __factory_map[__index][2]))
+                            return false;
+
+                        if (__index === 2)
+                        {
+                            var __record = 0,
+                                __callbacks_found = 0;
+
+                            for (__record = 0; __record < __factory_map[__index][2].length; __record++)
+                            {
+                                __callbacks_found = 0;
+
+                                for (__entry in __factory_map[__index][2][__record])
+                                {
+                                    if (system_config_keywords[__factory_map[__index][0]].indexOf(__entry) === -1)
+                                        return false;
+                                }
+                                /*
+                                if ()
+                                {
+                                    if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
+                                        return false;
+
+                                    for (__entry in main_config.tasks[__index].callbacks)
+                                    {
+                                        if (system_config_keywords.callbacks.indexOf(__entry) === -1)
+                                            return false;
+    
+                                        __callbacks_found++;
+                                    }
+    
+                                    if (!main_config.settings.optional_task_callbacks && __callbacks_found < system_config_keywords.callbacks.length)
+                                        return false;
+                                }
+
+                                if (main_config.tasks[__index].hasOwnProperty('latency') && 
+                                    !config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
+                                    return false;
+                                */
+                            }
+                        }
+                        else
+                        {
+                            for (__entry in __factory_map[__index][2])
+                            {
+                                if (system_config_keywords[__factory_map[__index][0]].indexOf(__entry) === -1)
+                                    return false;
+                            }
+                        }
+                    }
+
+                    __factory_map = [];
                 };
 
                 this.config_settings_loader = function(settings_config)
                 {
-                    
+                    __factory_map.push('init_delay', 'interval', 'optional_task_callbacks', 'final_callback');
+
+                    for (__entry in __factory_map)
+                    {
+                        if (settings_config.hasOwnProperty(__factory_map[__entry]))
+                            system_models.settings[__factory_map[__entry]] = settings_config[__factory_map[__entry]];
+                    }
+
+                    __factory_map = [];
                 };
 
                 this.qos_validator = function(record, entry, check)
@@ -187,7 +254,7 @@ function aether()
                         (entry === 'max' && record > system_constants.misc[check]))
                     {
                         system_tools.reset();
-    
+
                         return false;
                     }
 
@@ -347,39 +414,9 @@ function aether()
 
         this.verify_config_objects = function(main_config)
         {
-            //system_tools.utilities.factory.config_objects_verification(main_config);
+            system_tools.utilities.factory.config_objects_verification(main_config);
 
             var __callbacks_found = 0;
-
-            if (!config_parser.verify(__config_models['main'], main_config))
-                return false;
-
-            for (__entry in main_config)
-            {
-                if (system_config_keywords.main.indexOf(__entry) === -1)
-                    return false;
-            }
-
-            if (!config_parser.verify(__config_models['settings'], main_config.settings))
-                return false;
-
-            for (__entry in main_config.settings)
-            {
-                if (system_config_keywords.settings.indexOf(__entry) === -1)
-                    return false;
-            }
-
-            if (!config_parser.verify(__config_models['tasks'], main_config.tasks))
-                return false;
-
-            for (__index = 0; __index < main_config.tasks.length; __index++)
-            {
-                for (__entry in main_config.tasks[__index])
-                {
-                    if (system_config_keywords.tasks.indexOf(__entry) === -1)
-                        return false;
-                }
-            }
 
             for (__index = 0; __index < main_config.tasks.length; __index++)
             {
@@ -417,8 +454,6 @@ function aether()
 
         this.load_settings = function(settings_config)
         {
-            //system_tools.utilities.factory.config_settings_loader(settings_config);
-
             __modes = utils.conversions.object_to_array(false, system_constants.settings.chain_mode);
 
             if (__modes.indexOf(settings_config.chain_mode) === -1)
@@ -426,17 +461,7 @@ function aether()
 
             system_models.settings.chain_mode = settings_config.chain_mode;
 
-            if (settings_config.hasOwnProperty('init_delay'))
-                system_models.settings.init_delay = settings_config.init_delay;
-
-            if (settings_config.hasOwnProperty('interval'))
-                system_models.settings.interval = settings_config.interval;
-
-            if (settings_config.hasOwnProperty('optional_task_callbacks'))
-                system_models.settings.optional_task_callbacks = settings_config.optional_task_callbacks;
-
-            if (settings_config.hasOwnProperty('final_callback'))
-                system_models.settings.final_callback = settings_config.final_callback;
+            system_tools.utilities.factory.config_settings_loader(settings_config);
 
             return true;
         };
@@ -571,17 +596,7 @@ function aether()
 
         this.run = function()
         {
-            var __index = 0,
-                __task_a = null,
-                __task_b = null;
-
-            for (__index = 0; __index < system_models.tasks.num - 1; __index++)
-            {
-                task_a = system_models.tasks.list[__index];
-                task_b = system_models.tasks.list[__index + 1];
-
-                utils.misc.sort(system_models.tasks.list, 'asc', 'priority');
-            }
+            utils.misc.sort(system_models.tasks.list, 'asc', 'priority');
 
             ajax.request();
 

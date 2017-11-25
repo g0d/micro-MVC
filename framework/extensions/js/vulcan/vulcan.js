@@ -491,6 +491,14 @@ function vulcan()
 
     function misc()
     {
+        this.contains = function(subject, list)
+        {
+            if (list.indexOf(subject) === -1)
+                return false;
+
+            return true;
+        };
+
         this.sort = function(array, mode, by_property)
         {
             var __modes = ['asc', 'desc'],

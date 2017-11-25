@@ -240,19 +240,22 @@ function jap()
             __this_value = null,
             __is_multiple_keys_array = false,
             __keys_exist = 0,
-            __def_keys_found = 0,
-            __mandatory_keys_not_found = 0;
+            __mandatory_keys_not_found = 0,
+            __model_keywords = [];
 
         __def_model_args = __json_def_model.arguments;
 
-        for (__counter = 0; __counter < __def_model_args.length; __counter++)
-        {
-            if (__def_model_args[__counter].key.optional === false)
-                __def_keys_found++;
-        }
-
         if (utils.validation.misc.is_array(config))
             __is_multiple_keys_array = true;
+
+        for (__counter = 0; __counter < __def_model_args.length; __counter++)
+        {
+            for (__json_key in __def_model_args[__counter])
+            {
+                if (!utils.validation.misc.is_undefined(__def_model_args[__counter][__json_key].name))
+                    __model_keywords.push(__def_model_args[__counter][__json_key].name);
+            }
+        }
 
         for (__json_key in config)
         {
@@ -262,6 +265,28 @@ function jap()
             for (__counter = 0; __counter < __def_model_args.length; __counter++)
             {
                 __this_key = __def_model_args[__counter].key;
+
+                if (__is_multiple_keys_array)
+                {
+                    for (__this_value in config[__json_key])
+                    {
+                        if (__model_keywords.indexOf(__this_value) === -1)
+                        {
+                            info_log('Unknown keyword: "' + __this_value + '" in the configuration model!');
+            
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (__model_keywords.indexOf(__json_key) === -1)
+                    {
+                        info_log('Unknown keyword: "' + __json_key + '" in the configuration model!');
+        
+                        return false;
+                    }
+                }
 
                 if (__this_key.optional === false)
                 {
@@ -304,11 +329,6 @@ function jap()
             __this_key = __def_model_args[__counter].key;
             __this_value = __def_model_args[__counter].value;
 
-            if ((config[__counter] === undefined || 
-                 config[__counter].hasOwnProperty(__this_key.name) === undefined) || 
-                config[__this_key.name] === undefined)
-                    continue;
-
             if (__this_value.type !== '*')
             {
                 if (__this_value.type === 'null')
@@ -320,6 +340,16 @@ function jap()
                         return false;
                     }
                 }
+/*                 else if (__this_value.type === 'number')
+                {
+                    if (utils.validation.misc.is_nothing(config[__this_key.name].toString().trim()) || 
+                        !utils.validation.numerics.is_number(Number(config[__this_key.name])))
+                    {
+                        info_log('Argument: "' + __this_key.name + '" accepts only "numeric" values!');
+
+                        return false;
+                    }
+                } */
                 else if (__this_value.type === 'array')
                 {
                     if (!utils.validation.misc.is_array(config[__this_key.name]))
@@ -331,12 +361,28 @@ function jap()
                 }
                 else
                 {
-                    if ((__is_multiple_keys_array && typeof config[__counter][__this_key.name] !== __this_value.type) || 
-                        typeof config[__this_key.name] !== __this_value.type)
+                    if (__is_multiple_keys_array)
                     {
-                        info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
+                        for (__json_key in config)
+                        {
+                            if (!utils.validation.misc.is_undefined(config[__json_key][__this_key.name]) && 
+                                typeof config[__json_key][__this_key.name] !== __this_value.type)
+                            {
+                                info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
 
-                        return false;
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!utils.validation.misc.is_undefined(config[__this_key.name]) && 
+                            typeof config[__this_key.name] !== __this_value.type)
+                        {
+                            info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
+
+                            return false;
+                        }
                     }
                 }
             }

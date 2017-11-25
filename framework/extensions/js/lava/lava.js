@@ -128,7 +128,7 @@ function lava()
                 return false;
             }
 
-            if (utils.validation.misc.is_invalid(__this_key.id) || document.getElementById(__this_key.id) === null)
+            if (utils.validation.misc.is_invalid(__this_key.id) || utils.objects.by_id(__this_key.id) === null)
             {
                 info_log('The "id" points to no HTML element!');
 
@@ -209,7 +209,7 @@ function lava()
         for (__counter = 0; __counter < __json_def_model.length; __counter++)
         {
             __this_key = __json_def_model[__counter].key;
-            __this_field = document.getElementById(__this_key.id);
+            __this_field = utils.objects.by_id(__this_key.id);
 
             if (__this_field === null)
             {
@@ -235,7 +235,7 @@ function lava()
         {
             __this_key = __json_def_model[__counter].key;
             __this_value = __json_def_model[__counter].value;
-            __this_field = document.getElementById(__this_key.id);
+            __this_field = utils.objects.by_id(__this_key.id);
 
             if (__this_field === null && __keys_optional === true)
                 continue;
@@ -247,6 +247,16 @@ function lava()
                     if (__this_field.value !== null)
                     {
                         info_log('Field: "' + __this_field.id + '" accepts only "null" values!');
+
+                        return false;
+                    }
+                }
+                else if (__this_value.type === 'number')
+                {
+                    if (utils.validation.misc.is_nothing(__this_field.value.trim()) || 
+                        !utils.validation.numerics.is_number(Number(__this_field.value)))
+                    {
+                        info_log('Field: "' + __this_field.id + '" accepts only numbers!');
 
                         return false;
                     }
