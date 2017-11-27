@@ -360,6 +360,9 @@ function jap()
                     }
                     else
                     {
+                        if (utils.validation.misc.is_undefined(config[__this_key.name]))
+                            continue;
+
                         if (utils.validation.misc.is_nothing(config[__this_key.name].toString().trim()) || 
                             !utils.validation.numerics.is_number(Number(config[__this_key.name])))
                         {

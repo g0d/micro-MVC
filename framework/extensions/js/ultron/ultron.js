@@ -6,7 +6,7 @@
     Description: This file contains the ULTRON - Safe JS loader & manager.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2016 - 2017
+    Copyright (C) 2016
     Open Software License (OSL 3.0)
 
 */

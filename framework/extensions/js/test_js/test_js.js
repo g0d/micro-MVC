@@ -26,22 +26,22 @@ ultron(function(event)
     var my_jap = new jap();
     var aether_config = {
                             settings    :   {
-                                                chain_mode                  :   'serial',           // CHOICES: ['serial', 'parallel', 'delay', 'callback' (If 'optional_task_callbacks' is set to false, the scheduler respects only 'SUCCESS' callbacks)]
-                                                init_delay                  :   5000,               // OPTIONAL (Delay initialization of scheduler by so many milliseconds)
-                                                interval                    :   30000,              // OPTIONAL (Repeat scheduled tasks every so many milliseconds)
-                                                optional_task_callbacks     :   true,               // OPTIONAL (Allow optional task callbacks: 'fail' and 'timeout' - DEFAULT: true)
-                                                final_callback              :   function() {  }     // OPTIONAL (Function to execute when scheduler finishes up)
+                                                chain_mode                  :   'parallel',             // CHOICES: ['parallel', 'delay', 'callback' (Proceed on 'success' callback)]
+                                                init_delay                  :   3000,                   // OPTIONAL (Delay initialization of scheduler by so many milliseconds)
+                                                interval                    :   10000,                  // OPTIONAL (Repeat scheduled tasks every so many milliseconds)
+                                                optional_task_callbacks     :   true,                   // OPTIONAL (Allow optional task callbacks: 'fail' and 'timeout' - DEFAULT: true)
+                                                scheduler_callback          :   function() {  }         // OPTIONAL (Function to execute after scheduler runs all tasks)
                                             },
                             tasks       :   [
                                                 {
                                                     type                :   'data',
                                                     element_id          :   'test_id',                                  // OPTIONAL (Use only with 'data' type / Any valid HTML element ID)
                                                     content_mode        :   'replace',                                  // OPTIONAL (Use only with 'data' type / Modes: 'replace' or 'append')
-                                                    url                 :   '/test',
+                                                    url                 :   '/',
                                                     data                :   '',
-                                                    response_timeout    :   2500,
+                                                    response_timeout    :   2500,                                       // RESPONSE TIMEOUT: Waiting time of response until timeout in milliseconds
                                                     callbacks           :   {
-                                                                                success     :   function() { console.log('n-th task'); },
+                                                                                success     :   function() { console.log('2nd task'); },
                                                                                 fail        :   function() {  },        // OPTIONAL (By design unless enforced by 'optional_task_callbacks')
                                                                                 timeout     :   function() {  }         // OPTIONAL (By design unless enforced by 'optional_task_callbacks')
                                                                             },
@@ -58,11 +58,11 @@ ultron(function(event)
                                                     type                :   'data',
                                                     element_id          :   'test_id',
                                                     content_mode        :   'append',
-                                                    url                 :   '/test',
+                                                    url                 :   '/',
                                                     data                :   '',
                                                     response_timeout    :   2500,
                                                     callbacks           :   {
-                                                                                success     :   function() { console.log('1st task'); },
+                                                                                success     :   function() { console.log('n-th task'); },
                                                                                 //fail        :   function() {  },
                                                                                 timeout     :   function() {  }
                                                                             }
@@ -78,7 +78,7 @@ ultron(function(event)
                                                     data                :   '',
                                                     response_timeout    :   3000,
                                                     callbacks           :   {
-                                                                                success     :   function() { console.log('4th task'); },
+                                                                                success     :   function() { console.log('3rd task'); },
                                                                                 fail        :   function() {  },
                                                                                 //timeout     :   function() {  }
                                                                             }
@@ -93,7 +93,7 @@ ultron(function(event)
                                                     data                :   '',
                                                     response_timeout    :   1000,
                                                     callbacks           :   {
-                                                                                success     :   function() { console.log('2nd task'); },
+                                                                                success     :   function() { console.log('1st task'); },
                                                                                 //fail        :   function() {  },
                                                                                 //timeout     :   function() {  }
                                                                             }
