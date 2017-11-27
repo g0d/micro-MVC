@@ -340,16 +340,35 @@ function jap()
                         return false;
                     }
                 }
-/*                 else if (__this_value.type === 'number')
+                else if (__this_value.type === 'number')
                 {
-                    if (utils.validation.misc.is_nothing(config[__this_key.name].toString().trim()) || 
-                        !utils.validation.numerics.is_number(Number(config[__this_key.name])))
+                    if (__is_multiple_keys_array)
                     {
-                        info_log('Argument: "' + __this_key.name + '" accepts only "numeric" values!');
+                        for (__json_key in config)
+                        {
+                            if (utils.validation.misc.is_undefined(config[__json_key][__this_key.name]))
+                                continue;
 
-                        return false;
+                            if (utils.validation.misc.is_nothing(config[__json_key][__this_key.name].toString().trim()) || 
+                                !utils.validation.numerics.is_number(Number(config[__json_key][__this_key.name])))
+                            {
+                                info_log('Argument: "' + __this_key.name + '" accepts only "numeric" values!');
+
+                                return false;
+                            }
+                        }
                     }
-                } */
+                    else
+                    {
+                        if (utils.validation.misc.is_nothing(config[__this_key.name].toString().trim()) || 
+                            !utils.validation.numerics.is_number(Number(config[__this_key.name])))
+                        {
+                            info_log('Argument: "' + __this_key.name + '" accepts only "numeric" values!');
+
+                            return false;
+                        }
+                    }
+                }
                 else if (__this_value.type === 'array')
                 {
                     if (!utils.validation.misc.is_array(config[__this_key.name]))
@@ -365,8 +384,10 @@ function jap()
                     {
                         for (__json_key in config)
                         {
-                            if (!utils.validation.misc.is_undefined(config[__json_key][__this_key.name]) && 
-                                typeof config[__json_key][__this_key.name] !== __this_value.type)
+                            if (utils.validation.misc.is_undefined(config[__json_key][__this_key.name]))
+                                continue;
+
+                            if (typeof config[__json_key][__this_key.name] !== __this_value.type)
                             {
                                 info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
 

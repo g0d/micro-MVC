@@ -283,23 +283,12 @@ function lava()
 
             if (__this_value.hasOwnProperty('length'))
             {
-                if (__this_value.type === 'array')
+                if ((__this_value.type === 'array' && __this_field.value.length > __this_value.length) || 
+                    (__this_value.type !== 'array' && __this_field.value.toString().length > __this_value.length))
                 {
-                    if (__this_field.value.length > __this_value.length)
-                    {
-                        info_log('Field: "' + __this_field.id + '" has exceeded the defined length!');
+                    info_log('Field: "' + __this_field.id + '" has exceeded the defined length!');
 
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (__this_field.value.toString().length > __this_value.length)
-                    {
-                        info_log('Field: "' + __this_field.id + '" has exceeded the defined length!');
-
-                        return false;
-                    }
+                    return false;
                 }
             }
 

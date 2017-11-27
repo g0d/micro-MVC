@@ -172,7 +172,7 @@ function aether()
             {
                 var __factory_map = [];
 
-                this.config_objects_verification = function(main_config)
+                this.config_verification = function(main_config)
                 {
                     __factory_map.push(['main', __config_models['main'], main_config]);
                     __factory_map.push(['settings', __config_models['settings'], main_config.settings]);
@@ -186,39 +186,36 @@ function aether()
                         if (__index === 2)
                         {
                             var __record = 0,
-                                __callbacks_found = 0;
+                                __option = 0,
+                                __callbacks_found = 0,
+                                __object_options = ['callbacks', 'latency', 'bandwidth', 'repeat'];
 
                             for (__record = 0; __record < __factory_map[__index][2].length; __record++)
                             {
-                                __callbacks_found = 0;
-
                                 for (__entry in __factory_map[__index][2][__record])
                                 {
-                                    if (system_config_keywords[__factory_map[__index][0]].indexOf(__entry) === -1)
-                                        return false;
-                                }
-                                /*
-                                if ()
-                                {
-                                    if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
-                                        return false;
+                                    __callbacks_found = 0;
 
-                                    for (__entry in main_config.tasks[__index].callbacks)
+                                    if (__object_options.indexOf(__entry) === -1)
                                     {
-                                        if (system_config_keywords.callbacks.indexOf(__entry) === -1)
+                                        if (system_config_keywords[__factory_map[__index][0]].indexOf(__entry) === -1)
                                             return false;
-    
-                                        __callbacks_found++;
                                     }
-    
-                                    if (!main_config.settings.optional_task_callbacks && __callbacks_found < system_config_keywords.callbacks.length)
-                                        return false;
-                                }
+                                    else
+                                    {
+                                        for (__option in __object_options)
+                                        {
+                                            __factory_map.push([__object_options[__option], 
+                                                                __config_models[__object_options[__option]], 
+                                                                main_config.tasks[__record][__object_options[__option]]]);
 
-                                if (main_config.tasks[__index].hasOwnProperty('latency') && 
-                                    !config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
-                                    return false;
-                                */
+                                            if (!config_parser.verify(__factory_map[3][1], __factory_map[3][2]))
+                                                return false;
+
+                                            __factory_map.pop();
+                                        }
+                                    }
+                                }
                             }
                         }
                         else
@@ -236,7 +233,7 @@ function aether()
 
                 this.config_settings_loader = function(settings_config)
                 {
-                    __factory_map.push('init_delay', 'interval', 'optional_task_callbacks', 'final_callback');
+                    __factory_map = ['init_delay', 'interval', 'optional_task_callbacks', 'final_callback'];
 
                     for (__entry in __factory_map)
                     {
@@ -412,44 +409,14 @@ function aether()
                                         };
         };
 
-        this.verify_config_objects = function(main_config)
+        this.verify_config = function(main_config)
         {
-            system_tools.utilities.factory.config_objects_verification(main_config);
+            if (!utils.validation.misc.is_object(main_config)|| 
+                !main_config.hasOwnProperty('settings') || !main_config.hasOwnProperty('tasks') || 
+                !utils.validation.misc.is_object(main_config.settings) || !utils.validation.misc.is_object(main_config.tasks))
+                return false;
 
-            var __callbacks_found = 0;
-
-            for (__index = 0; __index < main_config.tasks.length; __index++)
-            {
-                __callbacks_found = 0;
-
-                if (!config_parser.verify(__config_models['callbacks'], main_config.tasks[__index].callbacks))
-                    return false;
-
-                for (__entry in main_config.tasks[__index].callbacks)
-                {
-                    if (system_config_keywords.callbacks.indexOf(__entry) === -1)
-                        return false;
-
-                    __callbacks_found++;
-                }
-
-                if (!main_config.settings.optional_task_callbacks && __callbacks_found < system_config_keywords.callbacks.length)
-                    return false;
-
-                if (main_config.tasks[__index].hasOwnProperty('latency') && 
-                    !config_parser.verify(__config_models['latency'], main_config.tasks[__index].latency))
-                    return false;
-
-                if (main_config.tasks[__index].hasOwnProperty('bandwidth') && 
-                    !config_parser.verify(__config_models['bandwidth'], main_config.tasks[__index].bandwidth))
-                    return false;
-
-                if (main_config.tasks[__index].hasOwnProperty('repeat') && 
-                    !config_parser.verify(__config_models['repeat'], main_config.tasks[__index].repeat))
-                    return false;
-            }
-
-            return true;
+            return system_tools.utilities.factory.config_verification(main_config);
         };
 
         this.load_settings = function(settings_config)
@@ -489,6 +456,18 @@ function aether()
                 new_task.url = __this_task.url;
                 new_task.data = __this_task.data;
                 new_task.response_timeout = __this_task.response_timeout;
+
+                for (__option in main_config.tasks[__index].callbacks)
+                {
+                    if (system_config_keywords.callbacks.indexOf(__option) === -1)
+                        return false;
+
+                    __callbacks_found++;
+                }
+
+                if (!main_config.settings.optional_task_callbacks && __callbacks_found < system_config_keywords.callbacks.length)
+                    return false;
+
                 new_task.callbacks = __this_task.callbacks;
 
                 if (__this_task.hasOwnProperty('ajax_mode'))
@@ -626,7 +605,7 @@ function aether()
     this.schedule = function(json_config)
     {
         if (__is_init === true || 
-            !system_tools.verify_config_objects(json_config) || 
+            !system_tools.verify_config(json_config) || 
             !system_tools.load_settings(json_config.settings) || 
             !system_tools.load_tasks(json_config.tasks) || 
             !system_tools.run())
