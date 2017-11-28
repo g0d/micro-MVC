@@ -415,7 +415,8 @@ function aether()
                 {
                     if (__options_map[__entry] === 'init_delay' || __options_map[__entry] === 'interval')
                     {
-                        if (settings_config[__options_map[__entry]] < 1 || settings_config[__options_map[__entry]] > system_constants.misc.MAX_DELAY)
+                        if (settings_config[__options_map[__entry]] < 1 || 
+                            settings_config[__options_map[__entry]] > system_constants.misc.MAX_DELAY)
                         {
                             __modes = [];
                             __options_map = [];
@@ -640,9 +641,12 @@ function aether()
             {
                 function repeater(next_task)
                 {
+                    var __task_id = null,
+                        __task_delay = null;
+
                     if (!utils.validation.misc.is_undefined(next_task))
                     {
-                        __this_task = scheduled_tasks_list[next_task][0];
+                        __task_id = scheduled_tasks_list[next_task][0];
                         __task_delay = scheduled_tasks_list[next_task][1];
 
                         if (next_task < __all_tasks.length - 1)
@@ -652,7 +656,7 @@ function aether()
 
                         if (__task_delay === -1)
                         {
-                            __this_task.call(this);
+                            __task_id.call(this);
 
                             repeater(next_task);
                         }
@@ -660,7 +664,7 @@ function aether()
                         {
                             setTimeout(function()
                                        {
-                                            __this_task.call(this);
+                                            __task_id.call(this);
 
                                             repeater(next_task);
                                        }, __task_delay);
@@ -670,13 +674,13 @@ function aether()
                     {
                         for (__index = 0; __index < scheduled_tasks_list.length; __index++)
                         {
-                            __this_task = scheduled_tasks_list[__index][0];
+                            __task_id = scheduled_tasks_list[__index][0];
                             __task_delay = scheduled_tasks_list[__index][1];
 
                             if (__task_delay === -1)
-                                __this_task.call(this);
+                                __task_id.call(this);
                             else
-                                setTimeout(function() { __this_task.call(this); }, __task_delay);
+                                setTimeout(function() { __task_id.call(this); }, __task_delay);
                         }
                     }
                 }
@@ -697,21 +701,28 @@ function aether()
 
                 if (__this_task.type === 'data')
                 {
-                    __ajax_delegate = function()
+                    __ajax_delegate = function(task)
                                       {
-                                            __ajax.data(__this_task.url, __this_task.data, __this_task.element_id, __this_task.content_fill_mode, 
-                                                        __this_task.success_callback, __this_task.fail_callback, 
-                                                        __this_task.response_timeout, __this_task.timeout_callback);
-                                      };
+                                        return function()
+                                               {
+                                                    __ajax.data(task.url, task.data, task.element_id, 
+                                                                task.content_fill_mode, 
+                                                                task.success_callback, task.fail_callback, 
+                                                                task.response_timeout, task.timeout_callback);
+                                               }
+                                      }(__this_task);
                 }
                 else
                 {
-                    __ajax_delegate = function()
+                    __ajax_delegate = function(task)
                                       {
-                                            __ajax.request(__this_task.url, __this_task.data, __this_task.ajax_mode, 
-                                                           __this_task.success_callback, __this_task.fail_callback, 
-                                                           __this_task.response_timeout, __this_task.timeout_callback);
-                                      };
+                                          return function()
+                                                 {
+                                                    __ajax.request(task.url, task.data, task.ajax_mode, 
+                                                                   task.success_callback, task.fail_callback, 
+                                                                   task.response_timeout, task.timeout_callback);
+                                                 }
+                                      }(__this_task);
                 }
 
                 __scheduled_tasks_list.push([__ajax_delegate, __this_task.delay]);
