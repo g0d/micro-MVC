@@ -2,7 +2,7 @@
 
     BULL (AJAX System/Framework)
 
-    File name: bull.js (Version: 16.0)
+    File name: bull.js (Version: 16.2)
     Description: This file contains the BULL - AJAX System/Framework.
 
     Coded by George Delaportas (G0D) / Contributions by Catalin Maftei
@@ -36,8 +36,6 @@ function bull()
                 
                 if (mode === false)
                     state_changed();
-                
-                return;
             };
             
             this.create_object = function()
@@ -55,17 +53,19 @@ function bull()
         
         function state_changed()
         {
-            if (__is_time_out === true)
+            if (__is_time_out === true && utils.validation.misc.is_function(__timeout_callback))
             {
-                if (utils.validation.misc.is_function(__timeout_callback))
-                    __timeout_callback.call(this, result());
+                __timeout_callback.call(this);
                 
                 return false;
             }
 
             if (__xml_http.readyState === 4)
             {
+                stop_timer(__timer_handler);
+
                 __ajax_response = null;
+                __is_time_out = false;
                 
                 if (__xml_http.status === 200)
                 {
@@ -94,7 +94,7 @@ function bull()
                 else
                 {
                     if (utils.validation.misc.is_function(__fail_callback))
-                        __fail_callback.call(this, result());
+                        __fail_callback.call(this);
                 }
             }
             
@@ -112,8 +112,6 @@ function bull()
         function init_ajax()
         {
             __xml_http = ajax.create_object();
-            
-            return;
         }
         
         function set_callbacks(success_callback, fail_callback, timeout_callback)
@@ -121,16 +119,18 @@ function bull()
             __success_callback = success_callback;
             __fail_callback = fail_callback;
             __timeout_callback = timeout_callback;
-
-            return null;
         }
         
         function run_timer(response_timeout)
         {
             if (utils.validation.numerics.is_integer(response_timeout))
-                setTimeout(function() { __is_time_out = true; }, response_timeout);
-            
-            return null;
+                __timer_handler = setTimeout(function() { __is_time_out = true; }, response_timeout);
+        }
+        
+        function stop_timer(timer_handler)
+        {
+            if (utils.validation.misc.is_invalid(timer_handler))
+                clearTimeout(timer_handler);
         }
         
         this.data = function(url, data, element_id, content_fill_mode, success_callback, fail_callback, response_timeout, timeout_callback)
@@ -196,6 +196,7 @@ function bull()
             __success_callback = null,
             __timeout_callback = null,
             __fail_callback = null,
+            __timer_handler = null,
             __is_time_out = false,
             ajax = new ajax_model();
         
@@ -207,7 +208,7 @@ function bull()
                          success_callback, fail_callback, response_timeout, timeout_callback)
     {
         return new core().data(url, data, element_id, content_fill_mode, 
-                              success_callback, fail_callback, response_timeout, timeout_callback);
+                               success_callback, fail_callback, response_timeout, timeout_callback);
     };
     
     // AJAX request (Asynchronous [1] / Synchronous [2])

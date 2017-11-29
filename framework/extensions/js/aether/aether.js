@@ -20,6 +20,7 @@ function aether()
         {
             function chain_mode_model()
             {
+                this.SERIAL = 'serial';
                 this.PARALLEL = 'parallel';
                 this.DELAY = 'delay';
                 this.CALLBACK = 'callback';
@@ -42,7 +43,7 @@ function aether()
                 this.SYNCHRONOUS = 'synchronous';
             }
 
-            function content_mode_model()
+            function content_fill_mode_model()
             {
                 this.REPLACE = 'replace';
                 this.APPEND = 'append';
@@ -56,7 +57,7 @@ function aether()
 
             this.type = new type_model();
             this.ajax_mode = new ajax_mode_model();
-            this.content_mode = new content_mode_model();
+            this.content_fill_mode = new content_fill_mode_model();
             this.repeat = new repeat_model();
         }
 
@@ -95,7 +96,7 @@ function aether()
             this.callbacks = null;
             this.ajax_mode = null;
             this.element_id = null;
-            this.content_mode = null;
+            this.content_fill_mode = null;
             this.priority = 999999;
             this.latency = null;
             this.bandwidth = null;
@@ -132,7 +133,7 @@ function aether()
 
         function tasks_group()
         {
-            return ['type', 'url', 'data', 'response_timeout', 'callbacks', 'ajax_mode', 'element_id', 'content_mode', 
+            return ['type', 'url', 'data', 'response_timeout', 'callbacks', 'ajax_mode', 'element_id', 'content_fill_mode', 
                     'priority', 'latency', 'bandwidth', 'repeat', 'delay'];
         }
 
@@ -242,6 +243,25 @@ function aether()
 
                 return true;
             };
+
+            this.ajax_task_call = function(task)
+            {
+                var __this_task = task.args,
+                    __ajax = new bull();
+
+                if (task.type === 'data')
+                {
+                    __ajax.data(__this_task.url, __this_task.data, __this_task.element_id, __this_task.content_fill_mode,
+                                __this_task.success_callback, __this_task.fail_callback, 
+                                __this_task.response_timeout, __this_task.timeout_callback);
+                }
+                else
+                {
+                    __ajax.request(__this_task.url, __this_task.data, __this_task.ajax_mode,
+                                   __this_task.success_callback, __this_task.fail_callback, 
+                                   __this_task.response_timeout, __this_task.timeout_callback);
+                }
+            };
         }
 
         this.init_config_definition_models = function()
@@ -312,7 +332,7 @@ function aether()
                                                                             value   :   { type : 'string' }
                                                                         },
                                                                         {
-                                                                            key     :   { name : 'content_mode', optional : true },
+                                                                            key     :   { name : 'content_fill_mode', optional : true },
                                                                             value   :   { type : 'string' }
                                                                         },
                                                                         {
@@ -443,6 +463,8 @@ function aether()
                 __new_task = null,
                 __option = null,
                 __callbacks_found = 0,
+                __tasks_delay_sum = 0,
+                __same_priorities_num = 0,
                 __modes = [];
 
             for (__index = 0; __index < tasks_config.length; __index++)
@@ -464,7 +486,7 @@ function aether()
 
                 if (__this_config_task.type === 'data')
                 {
-                    if (!__this_config_task.hasOwnProperty('element_id') || !__this_config_task.hasOwnProperty('content_mode') || 
+                    if (!__this_config_task.hasOwnProperty('element_id') || !__this_config_task.hasOwnProperty('content_fill_mode') || 
                         __this_config_task.hasOwnProperty('ajax_mode'))
                     {
                         system_tools.reset();
@@ -475,7 +497,7 @@ function aether()
                 else
                 {
                     if (!__this_config_task.hasOwnProperty('ajax_mode') || 
-                        __this_config_task.hasOwnProperty('element_id') || __this_config_task.hasOwnProperty('content_mode'))
+                        __this_config_task.hasOwnProperty('element_id') || __this_config_task.hasOwnProperty('content_fill_mode'))
                     {
                         system_tools.reset();
 
@@ -483,7 +505,22 @@ function aether()
                     }
                 }
 
+                if (utils.validation.misc.is_nothing(__this_config_task.url))
+                {
+                    system_tools.reset();
+
+                    return false;
+                }
+
                 __new_task.url = __this_config_task.url;
+
+                if (utils.validation.misc.is_nothing(__this_config_task.data))
+                {
+                    system_tools.reset();
+
+                    return false;
+                }
+
                 __new_task.data = __this_config_task.data;
 
                 if (__this_config_task.response_timeout < 1 || __this_config_task.response_timeout > system_constants.misc.MAX_DELAY)
@@ -510,7 +547,11 @@ function aether()
                 }
 
                 if (!__is_optional_task_callbacks && __callbacks_found < system_config_keywords.callbacks.length)
+                {
+                    system_tools.reset();
+
                     return false;
+                }
 
                 __new_task.callbacks = __this_config_task.callbacks;
 
@@ -525,24 +566,43 @@ function aether()
                         return false;
                     }
 
-                    __new_task.ajax_mode = __this_config_task.ajax_mode;
+                    if (__this_config_task.ajax_mode === 'asynchronous')
+                        __new_task.ajax_mode = 1;
+                    else
+                    {
+                        __new_task.ajax_mode = 2;
+
+                        info_log('Warning: Use of synchronous AJAX causes\nunexpected scheduling in various cases!');
+                    }
                 }
 
                 if (__this_config_task.hasOwnProperty('element_id'))
-                    __new_task.element_id = __this_config_task.element_id;
-
-                if (__this_config_task.hasOwnProperty('content_mode'))
                 {
-                    __modes = utils.conversions.object_to_array(false, system_constants.tasks.content_mode);
-
-                    if (__modes.indexOf(__this_config_task.content_mode) === -1)
+                    if (!utils.objects.by_id(__this_config_task.element_id))
                     {
                         system_tools.reset();
     
                         return false;
                     }
 
-                    __new_task.content_mode = __this_config_task.content_mode;
+                    __new_task.element_id = __this_config_task.element_id;
+                }
+
+                if (__this_config_task.hasOwnProperty('content_fill_mode'))
+                {
+                    __modes = utils.conversions.object_to_array(false, system_constants.tasks.content_fill_mode);
+
+                    if (__modes.indexOf(__this_config_task.content_fill_mode) === -1)
+                    {
+                        system_tools.reset();
+    
+                        return false;
+                    }
+
+                    if (__this_config_task.content_fill_mode === 'replace')
+                        __new_task.content_fill_mode = false;
+                    else
+                        __new_task.content_fill_mode = true;
                 }
 
                 if (__this_config_task.hasOwnProperty('priority'))
@@ -616,136 +676,12 @@ function aether()
                     }
 
                     __new_task.delay = __this_config_task.delay;
+
+                    __tasks_delay_sum += __new_task.delay;
                 }
 
                 system_models.tasks.num++;
                 system_models.tasks.list.push(__new_task);
-            }
-
-            __modes = [];
-
-            return true;
-        };
-
-        this.process_tasks = function()
-        {
-            var __index = 0,
-                __this_task = null,
-                __all_tasks = system_models.tasks.list,
-                __task_delay = -1,
-                __ajax_delegate = null,
-                __scheduled_tasks_list = [],
-                __ajax = new bull();
-
-            function go(mode, scheduled_tasks_list)
-            {
-                function repeater(next_task)
-                {
-                    var __task_id = null,
-                        __task_delay = null;
-
-                    if (!utils.validation.misc.is_undefined(next_task))
-                    {
-                        __task_id = scheduled_tasks_list[next_task][0];
-                        __task_delay = scheduled_tasks_list[next_task][1];
-
-                        if (next_task < __all_tasks.length - 1)
-                            next_task++;
-                        else
-                            return;
-
-                        if (__task_delay === -1)
-                        {
-                            __task_id.call(this);
-
-                            repeater(next_task);
-                        }
-                        else
-                        {
-                            setTimeout(function()
-                                       {
-                                            __task_id.call(this);
-
-                                            repeater(next_task);
-                                       }, __task_delay);
-                        }
-                    }
-                    else
-                    {
-                        for (__index = 0; __index < scheduled_tasks_list.length; __index++)
-                        {
-                            __task_id = scheduled_tasks_list[__index][0];
-                            __task_delay = scheduled_tasks_list[__index][1];
-
-                            if (__task_delay === -1)
-                                __task_id.call(this);
-                            else
-                                setTimeout(function() { __task_id.call(this); }, __task_delay);
-                        }
-                    }
-                }
-
-                if (system_models.settings.chain_mode === 'parallel')
-                    repeater();
-                else if (system_models.settings.chain_mode === 'delay')
-                    repeater(0);
-                else
-                {
-                    //TODO: Execute on success callback
-                }
-            }
-
-            for (__index in __all_tasks)
-            {
-                __this_task = __all_tasks[__index];
-
-                if (__this_task.type === 'data')
-                {
-                    __ajax_delegate = function(task)
-                                      {
-                                        return function()
-                                               {
-                                                    __ajax.data(task.url, task.data, task.element_id, 
-                                                                task.content_fill_mode, 
-                                                                task.success_callback, task.fail_callback, 
-                                                                task.response_timeout, task.timeout_callback);
-                                               }
-                                      }(__this_task);
-                }
-                else
-                {
-                    __ajax_delegate = function(task)
-                                      {
-                                          return function()
-                                                 {
-                                                    __ajax.request(task.url, task.data, task.ajax_mode, 
-                                                                   task.success_callback, task.fail_callback, 
-                                                                   task.response_timeout, task.timeout_callback);
-                                                 }
-                                      }(__this_task);
-                }
-
-                __scheduled_tasks_list.push([__ajax_delegate, __this_task.delay]);
-            }
-
-            go(system_models.settings.chain_mode, __scheduled_tasks_list);
-
-            if (system_models.settings.scheduler_callback !== null)
-                system_models.settings.scheduler_callback.call(this);
-        };
-
-        this.run = function()
-        {
-            function do_tasks()
-            {
-                if (system_models.settings.interval === -1)
-                    system_tools.process_tasks();
-                else
-                {
-                    system_tools.process_tasks();
-
-                    scheduler.start(system_models.settings.interval, system_tools.process_tasks, false);
-                }
             }
 
             if (!utils.misc.sort(system_models.tasks.list, 'asc', 'priority'))
@@ -755,10 +691,190 @@ function aether()
                 return false;
             }
 
+            __modes = [];
+
+            if (system_models.settings.interval !== -1 && __tasks_delay_sum > system_models.settings.interval)
+            {
+                system_tools.info_log('Warning: Scheduler loop interval is\nlower than the sum of delay produced by tasks.\n' + 
+                                      'This may lead to strange behaviour due to\nthe asynchronous nature of AJAX!');
+            }
+
+            for (__index = 0; __index < system_models.tasks.num - 1; __index++)
+            {
+                if (system_models.tasks.list[__index].priority === system_models.tasks.list[__index + 1].priority)
+                    __same_priorities_num++;
+            }
+
+            if (__same_priorities_num > 0)
+            {
+                system_tools.info_log('Warning: One or more AJAX tasks have the same priority.\n' + 
+                                      'Please consider providing distinct priorities for better scheduling!');
+            }
+
+            return true;
+        };
+
+        this.process_tasks = function(process_callback)
+        {
+            var __index = 0,
+                __this_task = null,
+                __all_tasks = system_models.tasks.list,
+                __task_delay = -1,
+                __task_config_map = null,
+                __scheduled_tasks_list = [];
+
+            function go(mode, scheduled_tasks_list)
+            {
+                function scheduler_callback_action()
+                {
+                    if (system_models.settings.scheduler_callback !== null)
+                        system_models.settings.scheduler_callback.call(this);
+                }
+
+                function repeater_delegate(mode, index)
+                {
+                    var __task_entry = null,
+                        __task_delay = null;
+
+                    if (mode === 'serial')
+                    {
+                        return;
+                    }
+                    else if (mode === 'delay')
+                    {
+                        if (index < __all_tasks.length - 1)
+                            index++;
+                        else
+                            return;
+                    }
+                    else if (mode === 'callback')
+                    {
+                        return;
+                    }
+
+                    __task_entry = scheduled_tasks_list[index][0];
+                    __task_delay = scheduled_tasks_list[index][1];
+
+                    if (__task_delay === -1)
+                    {
+                        system_tools.factory.ajax_task_call(__task_entry);
+
+                        if (mode === 'delay')
+                            repeater_delegate(mode, index);
+                    }
+                    else
+                    {
+                        setTimeout(function()
+                                   {
+                                        system_tools.factory.ajax_task_call(__task_entry);
+
+                                        if (mode === 'delay')
+                                        {
+                                            repeater_delegate(mode, index);
+
+                                            if (index === __all_tasks.length - 1)
+                                                setTimeout(scheduler_callback_action, __task_delay);
+                                        }
+                                   }, __task_delay);
+                    }
+                }
+
+                function repeater(mode)
+                {
+                    var __task_entry = null,
+                        __task_delay = null;
+
+                    if (mode === 'serial')
+                    {
+                        //TODO: ...
+                    }
+                    else if (mode === 'parallel')
+                    {
+                        for (__index = 0; __index < scheduled_tasks_list.length; __index++)
+                            repeater_delegate(mode, __index);
+
+                        scheduler_callback_action();
+                    }
+                    else if (mode === 'delay')
+                        repeater_delegate(mode, -1);
+                    else
+                    {
+                        repeater_delegate(mode, null);
+                    }
+
+                    if (utils.validation.misc.is_function(process_callback))
+                        process_callback.call(this);
+                }
+
+                repeater(system_models.settings.chain_mode);
+            }
+
+            for (__index in __all_tasks)
+            {
+                __this_task = __all_tasks[__index];
+
+                if (__this_task.type === 'data')
+                {
+                    __task_config_map = {
+                                            type   :    __this_task.type,
+                                            args   :    {
+                                                            url                 :       __this_task.url, 
+                                                            data                :       __this_task.data, 
+                                                            element_id          :       __this_task.element_id, 
+                                                            content_fill_mode   :       __this_task.content_fill_mode, 
+                                                            success_callback    :       __this_task.callbacks.success, 
+                                                            fail_callback       :       __this_task.callbacks.fail, 
+                                                            response_timeout    :       __this_task.response_timeout,
+                                                            timeout_callback    :       __this_task.callbacks.timeout
+                                                        }
+                                        };
+                }
+                else
+                {
+                    __task_config_map = {
+                                            type   :    __this_task.type,
+                                            args   :    {
+                                                            url                 :       __this_task.url, 
+                                                            data                :       __this_task.data, 
+                                                            ajax_mode           :       __this_task.ajax_mode, 
+                                                            success_callback    :       __this_task.callbacks.success, 
+                                                            fail_callback       :       __this_task.callbacks.fail, 
+                                                            response_timeout    :       __this_task.response_timeout,
+                                                            timeout_callback    :       __this_task.callbacks.timeout
+                                                        }
+                                        };
+                }
+
+                __scheduled_tasks_list.push([__task_config_map, __this_task.delay]);
+            }
+
+            go(system_models.settings.chain_mode, __scheduled_tasks_list);
+        };
+
+        this.run = function()
+        {
+            var __scheduler = new stopwatch();
+
+            function do_tasks()
+            {
+                if (system_models.settings.interval === -1)
+                    system_tools.process_tasks();
+                else
+                {
+                    __scheduler = new stopwatch();
+
+                    system_tools.process_tasks(function()
+                                               {
+                                                    __scheduler.start(system_models.settings.interval, 
+                                                                      system_tools.process_tasks, false);
+                                               });
+                }
+            }
+
             if (system_models.settings.init_delay === -1)
                 do_tasks();
             else
-                scheduler.start(system_models.settings.init_delay, do_tasks, true);
+            __scheduler.start(system_models.settings.init_delay, do_tasks, true);
 
             return true;
         };
@@ -767,7 +883,16 @@ function aether()
         {
             __is_init = false;
             __config_definition_models = [];
+
             system_models = new sys_models_class();
+        };
+
+        this.info_log = function(message)
+        {
+            console.log('----------------------- Aether -----------------------');
+            console.log(message);
+            console.log('-----------------------  ****  -----------------------');
+            console.log('');
         };
 
         this.factory = new factory_model();
@@ -825,10 +950,9 @@ function aether()
         system_models = new sys_models_class(),
         system_config_keywords = new config_keywords_class(),
         system_tools = new sys_tools_class(),
+        config_parser = new jap(),
         prng = new pythia(),
-        scheduler = new stopwatch(),
-        utils = new vulcan(),
-        config_parser = new jap();
+        utils = new vulcan();
 
     // Initialize
     init();
