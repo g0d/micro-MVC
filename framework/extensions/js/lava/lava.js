@@ -14,15 +14,6 @@
 // L.A.Va
 function lava()
 {
-    // Informative log for the programmer
-    function info_log(message)
-    {
-        console.log('---------- L.A.Va ----------');
-        console.log(message);
-        console.log('---------- ****** ----------');
-        console.log('');
-    }
-
     // Scan for unknown keywords
     function has_unknown_keywords(definition_model)
     {
@@ -64,21 +55,21 @@ function lava()
     {
         if (!utils.validation.misc.is_array(definition_model))
         {
-            info_log('Invalid definition model!');
+            sensei('L.A.Va', 'Invalid definition model!');
 
             return false;
         }
 
         if (definition_model.length === 0)
         {
-            info_log('The definition model is null!');
+            sensei('L.A.Va', 'The definition model is null!');
 
             return false;
         }
 
         if (has_unknown_keywords(definition_model))
         {
-            info_log('The definition model contains unknown keywords!');
+            sensei('L.A.Va', 'The definition model contains unknown keywords!');
 
             return false;
         }
@@ -92,14 +83,14 @@ function lava()
         {
             if (!utils.validation.misc.is_object(definition_model[__counter]))
             {
-                info_log('Invalid JSON object in the model!');
+                sensei('L.A.Va', 'Invalid JSON object in the model!');
 
                 return false;
             }
 
             if (!definition_model[__counter].hasOwnProperty('key') || !definition_model[__counter].hasOwnProperty('value'))
             {
-                info_log('Missing "key" or "value" mandatory attributes!');
+                sensei('L.A.Va', 'Missing "key" or "value" mandatory attributes!');
 
                 return false;
             }
@@ -109,42 +100,42 @@ function lava()
 
             if (!utils.validation.misc.is_object(__this_key) || !utils.validation.misc.is_object(__this_value))
             {
-                info_log('A "key" or "value" attribute does not point to a JSON object!');
+                sensei('L.A.Va', 'A "key" or "value" attribute does not point to a JSON object!');
 
                 return false;
             }
 
             if (!__this_key.hasOwnProperty('id') || !__this_key.hasOwnProperty('optional'))
             {
-                info_log('Missing "id" or "optional" mandatory properties!');
+                sensei('L.A.Va', 'Missing "id" or "optional" mandatory properties!');
 
                 return false;
             }
 
             if (!utils.validation.alpha.is_string(__this_key.id) || !utils.validation.misc.is_bool(__this_key.optional))
             {
-                info_log('Invalid specification for "id" or "optional" property!');
+                sensei('L.A.Va', 'Invalid specification for "id" or "optional" property!');
 
                 return false;
             }
 
             if (utils.validation.misc.is_invalid(__this_key.id) || utils.objects.by_id(__this_key.id) === null)
             {
-                info_log('The "id" points to no HTML element!');
+                sensei('L.A.Va', 'The "id" points to no HTML element!');
 
                 return false;
             }
 
             if (!__this_value.hasOwnProperty('type'))
             {
-                info_log('Missing "type" mandatory property!');
+                sensei('L.A.Va', 'Missing "type" mandatory property!');
 
                 return false;
             }
 
             if (!utils.validation.alpha.is_string(__this_value.type) || __all_value_types.indexOf(__this_value.type) === -1)
             {
-                info_log('Invalid specification for "type" property!');
+                sensei('L.A.Va', 'Invalid specification for "type" property!');
 
                 return false;
             }
@@ -153,14 +144,14 @@ function lava()
             {
                 if (__uncountable_value_types.indexOf(__this_value.type) !== -1)
                 {
-                    info_log('This type does not support the "length" option!');
+                    sensei('L.A.Va', 'This type does not support the "length" option!');
 
                     return false;
                 }
 
                 if (!utils.validation.numerics.is_integer(__this_value.length) || __this_value.length < 1)
                 {
-                    info_log('The "length" option has to be a positive integer!');
+                    sensei('L.A.Va', 'The "length" option has to be a positive integer!');
 
                     return false;
                 }
@@ -170,14 +161,14 @@ function lava()
             {
                 if (__uncountable_value_types.indexOf(__this_value.type) !== -1 || __this_value.type === 'array')
                 {
-                    info_log('This type does not support the "regex" option!');
+                    sensei('L.A.Va', 'This type does not support the "regex" option!');
 
                     return false;
                 }
 
                 if (utils.validation.misc.is_invalid(__this_value.regex))
                 {
-                    info_log('Invalid "regex" option!');
+                    sensei('L.A.Va', 'Invalid "regex" option!');
 
                     return false;
                 }
@@ -195,7 +186,7 @@ function lava()
     {
         if (!__is_model_defined)
         {
-            info_log('No definition model was specified!');
+            sensei('L.A.Va', 'No definition model was specified!');
 
             return false;
         }
@@ -213,7 +204,7 @@ function lava()
 
             if (__this_field === null)
             {
-                info_log('Element: "' + __this_key.id + '" does not exit!');
+                sensei('L.A.Va', 'Element: "' + __this_key.id + '" does not exit!');
 
                 return false;
             }
@@ -226,7 +217,7 @@ function lava()
 
         if (__keys_found < __json_def_model.length && __keys_optional === false)
         {
-            info_log('Defined non-optional elements differ from that on the page!');
+            sensei('L.A.Va', 'Defined non-optional elements differ from that on the page!');
 
             return false;
         }
@@ -246,7 +237,7 @@ function lava()
                 {
                     if (__this_field.value !== null)
                     {
-                        info_log('Field: "' + __this_field.id + '" accepts only "null" values!');
+                        sensei('L.A.Va', 'Field: "' + __this_field.id + '" accepts only "null" values!');
 
                         return false;
                     }
@@ -256,7 +247,7 @@ function lava()
                     if (utils.validation.misc.is_nothing(__this_field.value.trim()) || 
                         !utils.validation.numerics.is_number(Number(__this_field.value)))
                     {
-                        info_log('Field: "' + __this_field.id + '" accepts only numbers!');
+                        sensei('L.A.Va', 'Field: "' + __this_field.id + '" accepts only numbers!');
 
                         return false;
                     }
@@ -265,7 +256,7 @@ function lava()
                 {
                     if (!utils.validation.misc.is_array(__this_field.value))
                     {
-                        info_log('Field: "' + __this_field.id + '" accepts only "array" values!');
+                        sensei('L.A.Va', 'Field: "' + __this_field.id + '" accepts only "array" values!');
 
                         return false;
                     }
@@ -274,7 +265,7 @@ function lava()
                 {
                     if (typeof __this_field.value !== __this_value.type)
                     {
-                        info_log('Field: "' + __this_field.id + '" has a type mismatch!');
+                        sensei('L.A.Va', 'Field: "' + __this_field.id + '" has a type mismatch!');
 
                         return false;
                     }
@@ -286,7 +277,7 @@ function lava()
                 if ((__this_value.type === 'array' && __this_field.value.length > __this_value.length) || 
                     (__this_value.type !== 'array' && __this_field.value.toString().length > __this_value.length))
                 {
-                    info_log('Field: "' + __this_field.id + '" exceeds the defined length!');
+                    sensei('L.A.Va', 'Field: "' + __this_field.id + '" exceeds the defined length!');
 
                     return false;
                 }
@@ -296,7 +287,7 @@ function lava()
             {
                 if (!utils.validation.utilities.reg_exp(__this_value.regex, __this_field.value))
                 {
-                    info_log('Field: "' + __this_field.id + '" has not matched the specified regex!');
+                    sensei('L.A.Va', 'Field: "' + __this_field.id + '" has not matched the specified regex!');
 
                     return false;
                 }

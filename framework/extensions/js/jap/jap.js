@@ -14,15 +14,6 @@
 // J.A.P
 function jap()
 {
-    // Informative log for the programmer
-    function info_log(message)
-    {
-        console.log('---------- J.A.P ----------');
-        console.log(message);
-        console.log('---------- ***** ----------');
-        console.log('');
-    }
-
     // Scan for unknown keywords
     function has_unknown_keywords(definition_model)
     {
@@ -82,21 +73,21 @@ function jap()
     {
         if (!utils.validation.misc.is_object(definition_model))
         {
-            info_log('Invalid definition model!');
+            sensei('J.A.P', 'Invalid definition model!');
 
             return false;
         }
 
         if (definition_model.length === 0)
         {
-            info_log('The definition model is null!');
+            sensei('J.A.P', 'The definition model is null!');
 
             return false;
         }
 
         if (has_unknown_keywords(definition_model))
         {
-            info_log('The definition model contains unknown keywords!');
+            sensei('J.A.P', 'The definition model contains unknown keywords!');
 
             return false;
         }
@@ -108,14 +99,14 @@ function jap()
 
         if (definition_model.hasOwnProperty('ignore_keys_num') && !utils.validation.misc.is_bool(definition_model.ignore_keys_num))
         {
-            info_log('Missing or invalid "ignore_keys_num" attribute!');
+            sensei('J.A.P', 'Missing or invalid "ignore_keys_num" attribute!');
 
             return false;
         }
 
         if (!definition_model.hasOwnProperty('arguments') || !utils.validation.misc.is_object(definition_model.arguments))
         {
-            info_log('Missing or invalid "arguments" attribute!');
+            sensei('J.A.P', 'Missing or invalid "arguments" attribute!');
 
             return false;
         }
@@ -126,14 +117,14 @@ function jap()
         {
             if (!utils.validation.misc.is_object(__def_model_args[__counter]))
             {
-                info_log('Invalid JSON object in "arguments" attribute!');
+                sensei('J.A.P', 'Invalid JSON object in "arguments" attribute!');
 
                 return false;
             }
 
             if (!__def_model_args[__counter].hasOwnProperty('key') || !__def_model_args[__counter].hasOwnProperty('value'))
             {
-                info_log('Missing "key" or "value" mandatory attributes!');
+                sensei('J.A.P', 'Missing "key" or "value" mandatory attributes!');
 
                 return false;
             }
@@ -143,35 +134,35 @@ function jap()
 
             if (!utils.validation.misc.is_object(__this_key) || !utils.validation.misc.is_object(__this_value))
             {
-                info_log('A "key" or "value" attribute does not point to a JSON object!');
+                sensei('J.A.P', 'A "key" or "value" attribute does not point to a JSON object!');
 
                 return false;
             }
 
             if (!__this_key.hasOwnProperty('name') || !__this_key.hasOwnProperty('optional'))
             {
-                info_log('Missing "name" or "optional" mandatory properties!');
+                sensei('J.A.P', 'Missing "name" or "optional" mandatory properties!');
 
                 return false;
             }
 
             if (!utils.validation.alpha.is_string(__this_key.name) || !utils.validation.misc.is_bool(__this_key.optional))
             {
-                info_log('Invalid specification for "name" or "optional" property!');
+                sensei('J.A.P', 'Invalid specification for "name" or "optional" property!');
 
                 return false;
             }
 
             if (!__this_value.hasOwnProperty('type'))
             {
-                info_log('Missing "type" mandatory property!');
+                sensei('J.A.P', 'Missing "type" mandatory property!');
 
                 return false;
             }
 
             if (!utils.validation.alpha.is_string(__this_value.type) || __all_value_types.indexOf(__this_value.type) === -1)
             {
-                info_log('Invalid specification for "type" property!');
+                sensei('J.A.P', 'Invalid specification for "type" property!');
 
                 return false;
             }
@@ -180,7 +171,7 @@ function jap()
             {
                 if (__uncountable_value_types.indexOf(__this_value.type) !== -1)
                 {
-                    info_log('This type does not support the "length" option!');
+                    sensei('J.A.P', 'This type does not support the "length" option!');
 
                     return false;
                 }
@@ -188,7 +179,7 @@ function jap()
                 if (!utils.validation.numerics.is_integer(__this_value.length) || 
                     __this_value.length < 1)
                 {
-                    info_log('The "length" option has to be a positive integer!');
+                    sensei('J.A.P', 'The "length" option has to be a positive integer!');
 
                     return false;
                 }
@@ -198,14 +189,14 @@ function jap()
             {
                 if (__uncountable_value_types.indexOf(__this_value.type) !== -1 || __this_value.type === 'array')
                 {
-                    info_log('This type does not support the "regex" option!');
+                    sensei('J.A.P', 'This type does not support the "regex" option!');
 
                     return false;
                 }
 
                 if (!utils.validation.misc.is_object(__this_value.regex) || __this_value.regex === '')
                 {
-                    info_log('Invalid "regex" option!');
+                    sensei('J.A.P', 'Invalid "regex" option!');
 
                     return false;
                 }
@@ -223,14 +214,14 @@ function jap()
     {
         if (!__is_model_defined)
         {
-            info_log('No definition model was specified!');
+            sensei('J.A.P', 'No definition model was specified!');
 
             return false;
         }
 
         if (!utils.validation.misc.is_object(config))
         {
-            info_log('Invalid JSON object!');
+            sensei('J.A.P', 'Invalid JSON object!');
 
             return false;
         }
@@ -272,7 +263,7 @@ function jap()
                     {
                         if (__model_keywords.indexOf(__this_value) === -1)
                         {
-                            info_log('Unknown keyword: "' + __this_value + '" in the configuration model!');
+                            sensei('J.A.P', 'Unknown keyword: "' + __this_value + '" in the configuration model!');
             
                             return false;
                         }
@@ -282,7 +273,7 @@ function jap()
                 {
                     if (__model_keywords.indexOf(__json_key) === -1)
                     {
-                        info_log('Unknown keyword: "' + __json_key + '" in the configuration model!');
+                        sensei('J.A.P', 'Unknown keyword: "' + __json_key + '" in the configuration model!');
         
                         return false;
                     }
@@ -312,14 +303,14 @@ function jap()
         if ((!__json_def_model.hasOwnProperty('ignore_keys_num') || __json_def_model.ignore_keys_num === false) && 
             __mandatory_keys_not_found > 0)
         {
-            info_log('Mandatory properties are missing!');
+            sensei('J.A.P', 'Mandatory properties are missing!');
 
             return false;
         }
 
         if (__keys_exist === 0)
         {
-            info_log('The JSON object is null!');
+            sensei('J.A.P', 'The JSON object is null!');
 
             return false;
         }
@@ -335,7 +326,7 @@ function jap()
                 {
                     if (config[__this_key.name] !== null)
                     {
-                        info_log('Argument: "' + __this_key.name + '" accepts only "null" values!');
+                        sensei('J.A.P', 'Argument: "' + __this_key.name + '" accepts only "null" values!');
 
                         return false;
                     }
@@ -352,7 +343,7 @@ function jap()
                             if (utils.validation.misc.is_nothing(config[__json_key][__this_key.name].toString().trim()) || 
                                 !utils.validation.numerics.is_number(Number(config[__json_key][__this_key.name])))
                             {
-                                info_log('Argument: "' + __this_key.name + '" accepts only "numeric" values!');
+                                sensei('J.A.P', 'Argument: "' + __this_key.name + '" accepts only "numeric" values!');
 
                                 return false;
                             }
@@ -366,7 +357,7 @@ function jap()
                         if (utils.validation.misc.is_nothing(config[__this_key.name].toString().trim()) || 
                             !utils.validation.numerics.is_number(Number(config[__this_key.name])))
                         {
-                            info_log('Argument: "' + __this_key.name + '" accepts only "numeric" values!');
+                            sensei('J.A.P', 'Argument: "' + __this_key.name + '" accepts only "numeric" values!');
 
                             return false;
                         }
@@ -376,7 +367,7 @@ function jap()
                 {
                     if (!utils.validation.misc.is_array(config[__this_key.name]))
                     {
-                        info_log('Argument: "' + __this_key.name + '" accepts only "array" values!');
+                        sensei('J.A.P', 'Argument: "' + __this_key.name + '" accepts only "array" values!');
 
                         return false;
                     }
@@ -392,7 +383,7 @@ function jap()
 
                             if (typeof config[__json_key][__this_key.name] !== __this_value.type)
                             {
-                                info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
+                                sensei('J.A.P', 'Argument: "' + __this_key.name + '" has a type mismatch!');
 
                                 return false;
                             }
@@ -403,7 +394,7 @@ function jap()
                         if (!utils.validation.misc.is_undefined(config[__this_key.name]) && 
                             typeof config[__this_key.name] !== __this_value.type)
                         {
-                            info_log('Argument: "' + __this_key.name + '" has a type mismatch!');
+                            sensei('J.A.P', 'Argument: "' + __this_key.name + '" has a type mismatch!');
 
                             return false;
                         }
@@ -417,7 +408,7 @@ function jap()
                 {
                     if (config[__this_key.name].length > __this_value.length)
                     {
-                        info_log('Argument: "' + __this_key.name + '" has exceeded the defined length!');
+                        sensei('J.A.P', 'Argument: "' + __this_key.name + '" has exceeded the defined length!');
 
                         return false;
                     }
@@ -426,7 +417,7 @@ function jap()
                 {
                     if (config[__this_key.name].toString().length > __this_value.length)
                     {
-                        info_log('Argument: "' + __this_key.name + '" has exceeded the defined length!');
+                        sensei('J.A.P', 'Argument: "' + __this_key.name + '" has exceeded the defined length!');
 
                         return false;
                     }
@@ -437,7 +428,7 @@ function jap()
             {
                 if (!utils.validation.utilities.reg_exp(__this_value.regex, config[__this_key.name]))
                 {
-                    info_log('Argument: "' + __this_key.name + '" has not matched the specified regex!');
+                    sensei('J.A.P', 'Argument: "' + __this_key.name + '" has not matched the specified regex!');
 
                     return false;
                 }

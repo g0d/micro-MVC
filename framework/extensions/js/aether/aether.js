@@ -247,16 +247,90 @@ function aether()
             this.ajax_task_call = function(task)
             {
                 var __this_task = task.args,
+                    __task_repeat = task.repeat,
+                    __task_latency = task.latency,
+                    __task_bandwidth = task.bandwidth,
+                    __index = 0,
                     __ajax = new bull();
 
                 if (task.type === 'data')
                 {
+                    if (!utils.validation.misc.is_invalid(__task_repeat))
+                    {
+                        if (__task_repeat.mode === system_constants.tasks.repeat.SERIAL)
+                        {
+                            if (!utils.validation.misc.is_invalid(__task_latency))
+                            {
+                                
+                            }
+
+                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
+                            {
+                                
+                            }
+
+                            //TODO: ....
+                        }
+                        else
+                        {
+                            if (!utils.validation.misc.is_invalid(__task_latency))
+                            {
+                                
+                            }
+
+                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
+                            {
+                                
+                            }
+
+                            for (__index = 0; __index < __task_repeat.times; __index++)
+                            {
+                                
+                            }
+                        }
+                    }
+
                     __ajax.data(__this_task.url, __this_task.data, __this_task.element_id, __this_task.content_fill_mode,
                                 __this_task.success_callback, __this_task.fail_callback, 
                                 __this_task.response_timeout, __this_task.timeout_callback);
                 }
                 else
                 {
+                    if (!utils.validation.misc.is_invalid(__task_repeat))
+                    {
+                        if (__task_repeat.mode === system_constants.tasks.repeat.SERIAL)
+                        {
+                            if (!utils.validation.misc.is_invalid(__task_latency))
+                            {
+                                
+                            }
+
+                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
+                            {
+                                
+                            }
+
+                            //TODO: ....
+                        }
+                        else
+                        {
+                            if (!utils.validation.misc.is_invalid(__task_latency))
+                            {
+                                
+                            }
+
+                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
+                            {
+                                
+                            }
+
+                            for (__index = 0; __index < __task_repeat.times; __index++)
+                            {
+                                
+                            }
+                        }
+                    }
+
                     __ajax.request(__this_task.url, __this_task.data, __this_task.ajax_mode,
                                    __this_task.success_callback, __this_task.fail_callback, 
                                    __this_task.response_timeout, __this_task.timeout_callback);
@@ -449,6 +523,9 @@ function aether()
                 }
             }
 
+            if (settings_config.chain_mode === system_constants.settings.chain_mode.SERIAL)
+                __is_serial_chain_mode = true;
+
             __is_optional_task_callbacks = settings_config.optional_task_callbacks;
 
             __modes = [];
@@ -463,6 +540,7 @@ function aether()
                 __new_task = null,
                 __option = null,
                 __callbacks_found = 0,
+                __tasks_response_timeout_sum = 0,
                 __tasks_delay_sum = 0,
                 __same_priorities_num = 0,
                 __modes = [];
@@ -484,7 +562,7 @@ function aether()
                 __new_task.id = prng.generate();
                 __new_task.type = __this_config_task.type;
 
-                if (__this_config_task.type === 'data')
+                if (__this_config_task.type === system_constants.tasks.type.DATA)
                 {
                     if (!__this_config_task.hasOwnProperty('element_id') || !__this_config_task.hasOwnProperty('content_fill_mode') || 
                         __this_config_task.hasOwnProperty('ajax_mode'))
@@ -532,6 +610,8 @@ function aether()
 
                 __new_task.response_timeout = __this_config_task.response_timeout;
 
+                __tasks_response_timeout_sum += __new_task.response_timeout;
+
                 __callbacks_found = 0
 
                 for (__option in tasks_config[__index].callbacks)
@@ -566,13 +646,13 @@ function aether()
                         return false;
                     }
 
-                    if (__this_config_task.ajax_mode === 'asynchronous')
+                    if (__this_config_task.ajax_mode === system_constants.tasks.ajax_mode.ASYNCHRONOUS)
                         __new_task.ajax_mode = 1;
                     else
                     {
                         __new_task.ajax_mode = 2;
 
-                        info_log('Warning: Use of synchronous AJAX causes\nunexpected scheduling in various cases!');
+                        sensei('Aether', 'Warning: Use of synchronous AJAX causes unexpected\nscheduling in various cases!');
                     }
                 }
 
@@ -599,7 +679,7 @@ function aether()
                         return false;
                     }
 
-                    if (__this_config_task.content_fill_mode === 'replace')
+                    if (__this_config_task.content_fill_mode === system_constants.tasks.content_fill_mode.REPLACE)
                         __new_task.content_fill_mode = false;
                     else
                         __new_task.content_fill_mode = true;
@@ -668,7 +748,7 @@ function aether()
 
                 if (__this_config_task.hasOwnProperty('delay'))
                 {
-                    if (__this_config_task.delay < 1 || __this_config_task.delay > system_constants.misc.MAX_DELAY)
+                    if (__is_serial_chain_mode || __this_config_task.delay < 1 || __this_config_task.delay > system_constants.misc.MAX_DELAY)
                     {
                         system_tools.reset();
     
@@ -693,10 +773,16 @@ function aether()
 
             __modes = [];
 
+            if (__tasks_response_timeout_sum > system_models.settings.interval)
+            {
+                sensei('Aether', 'Warning: Scheduler loop interval is lower than the sum\nof response time outs in tasks. ' + 
+                                 'This may lead to strange\nbehaviour due to the asynchronous nature of AJAX!');
+            }
+
             if (system_models.settings.interval !== -1 && __tasks_delay_sum > system_models.settings.interval)
             {
-                system_tools.info_log('Warning: Scheduler loop interval is\nlower than the sum of delay produced by tasks.\n' + 
-                                      'This may lead to strange behaviour due to\nthe asynchronous nature of AJAX!');
+                sensei('Aether', 'Warning: Scheduler loop interval is lower than the sum\nof delay produced by tasks. ' + 
+                                 'This may lead to strange\nbehaviour due to the asynchronous nature of AJAX!');
             }
 
             for (__index = 0; __index < system_models.tasks.num - 1; __index++)
@@ -707,8 +793,8 @@ function aether()
 
             if (__same_priorities_num > 0)
             {
-                system_tools.info_log('Warning: One or more AJAX tasks have the same priority.\n' + 
-                                      'Please consider providing distinct priorities for better scheduling!');
+                sensei('Aether', 'Warning: One or more AJAX tasks have the same priority.\n' + 
+                                 'Please consider providing distinct priorities for better scheduling!');
             }
 
             return true;
@@ -719,6 +805,7 @@ function aether()
             var __index = 0,
                 __this_task = null,
                 __all_tasks = system_models.tasks.list,
+                __modes_list = system_constants.settings.chain_mode,
                 __task_delay = -1,
                 __task_config_map = null,
                 __scheduled_tasks_list = [];
@@ -736,30 +823,40 @@ function aether()
                     var __task_entry = null,
                         __task_delay = null;
 
-                    if (mode === 'serial')
-                    {
-                        return;
-                    }
-                    else if (mode === 'delay')
+                    if (mode === __modes_list.SERIAL || mode === __modes_list.DELAY || mode === __modes_list.CALLBACK)
                     {
                         if (index < __all_tasks.length - 1)
                             index++;
                         else
+                        {
+                            if ((mode === __modes_list.SERIAL || mode === __modes_list.CALLBACK) && index === __all_tasks.length - 1)
+                                scheduler_callback_action();
+
                             return;
-                    }
-                    else if (mode === 'callback')
-                    {
-                        return;
+                        }
                     }
 
                     __task_entry = scheduled_tasks_list[index][0];
                     __task_delay = scheduled_tasks_list[index][1];
 
+                    if (mode === __modes_list.CALLBACK)
+                    {
+                        var __old_success_callback = __task_entry.args.success_callback,
+                            __new_success_callback = function()
+                                                     {
+                                                        __old_success_callback.call(this);
+
+                                                        repeater_delegate(mode, index);
+                                                     };
+
+                        __task_entry.args.success_callback = __new_success_callback;
+                    }
+
                     if (__task_delay === -1)
                     {
                         system_tools.factory.ajax_task_call(__task_entry);
 
-                        if (mode === 'delay')
+                        if (mode === __modes_list.SERIAL || mode === __modes_list.DELAY)
                             repeater_delegate(mode, index);
                     }
                     else
@@ -768,7 +865,7 @@ function aether()
                                    {
                                         system_tools.factory.ajax_task_call(__task_entry);
 
-                                        if (mode === 'delay')
+                                        if (mode === __modes_list.DELAY)
                                         {
                                             repeater_delegate(mode, index);
 
@@ -784,22 +881,14 @@ function aether()
                     var __task_entry = null,
                         __task_delay = null;
 
-                    if (mode === 'serial')
-                    {
-                        //TODO: ...
-                    }
-                    else if (mode === 'parallel')
+                    if (mode === __modes_list.SERIAL || mode === __modes_list.DELAY || mode === __modes_list.CALLBACK)
+                        repeater_delegate(mode, -1);
+                    else
                     {
                         for (__index = 0; __index < scheduled_tasks_list.length; __index++)
                             repeater_delegate(mode, __index);
 
                         scheduler_callback_action();
-                    }
-                    else if (mode === 'delay')
-                        repeater_delegate(mode, -1);
-                    else
-                    {
-                        repeater_delegate(mode, null);
                     }
 
                     if (utils.validation.misc.is_function(process_callback))
@@ -813,35 +902,41 @@ function aether()
             {
                 __this_task = __all_tasks[__index];
 
-                if (__this_task.type === 'data')
+                if (__this_task.type === system_constants.tasks.type.DATA)
                 {
                     __task_config_map = {
-                                            type   :    __this_task.type,
-                                            args   :    {
-                                                            url                 :       __this_task.url, 
-                                                            data                :       __this_task.data, 
-                                                            element_id          :       __this_task.element_id, 
-                                                            content_fill_mode   :       __this_task.content_fill_mode, 
-                                                            success_callback    :       __this_task.callbacks.success, 
-                                                            fail_callback       :       __this_task.callbacks.fail, 
-                                                            response_timeout    :       __this_task.response_timeout,
-                                                            timeout_callback    :       __this_task.callbacks.timeout
-                                                        }
+                                            type        :   __this_task.type,
+                                            args        :   {
+                                                                url                 :       __this_task.url, 
+                                                                data                :       __this_task.data, 
+                                                                element_id          :       __this_task.element_id, 
+                                                                content_fill_mode   :       __this_task.content_fill_mode, 
+                                                                success_callback    :       __this_task.callbacks.success, 
+                                                                fail_callback       :       __this_task.callbacks.fail, 
+                                                                response_timeout    :       __this_task.response_timeout,
+                                                                timeout_callback    :       __this_task.callbacks.timeout
+                                                            },
+                                            repeat      :   __this_task.repeat,
+                                            latency     :   __this_task.latency,
+                                            bandwidth   :   __this_task.bandwidth
                                         };
                 }
                 else
                 {
                     __task_config_map = {
-                                            type   :    __this_task.type,
-                                            args   :    {
-                                                            url                 :       __this_task.url, 
-                                                            data                :       __this_task.data, 
-                                                            ajax_mode           :       __this_task.ajax_mode, 
-                                                            success_callback    :       __this_task.callbacks.success, 
-                                                            fail_callback       :       __this_task.callbacks.fail, 
-                                                            response_timeout    :       __this_task.response_timeout,
-                                                            timeout_callback    :       __this_task.callbacks.timeout
-                                                        }
+                                            type        :    __this_task.type,
+                                            args        :   {
+                                                                url                 :       __this_task.url, 
+                                                                data                :       __this_task.data, 
+                                                                ajax_mode           :       __this_task.ajax_mode, 
+                                                                success_callback    :       __this_task.callbacks.success, 
+                                                                fail_callback       :       __this_task.callbacks.fail, 
+                                                                response_timeout    :       __this_task.response_timeout,
+                                                                timeout_callback    :       __this_task.callbacks.timeout
+                                                            },
+                                            repeat      :   __this_task.repeat,
+                                            latency     :   __this_task.latency,
+                                            bandwidth   :   __this_task.bandwidth
                                         };
                 }
 
@@ -885,14 +980,6 @@ function aether()
             __config_definition_models = [];
 
             system_models = new sys_models_class();
-        };
-
-        this.info_log = function(message)
-        {
-            console.log('----------------------- Aether -----------------------');
-            console.log(message);
-            console.log('-----------------------  ****  -----------------------');
-            console.log('');
         };
 
         this.factory = new factory_model();
@@ -944,7 +1031,8 @@ function aether()
     };
 
     var __is_init = false,
-        __is_optional_task_callbacks = null,
+        __is_serial_chain_mode = false,
+        __is_optional_task_callbacks = false,
         __config_definition_models = [],
         system_constants = new sys_constants_class(),
         system_models = new sys_models_class(),
