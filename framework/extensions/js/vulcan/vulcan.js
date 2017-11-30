@@ -2,7 +2,7 @@
 
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.0)
+    File name: vulcan.js (Version: 1.1)
     Description: This file contains the Vulcan - General JS Programming Utilities.
 
     Coded by George Delaportas (G0D)
@@ -54,7 +54,7 @@ function vulcan()
 
             this.is_integer = function(val)
             {
-                if (__self.is_number(val) && (val % 1 === 0) && (val.toString().indexOf('.') === -1))
+                if (__self.is_number(val) && (val % 1 === 0) && !self.misc.contains('.', val.toString()))
                     return true;
 
                 return false;
@@ -401,7 +401,7 @@ function vulcan()
 
                     for (__this_attribute in attributes)
                     {
-                        if (__valid_attributes.indexOf(__this_attribute) === -1 && __this_attribute.indexOf('data-') !== 0)
+                        if (!self.misc.contains(__this_attribute, __valid_attributes) && __this_attribute.indexOf('data-') !== 0)
                             return false;
 
                         __final_attributes += __this_attribute + '="' + attributes[__this_attribute] + '" ';
@@ -491,6 +491,8 @@ function vulcan()
 
     function misc()
     {
+        var __self = this;
+
         this.contains = function(subject, list)
         {
             if (list.indexOf(subject) === -1)
@@ -505,7 +507,7 @@ function vulcan()
                 __order = null,
                 __result = null;
 
-            if (!self.validation.misc.is_array(array) || __modes.indexOf(mode) === -1 || 
+            if (!self.validation.misc.is_array(array) || !__self.contains(mode, __modes) || 
                 (!self.validation.misc.is_invalid(by_property) && !self.validation.alpha.is_string(by_property)))
                 return false;
 

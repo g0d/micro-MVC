@@ -2,7 +2,7 @@
 
     J.A.P (JSON Argument Parser)
 
-    File name: jap.js (Version: 1.0)
+    File name: jap.js (Version: 1.1)
     Description: This file contains the J.A.P - JSON Argument Parser.
 
     Coded by George Delaportas (G0D)
@@ -31,7 +31,7 @@ function jap()
 
             if (!utils.validation.misc.is_object(__attribute))
             {
-                if (__def_keywords.indexOf(__index) === -1)
+                if (!utils.misc.contains(__index, __def_keywords))
                     return true;
 
                 continue;
@@ -47,7 +47,7 @@ function jap()
                 {
                     for (__property in __attribute[__option])
                     {
-                        if (__def_keywords.indexOf(__property) === -1)
+                        if (!utils.misc.contains(__property, __def_keywords))
                             return true;
 
                         if (has_unknown_keywords(__attribute[__option][__property]))
@@ -56,7 +56,7 @@ function jap()
                 }
                 else
                 {
-                    if (__def_keywords.indexOf(__option) === -1)
+                    if (!utils.misc.contains(__option, __def_keywords))
                         return true;
 
                     if (has_unknown_keywords(__attribute[__option]))
@@ -160,7 +160,7 @@ function jap()
                 return false;
             }
 
-            if (!utils.validation.alpha.is_string(__this_value.type) || __all_value_types.indexOf(__this_value.type) === -1)
+            if (!utils.validation.alpha.is_string(__this_value.type) || !utils.misc.contains(__this_value.type, __all_value_types))
             {
                 sensei('J.A.P', 'Invalid specification for "type" property!');
 
@@ -169,15 +169,14 @@ function jap()
 
             if (__this_value.hasOwnProperty('length'))
             {
-                if (__uncountable_value_types.indexOf(__this_value.type) !== -1)
+                if (utils.misc.contains(__this_value.type, __uncountable_value_types))
                 {
                     sensei('J.A.P', 'This type does not support the "length" option!');
 
                     return false;
                 }
 
-                if (!utils.validation.numerics.is_integer(__this_value.length) || 
-                    __this_value.length < 1)
+                if (!utils.validation.numerics.is_integer(__this_value.length) || __this_value.length < 1)
                 {
                     sensei('J.A.P', 'The "length" option has to be a positive integer!');
 
@@ -187,7 +186,7 @@ function jap()
 
             if (__this_value.hasOwnProperty('regex'))
             {
-                if (__uncountable_value_types.indexOf(__this_value.type) !== -1 || __this_value.type === 'array')
+                if (utils.misc.contains(__this_value.type, __uncountable_value_types) || __this_value.type === 'array')
                 {
                     sensei('J.A.P', 'This type does not support the "regex" option!');
 
@@ -261,7 +260,7 @@ function jap()
                 {
                     for (__this_value in config[__json_key])
                     {
-                        if (__model_keywords.indexOf(__this_value) === -1)
+                        if (!utils.misc.contains(__this_value, __model_keywords))
                         {
                             sensei('J.A.P', 'Unknown keyword: "' + __this_value + '" in the configuration model!');
             
@@ -271,7 +270,7 @@ function jap()
                 }
                 else
                 {
-                    if (__model_keywords.indexOf(__json_key) === -1)
+                    if (!utils.misc.contains(__json_key, __model_keywords))
                     {
                         sensei('J.A.P', 'Unknown keyword: "' + __json_key + '" in the configuration model!');
         

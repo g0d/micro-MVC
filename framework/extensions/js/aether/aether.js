@@ -98,8 +98,7 @@ function aether()
             this.element_id = null;
             this.content_fill_mode = null;
             this.priority = 999999;
-            this.latency = null;
-            this.bandwidth = null;
+            this.qos = null;
             this.repeat = null;
             this.delay = -1;
         }
@@ -134,7 +133,7 @@ function aether()
         function tasks_group()
         {
             return ['type', 'url', 'data', 'response_timeout', 'callbacks', 'ajax_mode', 'element_id', 'content_fill_mode', 
-                    'priority', 'latency', 'bandwidth', 'repeat', 'delay'];
+                    'priority', 'qos', 'repeat', 'delay'];
         }
 
         function callbacks_group()
@@ -143,6 +142,11 @@ function aether()
         }
 
         function qos_group()
+        {
+            return ['latency', 'bandwidth'];
+        }
+
+        function range_group()
         {
             return ['min', 'max'];
         }
@@ -157,6 +161,7 @@ function aether()
         this.tasks = new tasks_group();
         this.callbacks = new callbacks_group();
         this.qos = new qos_group();
+        this.range = new range_group();
         this.repeat = new repeat_group();
     }
 
@@ -167,10 +172,10 @@ function aether()
 
         function factory_model()
         {
-            var __factory_map = [];
-
             this.config_verification = function(main_config)
             {
+                var __factory_map = [];
+
                 __factory_map.push(['main', __config_definition_models['main'], main_config]);
                 __factory_map.push(['settings', __config_definition_models['settings'], main_config.settings]);
                 __factory_map.push(['tasks', __config_definition_models['tasks'], main_config.tasks]);
@@ -184,27 +189,42 @@ function aether()
                     {
                         var __record = 0,
                             __option = 0,
-                            __object_options = ['callbacks', 'latency', 'bandwidth', 'repeat'];
+                            __object_options = ['callbacks', 'qos', 'latency', 'bandwidth', 'repeat'],
+                            __object_exceptions = ['latency', 'bandwidth'],
+                            __task_option_config = null;
 
                         for (__record = 0; __record < __factory_map[__index][2].length; __record++)
                         {
                             for (__entry in __factory_map[__index][2][__record])
                             {
-                                if (__object_options.indexOf(__entry) === -1)
+                                if (!utils.misc.contains(__entry, __object_options))
                                 {
-                                    if (system_config_keywords[__factory_map[__index][0]].indexOf(__entry) === -1)
+                                    if (!utils.misc.contains(__entry, system_config_keywords[__factory_map[__index][0]]))
                                         return false;
                                 }
                                 else
                                 {
                                     for (__option in __object_options)
                                     {
-                                        if (utils.validation.misc.is_undefined(main_config.tasks[__record][__object_options[__option]]))
-                                            continue;
+                                        if (!utils.validation.misc.is_undefined(main_config.tasks[__record]['qos']) && 
+                                            utils.misc.contains(__object_options[__option], __object_exceptions))
+                                        {
+                                            __task_option_config = main_config.tasks[__record]['qos'][__object_options[__option]];
+
+                                            if (utils.validation.misc.is_undefined(__task_option_config))
+                                                continue;
+                                        }
+                                        else
+                                        {
+                                            if (utils.validation.misc.is_undefined(main_config.tasks[__record][__object_options[__option]]))
+                                                continue;
+
+                                            __task_option_config = main_config.tasks[__record][__object_options[__option]];
+                                        }
 
                                         __factory_map.push([__object_options[__option], 
                                                             __config_definition_models[__object_options[__option]], 
-                                                            main_config.tasks[__record][__object_options[__option]]]);
+                                                            __task_option_config]);
 
                                         if (!config_parser.verify(__factory_map[3][1], __factory_map[3][2]))
                                             return false;
@@ -215,14 +235,6 @@ function aether()
                             }
                         }
                     }
-                    else
-                    {
-                        for (__entry in __factory_map[__index][2])
-                        {
-                            if (system_config_keywords[__factory_map[__index][0]].indexOf(__entry) === -1)
-                                return false;
-                        }
-                    }
                 }
 
                 __factory_map = [];
@@ -230,11 +242,11 @@ function aether()
                 return true;
             };
 
-            this.qos_validator = function(record, entry, check)
+            this.range_validator = function(range_values, check)
             {
-                if (record !== system_constants.misc.IGNORE && 
-                    (entry === 'min' && record < 1) || 
-                    (entry === 'max' && record > system_constants.misc[check]))
+                if ((range_values[0] === system_constants.misc.IGNORE && range_values[1] === system_constants.misc.IGNORE) || 
+                    (range_values[0] !== system_constants.misc.IGNORE && range_values[0] < 1) || 
+                    (range_values[1] !== system_constants.misc.IGNORE && (range_values[1] > system_constants.misc[check] || range_values[1] <= range_values[0])))
                 {
                     system_tools.reset();
 
@@ -244,97 +256,119 @@ function aether()
                 return true;
             };
 
-            this.ajax_task_call = function(task)
+            this.ajax_task_set = function(task)
             {
                 var __this_task = task.args,
+                    __task_type = task.type,
                     __task_repeat = task.repeat,
-                    __task_latency = task.latency,
-                    __task_bandwidth = task.bandwidth,
+                    __task_qos = task.qos,
+                    __task_latency = null,
+                    __task_bandwidth = null,
                     __index = 0,
-                    __ajax = new bull();
+                    ajax = new bull();
 
-                if (task.type === 'data')
+                function ajax_call()
+                {
+                    if (__task_type === 'data')
+                    {
+                        ajax.data(__this_task.url, __this_task.data, __this_task.element_id, __this_task.content_fill_mode,
+                                  __this_task.success_callback, __this_task.fail_callback, 
+                                  __this_task.response_timeout, __this_task.timeout_callback);
+                    }
+                    else
+                    {
+                        ajax.request(__this_task.url, __this_task.data, __this_task.ajax_mode,
+                                     __this_task.success_callback, __this_task.fail_callback, 
+                                     __this_task.response_timeout, __this_task.timeout_callback);
+                    }
+                }
+
+                function ajax_prepare_delegate()
                 {
                     if (!utils.validation.misc.is_invalid(__task_repeat))
                     {
                         if (__task_repeat.mode === system_constants.tasks.repeat.SERIAL)
                         {
-                            if (!utils.validation.misc.is_invalid(__task_latency))
+                            if (__task_repeat.times === -1)
+                                setInterval(function() { ajax_call(); }, __this_task.response_timeout);
+                            else
                             {
-                                
+                                for (__index = 0; __index < __task_repeat.times; __index++)
+                                    setTimeout(function() { ajax_call(); }, __this_task.response_timeout);
                             }
-
-                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
-                            {
-                                
-                            }
-
-                            //TODO: ....
                         }
                         else
                         {
-                            if (!utils.validation.misc.is_invalid(__task_latency))
+                            if (__task_repeat.times === -1)
+                                setInterval(function() { ajax_call(); }, 1);
+                            else
                             {
-                                
-                            }
-
-                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
-                            {
-                                
-                            }
-
-                            for (__index = 0; __index < __task_repeat.times; __index++)
-                            {
-                                
+                                for (__index = 0; __index < __task_repeat.times; __index++)
+                                    ajax_call();
                             }
                         }
                     }
+                    else
+                        ajax_call();
+                }
 
-                    __ajax.data(__this_task.url, __this_task.data, __this_task.element_id, __this_task.content_fill_mode,
-                                __this_task.success_callback, __this_task.fail_callback, 
-                                __this_task.response_timeout, __this_task.timeout_callback);
+                if (!utils.validation.misc.is_invalid(__task_qos))
+                {
+                    __task_latency = __task_qos.latency;
+                    __task_bandwidth = __task_qos.bandwidth;
+
+                    if (!utils.validation.misc.is_invalid(__task_bandwidth))
+                    {
+                        var __ajax_bandwidth = __this_task.data.length;
+
+                        if (((__task_bandwidth.min !== system_constants.misc.IGNORE && __ajax_bandwidth >= __task_bandwidth.min) && 
+                            (__task_bandwidth.max !== system_constants.misc.IGNORE && __ajax_bandwidth <= __task_bandwidth.max)) || 
+                            (__task_bandwidth.max === system_constants.misc.IGNORE && __ajax_bandwidth >= __task_bandwidth.min) || 
+                            (__task_bandwidth.min === system_constants.misc.IGNORE && __ajax_bandwidth <= __task_bandwidth.max))
+                        {
+                            console.log('||--- Acceptable bandwidth: ' + __ajax_bandwidth + ' ---||');
+                        }
+                        else
+                        {
+                            console.log('|E|^^^ Off-range bandwidth: ' + __ajax_bandwidth + ' ^^^|E|');
+
+                            return;
+                        }
+                    }
+
+                    if (!utils.validation.misc.is_invalid(__task_latency))
+                    {
+                        var ping_tester = new centurion();
+
+                        ping_tester.benchmark.start();
+
+                        ajax.request(__this_task.url, __this_task.data, 1, 
+                                     function()
+                                     {
+                                        ping_tester.benchmark.end();
+
+                                        var __ajax_latency = ping_tester.benchmark.latency();
+
+                                        if (((__task_latency.min !== system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) && 
+                                            (__task_latency.max !== system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max)) || 
+                                            (__task_latency.max === system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) || 
+                                            (__task_latency.min === system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max))
+                                        {
+                                            console.log('||--- Acceptable latency: ' + __ajax_latency + ' ---||');
+
+                                            ajax_prepare_delegate();
+                                        }
+                                        else
+                                        {
+                                            console.log('|E|^^^ Off-range latency: ' + __ajax_latency + ' ^^^|E|');
+
+                                            return;
+                                        }
+                                     });
+                    }
                 }
                 else
-                {
-                    if (!utils.validation.misc.is_invalid(__task_repeat))
-                    {
-                        if (__task_repeat.mode === system_constants.tasks.repeat.SERIAL)
-                        {
-                            if (!utils.validation.misc.is_invalid(__task_latency))
-                            {
-                                
-                            }
-
-                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
-                            {
-                                
-                            }
-
-                            //TODO: ....
-                        }
-                        else
-                        {
-                            if (!utils.validation.misc.is_invalid(__task_latency))
-                            {
-                                
-                            }
-
-                            if (!utils.validation.misc.is_invalid(__task_bandwidth))
-                            {
-                                
-                            }
-
-                            for (__index = 0; __index < __task_repeat.times; __index++)
-                            {
-                                
-                            }
-                        }
-                    }
-
-                    __ajax.request(__this_task.url, __this_task.data, __this_task.ajax_mode,
-                                   __this_task.success_callback, __this_task.fail_callback, 
-                                   __this_task.response_timeout, __this_task.timeout_callback);
-                }
+                    ajax_prepare_delegate();
             };
         }
 
@@ -414,11 +448,7 @@ function aether()
                                                                             value   :   { type : 'number' }
                                                                         },
                                                                         {
-                                                                            key     :   { name : 'latency', optional : true },
-                                                                            value   :   { type : 'object' }
-                                                                        },
-                                                                        {
-                                                                            key     :   { name : 'bandwidth', optional : true },
+                                                                            key     :   { name : 'qos', optional : true },
                                                                             value   :   { type : 'object' }
                                                                         },
                                                                         {
@@ -447,6 +477,18 @@ function aether()
                                                                         }
                                                                      ]
                                                       };
+
+            __config_definition_models['qos'] = { arguments :   [
+                                                                    {
+                                                                        key     :   { name : 'latency', optional : true },
+                                                                        value   :   { type : 'object' }
+                                                                    },
+                                                                    {
+                                                                        key     :   { name : 'bandwidth', optional : true },
+                                                                        value   :   { type : 'object' }
+                                                                    }
+                                                                ]
+                                                };
 
             __config_definition_models['latency'] = { arguments :  [
                                                                         {
@@ -500,7 +542,7 @@ function aether()
             var __modes = utils.conversions.object_to_array(false, system_constants.settings.chain_mode),
                 __options_map = system_config_keywords.settings;
 
-            if (__modes.indexOf(settings_config.chain_mode) === -1)
+            if (!utils.misc.contains(settings_config.chain_mode, __modes))
                 return false;
 
             for (__entry in __options_map)
@@ -539,7 +581,6 @@ function aether()
             var __this_config_task = null,
                 __new_task = null,
                 __option = null,
-                __callbacks_found = 0,
                 __tasks_response_timeout_sum = 0,
                 __tasks_delay_sum = 0,
                 __same_priorities_num = 0,
@@ -550,7 +591,7 @@ function aether()
                 __this_config_task = tasks_config[__index];
                 __modes = utils.conversions.object_to_array(false, system_constants.tasks.type);
 
-                if (__modes.indexOf(__this_config_task.type) === -1)
+                if (!utils.misc.contains(__this_config_task.type, __modes))
                 {
                     system_tools.reset();
 
@@ -612,19 +653,10 @@ function aether()
 
                 __tasks_response_timeout_sum += __new_task.response_timeout;
 
-                __callbacks_found = 0
+                var __callbacks_found = 0
 
                 for (__option in tasks_config[__index].callbacks)
-                {
-                    if (system_config_keywords.callbacks.indexOf(__option) === -1)
-                    {
-                        system_tools.reset();
-
-                        return false;
-                    }
-
                     __callbacks_found++;
-                }
 
                 if (!__is_optional_task_callbacks && __callbacks_found < system_config_keywords.callbacks.length)
                 {
@@ -639,10 +671,10 @@ function aether()
                 {
                     __modes = utils.conversions.object_to_array(false, system_constants.tasks.ajax_mode);
 
-                    if (__modes.indexOf(__this_config_task.ajax_mode) === -1)
+                    if (!utils.misc.contains(__this_config_task.ajax_mode, __modes))
                     {
                         system_tools.reset();
-    
+
                         return false;
                     }
 
@@ -672,10 +704,10 @@ function aether()
                 {
                     __modes = utils.conversions.object_to_array(false, system_constants.tasks.content_fill_mode);
 
-                    if (__modes.indexOf(__this_config_task.content_fill_mode) === -1)
+                    if (!utils.misc.contains(__this_config_task.content_fill_mode, __modes))
                     {
                         system_tools.reset();
-    
+
                         return false;
                     }
 
@@ -697,34 +729,33 @@ function aether()
                     __new_task.priority = __this_config_task.priority;
                 }
 
-                if (__this_config_task.hasOwnProperty('latency'))
+                if (__this_config_task.hasOwnProperty('qos'))
                 {
-                    for (__entry in __this_config_task.latency)
-                    {
-                        if (!system_tools.factory.qos_validator(__this_config_task.latency[__entry], __entry, 'MAX_LATENCY'))
-                        {
-                            system_tools.reset();
+                    var __qos = __this_config_task.qos,
+                        __range_values = [],
+                        __check = null;
 
-                            return false;
+                    for (__option in __qos)
+                    {
+                        if (utils.misc.contains(__option, system_config_keywords.qos))
+                        {
+                            __range_values = [__qos[__option].min, __qos[__option].max];
+
+                            if (__option === 'latency')
+                                __check = 'MAX_LATENCY';
+                            else
+                                __check = 'MAX_BANDWIDTH';
+
+                            if (!system_tools.factory.range_validator(__range_values, __check))
+                            {
+                                system_tools.reset();
+
+                                return false;
+                            }
                         }
                     }
 
-                    __new_task.latency = __this_config_task.latency;
-                }
-
-                if (__this_config_task.hasOwnProperty('bandwidth'))
-                {
-                    for (__entry in __this_config_task.bandwidth)
-                    {
-                        if (!system_tools.factory.qos_validator(__this_config_task.bandwidth[__entry], __entry, 'MAX_BANDWIDTH'))
-                        {
-                            system_tools.reset();
-
-                            return false;
-                        }
-                    }
-
-                    __new_task.bandwidth = __this_config_task.bandwidth;
+                    __new_task.qos = __qos;
                 }
 
                 if (__this_config_task.hasOwnProperty('repeat'))
@@ -734,11 +765,11 @@ function aether()
                     for (__entry in __this_config_task.repeat)
                     {
                         if (__this_config_task.repeat[__entry] !== system_constants.misc.IGNORE && 
-                            (__entry === 'times' && __this_config_task.repeat[__entry] < 0) || 
-                            (__entry === 'mode' && __modes.indexOf(__this_config_task.repeat[__entry]) === -1))
+                            (__entry === 'times' && __this_config_task.repeat[__entry] < 1) || 
+                            (__entry === 'mode' && !utils.misc.contains(__this_config_task.repeat[__entry], __modes)))
                         {
                             system_tools.reset();
-        
+
                             return false;
                         }
                     }
@@ -751,7 +782,7 @@ function aether()
                     if (__is_serial_chain_mode || __this_config_task.delay < 1 || __this_config_task.delay > system_constants.misc.MAX_DELAY)
                     {
                         system_tools.reset();
-    
+
                         return false;
                     }
 
@@ -854,7 +885,7 @@ function aether()
 
                     if (__task_delay === -1)
                     {
-                        system_tools.factory.ajax_task_call(__task_entry);
+                        system_tools.factory.ajax_task_set(__task_entry);
 
                         if (mode === __modes_list.SERIAL || mode === __modes_list.DELAY)
                             repeater_delegate(mode, index);
@@ -863,7 +894,7 @@ function aether()
                     {
                         setTimeout(function()
                                    {
-                                        system_tools.factory.ajax_task_call(__task_entry);
+                                        system_tools.factory.ajax_task_set(__task_entry);
 
                                         if (mode === __modes_list.DELAY)
                                         {
@@ -917,8 +948,7 @@ function aether()
                                                                 timeout_callback    :       __this_task.callbacks.timeout
                                                             },
                                             repeat      :   __this_task.repeat,
-                                            latency     :   __this_task.latency,
-                                            bandwidth   :   __this_task.bandwidth
+                                            qos         :   __this_task.qos
                                         };
                 }
                 else
@@ -935,8 +965,7 @@ function aether()
                                                                 timeout_callback    :       __this_task.callbacks.timeout
                                                             },
                                             repeat      :   __this_task.repeat,
-                                            latency     :   __this_task.latency,
-                                            bandwidth   :   __this_task.bandwidth
+                                            qos         :   __this_task.qos
                                         };
                 }
 
@@ -948,7 +977,7 @@ function aether()
 
         this.run = function()
         {
-            var __scheduler = new stopwatch();
+            var scheduler = new stopwatch();
 
             function do_tasks()
             {
@@ -956,12 +985,12 @@ function aether()
                     system_tools.process_tasks();
                 else
                 {
-                    __scheduler = new stopwatch();
+                    scheduler = new stopwatch();
 
                     system_tools.process_tasks(function()
                                                {
-                                                    __scheduler.start(system_models.settings.interval, 
-                                                                      system_tools.process_tasks, false);
+                                                scheduler.start(system_models.settings.interval, 
+                                                                system_tools.process_tasks, false);
                                                });
                 }
             }
@@ -969,7 +998,7 @@ function aether()
             if (system_models.settings.init_delay === -1)
                 do_tasks();
             else
-            __scheduler.start(system_models.settings.init_delay, do_tasks, true);
+                scheduler.start(system_models.settings.init_delay, do_tasks, true);
 
             return true;
         };

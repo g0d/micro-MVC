@@ -2,7 +2,7 @@
 
     L.A.Va (LIVE Argument Validator)
 
-    File name: lava.js (Version: 1.0)
+    File name: lava.js (Version: 1.1)
     Description: This file contains the L.A.Va - LIVE Argument Validator.
 
     Coded by George Delaportas (G0D) 
@@ -27,7 +27,7 @@ function lava()
 
             if (!utils.validation.misc.is_object(__attribute))
             {
-                if (__def_keywords.indexOf(__index) === -1)
+                if (!utils.misc.contains(__index, __def_keywords))
                     return true;
 
                 continue;
@@ -39,7 +39,7 @@ function lava()
 
             for (__option in __attribute)
             {
-                if (__def_keywords.indexOf(__option) === -1)
+                if (!utils.misc.contains(__option, __def_keywords))
                     return true;
 
                 if (has_unknown_keywords(__attribute[__option]))
@@ -133,7 +133,7 @@ function lava()
                 return false;
             }
 
-            if (!utils.validation.alpha.is_string(__this_value.type) || __all_value_types.indexOf(__this_value.type) === -1)
+            if (!utils.validation.alpha.is_string(__this_value.type) || !utils.misc.contains(__this_value.type, __all_value_types))
             {
                 sensei('L.A.Va', 'Invalid specification for "type" property!');
 
@@ -142,7 +142,7 @@ function lava()
 
             if (__this_value.hasOwnProperty('length'))
             {
-                if (__uncountable_value_types.indexOf(__this_value.type) !== -1)
+                if (utils.misc.contains(__this_value.type, __uncountable_value_types))
                 {
                     sensei('L.A.Va', 'This type does not support the "length" option!');
 
@@ -159,7 +159,7 @@ function lava()
 
             if (__this_value.hasOwnProperty('regex'))
             {
-                if (__uncountable_value_types.indexOf(__this_value.type) !== -1 || __this_value.type === 'array')
+                if (utils.misc.contains(__this_value.type, __uncountable_value_types) || __this_value.type === 'array')
                 {
                     sensei('L.A.Va', 'This type does not support the "regex" option!');
 
