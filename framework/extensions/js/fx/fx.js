@@ -73,7 +73,7 @@ function fx()
             {
                 if (__inc === 0)
                 {
-                    utils.objects.by_id(id).style.display = 'block';
+                    //utils.objects.by_id(id).style.display = 'block';
 
                     self.opacity.apply(id, 0.0);
                 }
@@ -89,7 +89,7 @@ function fx()
                     clearInterval(__interval_id);
                     clearTimeout(__time_out);
 
-                    utils.objects.by_id(id).style.display = 'block';
+                    //utils.objects.by_id(id).style.display = 'block';
 
                     self.opacity.reset(id);
 
@@ -159,7 +159,7 @@ function fx()
 
                     if (utils.objects.by_id(id) !== null)
                     {
-                        utils.objects.by_id(id).style.display = 'none';
+                        //utils.objects.by_id(id).style.display = 'none';
 
                         self.opacity.apply(id, 0.0);
                     }

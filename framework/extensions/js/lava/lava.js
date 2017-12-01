@@ -204,7 +204,7 @@ function lava()
 
             if (__this_field === null)
             {
-                sensei('L.A.Va', 'Element: "' + __this_key.id + '" does not exit!');
+                sensei('L.A.Va', 'Element: "' + __this_key.id + '" does not exist!');
 
                 return false;
             }

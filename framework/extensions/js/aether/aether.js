@@ -65,7 +65,7 @@ function aether()
         {
             this.IGNORE = -1;
             this.MAX_PRIORITY = 999999;
-            this.MAX_LATENCY = 1000;
+            this.MAX_LATENCY = 6000;
             this.MAX_BANDWIDTH = 10737418240;
             this.MAX_DELAY = 86400000;
         }
@@ -197,40 +197,32 @@ function aether()
                         {
                             for (__entry in __factory_map[__index][2][__record])
                             {
-                                if (!utils.misc.contains(__entry, __object_options))
+                                for (__option in __object_options)
                                 {
-                                    if (!utils.misc.contains(__entry, system_config_keywords[__factory_map[__index][0]]))
-                                        return false;
-                                }
-                                else
-                                {
-                                    for (__option in __object_options)
+                                    if (!utils.validation.misc.is_undefined(main_config.tasks[__record]['qos']) && 
+                                        utils.misc.contains(__object_options[__option], __object_exceptions))
                                     {
-                                        if (!utils.validation.misc.is_undefined(main_config.tasks[__record]['qos']) && 
-                                            utils.misc.contains(__object_options[__option], __object_exceptions))
-                                        {
-                                            __task_option_config = main_config.tasks[__record]['qos'][__object_options[__option]];
+                                        __task_option_config = main_config.tasks[__record]['qos'][__object_options[__option]];
 
-                                            if (utils.validation.misc.is_undefined(__task_option_config))
-                                                continue;
-                                        }
-                                        else
-                                        {
-                                            if (utils.validation.misc.is_undefined(main_config.tasks[__record][__object_options[__option]]))
-                                                continue;
-
-                                            __task_option_config = main_config.tasks[__record][__object_options[__option]];
-                                        }
-
-                                        __factory_map.push([__object_options[__option], 
-                                                            __config_definition_models[__object_options[__option]], 
-                                                            __task_option_config]);
-
-                                        if (!config_parser.verify(__factory_map[3][1], __factory_map[3][2]))
-                                            return false;
-
-                                        __factory_map.pop();
+                                        if (utils.validation.misc.is_undefined(__task_option_config))
+                                            continue;
                                     }
+                                    else
+                                    {
+                                        if (utils.validation.misc.is_undefined(main_config.tasks[__record][__object_options[__option]]))
+                                            continue;
+
+                                        __task_option_config = main_config.tasks[__record][__object_options[__option]];
+                                    }
+
+                                    __factory_map.push([__object_options[__option], 
+                                                        __config_definition_models[__object_options[__option]], 
+                                                        __task_option_config]);
+
+                                    if (!config_parser.verify(__factory_map[3][1], __factory_map[3][2]))
+                                        return false;
+
+                                    __factory_map.pop();
                                 }
                             }
                         }
@@ -249,6 +241,8 @@ function aether()
                     (range_values[1] !== system_constants.misc.IGNORE && (range_values[1] > system_constants.misc[check] || range_values[1] <= range_values[0])))
                 {
                     system_tools.reset();
+
+                    sensei('Aether', 'Range validation error!');
 
                     return false;
                 }
@@ -293,7 +287,7 @@ function aether()
                                 setInterval(function() { ajax_call(); }, __this_task.response_timeout);
                             else
                             {
-                                for (__index = 0; __index < __task_repeat.times; __index++)
+                                for (__index = 0; __index < (__task_repeat.times + 1); __index++)
                                     setTimeout(function() { ajax_call(); }, __this_task.response_timeout);
                             }
                         }
@@ -303,7 +297,7 @@ function aether()
                                 setInterval(function() { ajax_call(); }, 1);
                             else
                             {
-                                for (__index = 0; __index < __task_repeat.times; __index++)
+                                for (__index = 0; __index < (__task_repeat.times + 1); __index++)
                                     ajax_call();
                             }
                         }
@@ -321,16 +315,10 @@ function aether()
                     {
                         var __ajax_bandwidth = __this_task.data.length;
 
-                        if (((__task_bandwidth.min !== system_constants.misc.IGNORE && __ajax_bandwidth >= __task_bandwidth.min) && 
-                            (__task_bandwidth.max !== system_constants.misc.IGNORE && __ajax_bandwidth <= __task_bandwidth.max)) || 
-                            (__task_bandwidth.max === system_constants.misc.IGNORE && __ajax_bandwidth >= __task_bandwidth.min) || 
-                            (__task_bandwidth.min === system_constants.misc.IGNORE && __ajax_bandwidth <= __task_bandwidth.max))
+                        if ((__task_bandwidth.min !== system_constants.misc.IGNORE && __ajax_bandwidth < __task_bandwidth.min) || 
+                            (__task_bandwidth.max !== system_constants.misc.IGNORE && __ajax_bandwidth > __task_bandwidth.max))
                         {
-                            console.log('||--- Acceptable bandwidth: ' + __ajax_bandwidth + ' ---||');
-                        }
-                        else
-                        {
-                            console.log('|E|^^^ Off-range bandwidth: ' + __ajax_bandwidth + ' ^^^|E|');
+                            sensei('Aether', 'Off-range bandwidth: ' + __ajax_bandwidth + ' bytes');
 
                             return;
                         }
@@ -353,19 +341,17 @@ function aether()
                                             (__task_latency.max !== system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max)) || 
                                             (__task_latency.max === system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) || 
                                             (__task_latency.min === system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max))
-                                        {
-                                            console.log('||--- Acceptable latency: ' + __ajax_latency + ' ---||');
-
                                             ajax_prepare_delegate();
-                                        }
                                         else
                                         {
-                                            console.log('|E|^^^ Off-range latency: ' + __ajax_latency + ' ^^^|E|');
+                                            sensei('Aether', 'Off-range latency: ' + __ajax_latency + ' ms');
 
                                             return;
                                         }
                                      });
                     }
+                    else
+                        ajax_prepare_delegate();
                 }
                 else
                     ajax_prepare_delegate();
@@ -532,7 +518,11 @@ function aether()
             if (!utils.validation.misc.is_object(main_config)|| 
                 !main_config.hasOwnProperty('settings') || !main_config.hasOwnProperty('tasks') || 
                 !utils.validation.misc.is_object(main_config.settings) || !utils.validation.misc.is_object(main_config.tasks))
+            {
+                sensei('Aether', 'Invalid configuration!');
+
                 return false;
+            }
 
             return system_tools.factory.config_verification(main_config);
         };
@@ -543,7 +533,11 @@ function aether()
                 __options_map = system_config_keywords.settings;
 
             if (!utils.misc.contains(settings_config.chain_mode, __modes))
+            {
+                sensei('Aether', 'Unsupported value for "chain_mode" option!');
+
                 return false;
+            }
 
             for (__entry in __options_map)
             {
@@ -556,6 +550,8 @@ function aether()
                         {
                             __modes = [];
                             __options_map = [];
+
+                            sensei('Aether', 'Invalid range for "' + __options_map[__entry] + '" option!');
 
                             return false;
                         }
@@ -595,6 +591,8 @@ function aether()
                 {
                     system_tools.reset();
 
+                    sensei('Aether', 'Unsupported value for "type" option!');
+
                     return false;
                 }
 
@@ -610,6 +608,8 @@ function aether()
                     {
                         system_tools.reset();
 
+                        sensei('Aether', 'Task type: "data" requires fields: "element_id" and\n"content_fill_mode" to operate!');
+
                         return false;
                     }
                 }
@@ -620,6 +620,8 @@ function aether()
                     {
                         system_tools.reset();
 
+                        sensei('Aether', 'Task type: "request" requires field: "ajax_mode" to operate!');
+
                         return false;
                     }
                 }
@@ -627,6 +629,8 @@ function aether()
                 if (utils.validation.misc.is_nothing(__this_config_task.url))
                 {
                     system_tools.reset();
+
+                    sensei('Aether', 'Field: "url" can\'t be empty!');
 
                     return false;
                 }
@@ -637,6 +641,8 @@ function aether()
                 {
                     system_tools.reset();
 
+                    sensei('Aether', 'Field: "data" can\'t be empty!');
+
                     return false;
                 }
 
@@ -645,6 +651,8 @@ function aether()
                 if (__this_config_task.response_timeout < 1 || __this_config_task.response_timeout > system_constants.misc.MAX_DELAY)
                 {
                     system_tools.reset();
+
+                    sensei('Aether', 'Invalid range for "response_timeout" option!');
 
                     return false;
                 }
@@ -662,6 +670,8 @@ function aether()
                 {
                     system_tools.reset();
 
+                    sensei('Aether', 'When "optional_task_callbacks" is set to false all task\ncallbacks have to be present!');
+
                     return false;
                 }
 
@@ -674,6 +684,8 @@ function aether()
                     if (!utils.misc.contains(__this_config_task.ajax_mode, __modes))
                     {
                         system_tools.reset();
+
+                        sensei('Aether', 'Unsupported value for "ajax_mode" option!');
 
                         return false;
                     }
@@ -694,6 +706,8 @@ function aether()
                     {
                         system_tools.reset();
     
+                        sensei('Aether', 'Field: "element_id" does not point to an existing element!');
+
                         return false;
                     }
 
@@ -707,6 +721,8 @@ function aether()
                     if (!utils.misc.contains(__this_config_task.content_fill_mode, __modes))
                     {
                         system_tools.reset();
+
+                        ensei('Aether', 'Unsupported value for "content_fill_mode" option!');
 
                         return false;
                     }
@@ -723,6 +739,8 @@ function aether()
                     {
                         system_tools.reset();
     
+                        sensei('Aether', 'Unsupported value for "priority" option!');
+
                         return false;
                     }
 
@@ -750,6 +768,8 @@ function aether()
                             {
                                 system_tools.reset();
 
+                                sensei('Aether', 'Invalid range for "' + __option + '" option!');
+
                                 return false;
                             }
                         }
@@ -770,6 +790,8 @@ function aether()
                         {
                             system_tools.reset();
 
+                            sensei('Aether', 'Unsupported value for "' + __entry + '" option!');
+
                             return false;
                         }
                     }
@@ -782,6 +804,11 @@ function aether()
                     if (__is_serial_chain_mode || __this_config_task.delay < 1 || __this_config_task.delay > system_constants.misc.MAX_DELAY)
                     {
                         system_tools.reset();
+
+                        if (__is_serial_chain_mode)
+                            sensei('Aether', 'Invalid use of the "delay" option when "chain_mode"\nis set to serial!');
+                        else
+                            sensei('Aether', 'Invalid range for "delay" option!');
 
                         return false;
                     }
@@ -798,6 +825,8 @@ function aether()
             if (!utils.misc.sort(system_models.tasks.list, 'asc', 'priority'))
             {
                 system_tools.reset();
+
+                sensei('Aether', 'Unable to sort tasks!');
 
                 return false;
             }
@@ -825,7 +854,7 @@ function aether()
             if (__same_priorities_num > 0)
             {
                 sensei('Aether', 'Warning: One or more AJAX tasks have the same priority.\n' + 
-                                 'Please consider providing distinct priorities for better scheduling!');
+                                 'Please consider providing distinct priorities for\nbetter scheduling!');
             }
 
             return true;
@@ -1037,9 +1066,13 @@ function aether()
     this.cancel = function()
     {
         if (__is_init === false)
-            return false;
+        {
+            sensei('Aether', 'The scheduler is not running!');
 
-        
+            return false;
+        }
+
+
 
         __is_init = false;
 
@@ -1049,7 +1082,11 @@ function aether()
     this.status = function()
     {
         if (__is_init === false)
+        {
+            sensei('Aether', 'The scheduler is not running!');
+
             return false;
+        }
 
         return system_models.tasks;
     };

@@ -53,17 +53,23 @@ function bull()
         
         function state_changed()
         {
-            if (__is_time_out === true && utils.validation.misc.is_function(__timeout_callback))
+            if (__is_time_out === true)
             {
-                __timeout_callback.call(this);
+                if (utils.validation.misc.is_function(__timeout_callback))
+                    __timeout_callback.call(this);
+                else
+                {
+                    if (utils.validation.misc.is_function(__fail_callback))
+                        __fail_callback.call(this);
+                }
                 
                 return false;
             }
-
+            
             if (__xml_http.readyState === 4)
             {
                 stop_timer(__timer_handler);
-
+                
                 __ajax_response = null;
                 __is_time_out = false;
                 

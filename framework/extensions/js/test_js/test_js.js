@@ -28,8 +28,8 @@ ultron(function(event)
                             settings    :   {
                                                 chain_mode                  :   'callback',             // CHOICES: ['serial' (Process based on 'priority' / Disable 'delay'), 'parallel', 'delay', 'callback' (Proceed on 'success' callback / Respect both 'priority' and 'delay')]
                                                 init_delay                  :   3000,                   // OPTIONAL (Delay initialization of scheduler by so many milliseconds)
-                                                interval                    :   8000,                   // OPTIONAL (Repeat scheduled tasks every so many milliseconds)
-                                                optional_task_callbacks     :   false,                  // OPTIONAL (Allow optional task callbacks: 'fail' and 'timeout' - DEFAULT: true)
+                                                interval                    :   5000,                   // OPTIONAL (Repeat scheduled tasks every so many milliseconds)
+                                                optional_task_callbacks     :   true,                   // OPTIONAL (Allow optional task callbacks: 'fail' and 'timeout' - DEFAULT: true)
                                                 scheduler_callback          :   function()              // OPTIONAL (Function to execute after all tasks have been scheduled)
                                                                                 {
                                                                                     console.log('------------------------------');
@@ -71,7 +71,7 @@ ultron(function(event)
                                                 },
                                                 {
                                                     qos                 :   {
-                                                                                latency     :   { min : -1, max : 50 },
+                                                                                //latency     :   { min : -1, max : 50 },
                                                                                 bandwidth   :   { min : 10, max : -1 }
                                                                             },
                                                     delay               :   500,
@@ -81,7 +81,7 @@ ultron(function(event)
                                                     url                 :   '/',
                                                     data                :   'nnnnxYxnnnn',
                                                     //repeat              :   { times : 5, mode : 'parallel' },
-                                                    response_timeout    :   2000,
+                                                    response_timeout    :   100,
                                                     callbacks           :   {
                                                                                 success     :   function() { console.log('SUCCESS: n-th task'); },
                                                                                 fail        :   function() { console.log('FAIL: n-th task'); },
@@ -113,7 +113,7 @@ ultron(function(event)
                                                     ajax_mode           :   'asynchronous',
                                                     url                 :   '/',
                                                     data                :   '1',
-                                                    response_timeout    :   2000,
+                                                    response_timeout    :   200,
                                                     callbacks           :   {
                                                                                 success     :   function() { console.log('SUCCESS: 1st task'); },
                                                                                 fail        :   function() { console.log('FAIL: 1st task'); },
@@ -125,8 +125,8 @@ ultron(function(event)
 
     //console.log(my_aether.schedule(aether_config)); // Schedule and run AJAX tasks
     //console.log(my_aether.constants());
-    //console.log(my_aether.status()); // All AJAX tasks
-    //console.log(my_aether.status(task_list[3])); // Only a specified AJAX task
+    //var __tasks_list = my_aether.status(); // All AJAX tasks
+    //my_aether.status(__tasks_list[3]); // Only a specified AJAX task
     //console.log(my_aether.cancel()); // All tasks
-    //console.log(my_aether.cancel(task_list[1])); // Only a specified AJAX task
+    //console.log(my_aether.cancel(__tasks_list[1])); // Only a specified AJAX task
 });
