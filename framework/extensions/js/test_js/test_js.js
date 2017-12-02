@@ -123,5 +123,5 @@ ultron(function(event)
                                             ]
                          };
 
-    my_aether.schedule(aether_config); // Schedule and run AJAX tasks
+    //my_aether.schedule(aether_config); // Schedule and run AJAX tasks
 });

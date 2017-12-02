@@ -1026,47 +1026,30 @@ function aether()
             {
                 __this_task = __all_tasks[__index];
 
+                __task_config_map = {
+                                        id          :   __this_task.id,
+                                        type        :   __this_task.type,
+                                        priority    :   __this_task.priority,
+                                        args        :   {
+                                                            url                 :   __this_task.url,
+                                                            data                :   __this_task.data,
+                                                            success_callback    :   __this_task.callbacks.success,
+                                                            fail_callback       :   __this_task.callbacks.fail,
+                                                            response_timeout    :   __this_task.response_timeout,
+                                                            timeout_callback    :   __this_task.callbacks.timeout
+                                                        },
+                                        repeat      :   __this_task.repeat,
+                                        qos         :   __this_task.qos,
+                                        canceled    :   __this_task.canceled
+                                    };
+
                 if (__this_task.type === system_constants.tasks.type.DATA)
                 {
-                    __task_config_map = {
-                                            id          :   __this_task.id,
-                                            type        :   __this_task.type,
-                                            priority    :   __this_task.priority,
-                                            args        :   {
-                                                                url                 :       __this_task.url, 
-                                                                data                :       __this_task.data, 
-                                                                element_id          :       __this_task.element_id, 
-                                                                content_fill_mode   :       __this_task.content_fill_mode, 
-                                                                success_callback    :       __this_task.callbacks.success, 
-                                                                fail_callback       :       __this_task.callbacks.fail, 
-                                                                response_timeout    :       __this_task.response_timeout,
-                                                                timeout_callback    :       __this_task.callbacks.timeout
-                                                            },
-                                            repeat      :   __this_task.repeat,
-                                            qos         :   __this_task.qos,
-                                            canceled    :   __this_task.canceled
-                                        };
+                    __task_config_map.args.element_id = __this_task.element_id;
+                    __task_config_map.args.content_fill_mode = __this_task.content_fill_mode;
                 }
                 else
-                {
-                    __task_config_map = {
-                                            id          :   __this_task.id,
-                                            type        :   __this_task.type,
-                                            priority    :   __this_task.priority,
-                                            args        :   {
-                                                                url                 :       __this_task.url, 
-                                                                data                :       __this_task.data, 
-                                                                ajax_mode           :       __this_task.ajax_mode, 
-                                                                success_callback    :       __this_task.callbacks.success, 
-                                                                fail_callback       :       __this_task.callbacks.fail, 
-                                                                response_timeout    :       __this_task.response_timeout,
-                                                                timeout_callback    :       __this_task.callbacks.timeout
-                                                            },
-                                            repeat      :   __this_task.repeat,
-                                            qos         :   __this_task.qos,
-                                            canceled    :   __this_task.canceled
-                                        };
-                }
+                    __task_config_map.args.ajax_mode = __this_task.ajax_mode;
 
                 __scheduled_tasks_list.push([__task_config_map, __this_task.delay]);
             }
