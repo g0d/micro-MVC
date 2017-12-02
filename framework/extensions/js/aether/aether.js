@@ -65,7 +65,7 @@ function aether()
         {
             this.IGNORE = -1;
             this.MAX_PRIORITY = 999999;
-            this.MAX_LATENCY = 6000;
+            this.MAX_LATENCY = 60000;
             this.MAX_BANDWIDTH = 10737418240;
             this.MAX_DELAY = 86400000;
         }
@@ -101,6 +101,7 @@ function aether()
             this.qos = null;
             this.repeat = null;
             this.delay = -1;
+            this.canceled = false;
         }
 
         function tasks_list_model()
@@ -172,6 +173,66 @@ function aether()
 
         function factory_model()
         {
+            this.test_init = function()
+            {
+                if (__is_init === false)
+                {
+                    sensei('Aether', 'The scheduler is not running!');
+
+                    return false;
+                }
+
+                return true;
+            };
+
+            this.check_task_id = function(func, task_id)
+            {
+                if (!utils.validation.misc.is_undefined(task_id))
+                {
+                    if (utils.validation.numerics.is_number(task_id) && task_id > 0)
+                    {
+                        var __entry = null;
+
+                        for (__entry in system_models.tasks.list)
+                        {
+                            if (system_models.tasks.list[__entry].id === task_id)
+                            {
+                                if (func === 'cancel')
+                                {
+                                    system_models.tasks.list[__entry].canceled = true;
+
+                                    return true;
+                                }
+                                else
+                                    return system_models.tasks.list[__entry];
+                            }
+                        }
+
+                        return false;
+                    }
+                    else
+                    {
+                        sensei('Aether', 'Invalid task ID!');
+
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (func === 'cancel')
+                    {
+                        __is_init = false;
+
+                        scheduler.stop();
+                        repetitive_scheduler.stop();
+
+                        return true;
+                    }
+                    else
+                        return system_models.tasks.list;
+                }
+            };
+
             this.config_verification = function(main_config)
             {
                 var __factory_map = [];
@@ -305,6 +366,9 @@ function aether()
                     else
                         ajax_call();
                 }
+
+                if (task.canceled)
+                    return;
 
                 if (!utils.validation.misc.is_invalid(__task_qos))
                 {
@@ -661,7 +725,7 @@ function aether()
 
                 __tasks_response_timeout_sum += __new_task.response_timeout;
 
-                var __callbacks_found = 0
+                var __callbacks_found = 0;
 
                 for (__option in tasks_config[__index].callbacks)
                     __callbacks_found++;
@@ -965,7 +1029,9 @@ function aether()
                 if (__this_task.type === system_constants.tasks.type.DATA)
                 {
                     __task_config_map = {
+                                            id          :   __this_task.id,
                                             type        :   __this_task.type,
+                                            priority    :   __this_task.priority,
                                             args        :   {
                                                                 url                 :       __this_task.url, 
                                                                 data                :       __this_task.data, 
@@ -977,13 +1043,16 @@ function aether()
                                                                 timeout_callback    :       __this_task.callbacks.timeout
                                                             },
                                             repeat      :   __this_task.repeat,
-                                            qos         :   __this_task.qos
+                                            qos         :   __this_task.qos,
+                                            canceled    :   __this_task.canceled
                                         };
                 }
                 else
                 {
                     __task_config_map = {
-                                            type        :    __this_task.type,
+                                            id          :   __this_task.id,
+                                            type        :   __this_task.type,
+                                            priority    :   __this_task.priority,
                                             args        :   {
                                                                 url                 :       __this_task.url, 
                                                                 data                :       __this_task.data, 
@@ -994,7 +1063,8 @@ function aether()
                                                                 timeout_callback    :       __this_task.callbacks.timeout
                                                             },
                                             repeat      :   __this_task.repeat,
-                                            qos         :   __this_task.qos
+                                            qos         :   __this_task.qos,
+                                            canceled    :   __this_task.canceled
                                         };
                 }
 
@@ -1006,20 +1076,16 @@ function aether()
 
         this.run = function()
         {
-            var scheduler = new stopwatch();
-
             function do_tasks()
             {
                 if (system_models.settings.interval === -1)
                     system_tools.process_tasks();
                 else
                 {
-                    scheduler = new stopwatch();
-
                     system_tools.process_tasks(function()
                                                {
-                                                scheduler.start(system_models.settings.interval, 
-                                                                system_tools.process_tasks, false);
+                                                    repetitive_scheduler.start(system_models.settings.interval, 
+                                                                               system_tools.process_tasks, false);
                                                });
                 }
             }
@@ -1063,32 +1129,20 @@ function aether()
         return true;
     };
 
-    this.cancel = function()
+    this.cancel = function(task_id)
     {
-        if (__is_init === false)
-        {
-            sensei('Aether', 'The scheduler is not running!');
-
+        if (!system_tools.factory.test_init())
             return false;
-        }
 
-
-
-        __is_init = false;
-
-        return true;
+        return system_tools.factory.check_task_id('cancel', task_id);
     };
 
-    this.status = function()
+    this.status = function(task_id)
     {
-        if (__is_init === false)
-        {
-            sensei('Aether', 'The scheduler is not running!');
-
+        if (!system_tools.factory.test_init())
             return false;
-        }
 
-        return system_models.tasks;
+        return system_tools.factory.check_task_id('status', task_id);
     };
 
     this.constants = function()
@@ -1105,6 +1159,8 @@ function aether()
         system_config_keywords = new config_keywords_class(),
         system_tools = new sys_tools_class(),
         config_parser = new jap(),
+        scheduler = new stopwatch(),
+        repetitive_scheduler = new stopwatch(),
         prng = new pythia(),
         utils = new vulcan();
 

@@ -123,10 +123,5 @@ ultron(function(event)
                                             ]
                          };
 
-    //console.log(my_aether.schedule(aether_config)); // Schedule and run AJAX tasks
-    //console.log(my_aether.constants());
-    //var __tasks_list = my_aether.status(); // All AJAX tasks
-    //my_aether.status(__tasks_list[3]); // Only a specified AJAX task
-    //console.log(my_aether.cancel()); // All tasks
-    //console.log(my_aether.cancel(__tasks_list[1])); // Only a specified AJAX task
+    my_aether.schedule(aether_config); // Schedule and run AJAX tasks
 });
