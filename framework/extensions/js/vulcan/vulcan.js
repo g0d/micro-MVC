@@ -46,6 +46,9 @@ function vulcan()
 
             this.is_number = function(val)
             {
+                if (self.validation.misc.is_array(val) && val.length === 0)
+                    return false;
+
                 if (!isNaN(val))
                     return true;
 
