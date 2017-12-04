@@ -2,7 +2,7 @@
 
     L.A.Va (LIVE Argument Validator)
 
-    File name: lava.js (Version: 1.1)
+    File name: lava.js (Version: 1.2)
     Description: This file contains the L.A.Va - LIVE Argument Validator.
 
     Coded by George Delaportas (G0D) 
@@ -39,6 +39,9 @@ function lava()
 
             for (__option in __attribute)
             {
+                if (utils.validation.numerics.is_number(__option))
+                    continue;
+
                 if (!utils.misc.contains(__option, __def_keywords))
                     return true;
 
@@ -69,7 +72,7 @@ function lava()
 
         if (has_unknown_keywords(definition_model))
         {
-            sensei('L.A.Va', 'The definition model contains unknown keywords!');
+            sensei('L.A.Va', 'The definition model contains unknown keywords\nor invalid values!');
 
             return false;
         }
@@ -138,6 +141,23 @@ function lava()
                 sensei('L.A.Va', 'Invalid specification for "type" property!');
 
                 return false;
+            }
+
+            if (__this_value.hasOwnProperty('choices'))
+            {
+                if (!utils.misc.contains(__this_value.type, __types_with_choices))
+                {
+                    sensei('L.A.Va', 'This type does not support the "choices" option!');
+
+                    return false;
+                }
+
+                if (!utils.validation.misc.is_array(__this_value.choices))
+                {
+                    sensei('L.A.Va', 'The "choices" option has to be an array with at least\none element!');
+
+                    return false;
+                }
             }
 
             if (__this_value.hasOwnProperty('length'))
@@ -272,6 +292,16 @@ function lava()
                 }
             }
 
+            if (__this_value.hasOwnProperty('choices'))
+            {
+                if (!utils.misc.contains(__this_field.value, __this_value.choices))
+                {
+                    sensei('L.A.Va', 'Field: "' + __this_field.id + '" does not contain any defined choices!');
+
+                    return false;
+                }
+            }
+
             if (__this_value.hasOwnProperty('length'))
             {
                 if ((__this_value.type === 'array' && __this_field.value.length > __this_value.length) || 
@@ -310,8 +340,9 @@ function lava()
         __is_model_defined = false,
         __counter = 0,
         __json_def_model = null,
-        __def_keywords = ['key', 'value', 'id', 'optional', 'type', 'length', 'regex'],
+        __def_keywords = ['key', 'value', 'id', 'optional', 'type', 'choices', 'length', 'regex'],
         __all_value_types = ['number', 'string', 'boolean', 'array', 'object', 'function', 'null', '*'],
         __uncountable_value_types = ['boolean', 'object', 'function', 'null', '*'],
+        __types_with_choices = ['number', 'string', 'array'],
         utils = new vulcan();
 }

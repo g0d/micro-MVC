@@ -2,7 +2,7 @@
 
     J.A.P (JSON Argument Parser)
 
-    File name: jap.js (Version: 1.1)
+    File name: jap.js (Version: 1.2)
     Description: This file contains the J.A.P - JSON Argument Parser.
 
     Coded by George Delaportas (G0D)
@@ -47,6 +47,9 @@ function jap()
                 {
                     for (__property in __attribute[__option])
                     {
+                        if (utils.validation.numerics.is_number(__option))
+                            continue;
+
                         if (!utils.misc.contains(__property, __def_keywords))
                             return true;
 
@@ -165,6 +168,23 @@ function jap()
                 sensei('J.A.P', 'Invalid specification for "type" property!');
 
                 return false;
+            }
+
+            if (__this_value.hasOwnProperty('choices'))
+            {
+                if (!utils.misc.contains(__this_value.type, __types_with_choices))
+                {
+                    sensei('J.A.P', 'This type does not support the "choices" option!');
+
+                    return false;
+                }
+
+                if (!utils.validation.misc.is_array(__this_value.choices) || __this_value.choices.length < 1)
+                {
+                    sensei('J.A.P', 'The "choices" option has to be an array with at least\none element!');
+
+                    return false;
+                }
             }
 
             if (__this_value.hasOwnProperty('length'))
@@ -401,6 +421,34 @@ function jap()
                 }
             }
 
+            if (__this_value.hasOwnProperty('choices'))
+            {
+                if (__is_multiple_keys_array)
+                {
+                    for (__json_key in config)
+                    {
+                        if (utils.validation.misc.is_undefined(config[__json_key][__this_key.name]))
+                            continue;
+
+                        if (!utils.misc.contains(config[__json_key][__this_key.name], __this_value.choices))
+                        {
+                            sensei('J.A.P', 'Argument: "' + __this_key.name + '" does not contain any\ndefined choices!');
+
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!utils.misc.contains(config[__this_key.name], __this_value.choices))
+                    {
+                        sensei('J.A.P', 'Argument: "' + __this_key.name + '" does not contain any\ndefined choices!');
+    
+                        return false;
+                    }
+                }
+            }
+
             if (__this_value.hasOwnProperty('length'))
             {
                 if (__this_value.type === 'array')
@@ -451,8 +499,9 @@ function jap()
         __counter = 0,
         __json_def_model = null,
         __def_model_args = null,
-        __def_keywords = ['ignore_keys_num', 'arguments', 'key', 'value', 'name', 'optional', 'type', 'length', 'regex'],
+        __def_keywords = ['ignore_keys_num', 'arguments', 'key', 'value', 'name', 'optional', 'type', 'choices', 'length', 'regex'],
         __all_value_types = ['number', 'string', 'boolean', 'array', 'object', 'function', 'null', '*'],
         __uncountable_value_types = ['boolean', 'object', 'function', 'null', '*'],
+        __types_with_choices = ['number', 'string', 'array'],
         utils = new vulcan();
 }
