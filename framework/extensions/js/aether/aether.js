@@ -2,7 +2,7 @@
 
     Aether (AJAX Traffic Controller [TC] / QoS for web apps)
 
-    File name: aether.js (Version: 2.2)
+    File name: aether.js (Version: 2.4)
     Description: This file contains the Aether - TC & QoS extension.
 
     Coded by George Delaportas (G0D) 
@@ -64,7 +64,7 @@ function aether()
         function misc_group()
         {
             this.IGNORE = -1;
-            this.MAX_PRIORITY = 999999;
+            this.MAX_PRIORITY = Number.MAX_SAFE_INTEGER;
             this.MAX_LATENCY = 60000;
             this.MAX_BANDWIDTH = 10737418240;
             this.MAX_DELAY = 86400000;
@@ -97,7 +97,7 @@ function aether()
             this.ajax_mode = null;
             this.element_id = null;
             this.content_fill_mode = null;
-            this.priority = 999999;
+            this.priority = -1;
             this.qos = null;
             this.repeat = null;
             this.delay = -1;
@@ -651,8 +651,11 @@ function aether()
             if (settings_config.chain_mode === system_constants.settings.chain_mode.SERIAL)
                 __is_serial_chain_mode = true;
 
+            if (settings_config.chain_mode === system_constants.settings.chain_mode.DELAY)
+                __is_delay_chain_mode = true;
+
             __is_optional_task_callbacks = settings_config.optional_task_callbacks;
-;
+
             __options_map = [];
 
             return true;
@@ -665,7 +668,9 @@ function aether()
                 __option = null,
                 __tasks_response_timeout_sum = 0,
                 __tasks_delay_sum = 0,
-                __same_priorities_num = 0;
+                __same_priorities_num = 0,
+                task_id_gen = new pythia(),
+                task_priority_gen = new pythia();
 
             for (__index = 0; __index < tasks_config.length; __index++)
             {
@@ -673,7 +678,7 @@ function aether()
 
                 __new_task = system_models.generate_task();
 
-                __new_task.id = prng.generate();
+                __new_task.id = task_id_gen.generate();
                 __new_task.type = __this_config_task.type;
 
                 if (__this_config_task.type === system_constants.tasks.type.DATA)
@@ -798,6 +803,8 @@ function aether()
 
                     __new_task.priority = __this_config_task.priority;
                 }
+                else
+                    __new_task.priority = task_priority_gen.generate();
 
                 if (__this_config_task.hasOwnProperty('qos'))
                 {
@@ -848,6 +855,15 @@ function aether()
                     __new_task.repeat = __this_config_task.repeat;
                 }
 
+                if (__is_delay_chain_mode && !__this_config_task.hasOwnProperty('delay'))
+                {
+                    system_tools.reset();
+
+                    sensei('Aether', 'When "chain_mode" is set to delay all tasks must have the\n"delay" option!');
+
+                    return false;
+                }
+
                 if (__this_config_task.hasOwnProperty('delay'))
                 {
                     if (__is_serial_chain_mode || __this_config_task.delay < 1 || __this_config_task.delay > system_constants.misc.MAX_DELAY)
@@ -863,7 +879,6 @@ function aether()
                     }
 
                     __new_task.delay = __this_config_task.delay;
-
                     __tasks_delay_sum += __new_task.delay;
                 }
 
@@ -880,15 +895,21 @@ function aether()
                 return false;
             }
 
-            if (__tasks_response_timeout_sum > system_models.settings.interval)
+            if (system_models.settings.interval !== -1 && 
+                ((system_models.settings.chain_mode === system_constants.settings.chain_mode.DELAY || 
+                  system_models.settings.chain_mode === system_constants.settings.chain_mode.CALLBACK) && 
+                  __tasks_delay_sum > system_models.settings.interval))
             {
-                sensei('Aether', 'Warning: Scheduler loop interval is lower than the sum\nof response time outs in tasks. ' + 
+                sensei('Aether', 'Warning: Scheduler loop interval is lower than the sum\nof delay in tasks. ' + 
                                  'This may lead to strange\nbehaviour due to the asynchronous nature of AJAX!');
             }
 
-            if (system_models.settings.interval !== -1 && __tasks_delay_sum > system_models.settings.interval)
+            if (system_models.settings.interval !== -1 && 
+                ((system_models.settings.chain_mode === system_constants.settings.chain_mode.SERIAL || 
+                  system_models.settings.chain_mode === system_constants.settings.chain_mode.CALLBACK) && 
+                 __tasks_response_timeout_sum > system_models.settings.interval))
             {
-                sensei('Aether', 'Warning: Scheduler loop interval is lower than the sum\nof delay produced by tasks. ' + 
+                sensei('Aether', 'Warning: Scheduler loop interval is lower than the sum\nof response time outs in tasks. ' + 
                                  'This may lead to strange\nbehaviour due to the asynchronous nature of AJAX!');
             }
 
@@ -1118,6 +1139,7 @@ function aether()
 
     var __is_init = false,
         __is_serial_chain_mode = false,
+        __is_delay_chain_mode = false,
         __is_optional_task_callbacks = false,
         __config_definition_models = [],
         system_constants = new sys_constants_class(),
@@ -1127,7 +1149,6 @@ function aether()
         config_parser = new jap(),
         scheduler = new stopwatch(),
         repetitive_scheduler = new stopwatch(),
-        prng = new pythia(),
         utils = new vulcan();
 
     // Initialize
