@@ -2,7 +2,7 @@
 
     Stopwatch (High precision timer for JS)
 
-    File name: stopwatch.js (Version: 0.3)
+    File name: stopwatch.js (Version: 0.4)
     Description: This file contains the Stopwatch extension.
 
     Coded by George Delaportas (G0D)
@@ -21,7 +21,7 @@ function stopwatch()
 
         clearTimeout(__timer_handler);
 
-        callback.call(this, this);
+        callback.call(this, self);
 
         if (__is_one_shot)
             return;
@@ -62,7 +62,8 @@ function stopwatch()
         return true;
     };
 
-    var __is_on = false,
+    var self = this,
+        __is_on = false,
         __is_one_shot = false,
         __init_time = new Date().getTime(),
         __delay = 0,
