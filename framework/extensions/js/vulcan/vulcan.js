@@ -2,7 +2,7 @@
 
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.1)
+    File name: vulcan.js (Version: 1.2)
     Description: This file contains the Vulcan - General JS Programming Utilities.
 
     Coded by George Delaportas (G0D)
@@ -49,7 +49,7 @@ function vulcan()
                 if (self.validation.misc.is_array(val) && val.length === 0)
                     return false;
 
-                if (!isNaN(val))
+                if (!isNaN(val - parseFloat(val)))
                     return true;
 
                 return false;
