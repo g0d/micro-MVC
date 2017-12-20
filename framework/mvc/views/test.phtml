@@ -18,6 +18,7 @@
     UTIL::Load_Extension('snail', 'js');
     UTIL::Load_Extension('parallel', 'js');
     UTIL::Load_Extension('aether', 'js');
+    UTIL::Load_Extension('msgbox', 'js');
     UTIL::Load_Extension('browser_db', 'js');
     UTIL::Load_Extension('content_fetcher', 'js');
     UTIL::Load_Extension('ultron', 'js');
@@ -102,29 +103,47 @@
 
 <script>
     var ajax = new bull();
+    var msg_box = new msgbox();
+
+    msg_box.init('main');
 
     function ajax_fetch_content(content_id)
     {
-        content_fetcher(content_id, '<?=LANG::Get('this');?>', function(response) { alert(response); });
+        content_fetcher(content_id, '<?=LANG::Get('this');?>', function(response) { msg_box.show('micro-MVC', response); });
     }
 
     function send_data_to_server()
     {
         var dom = new vulcan();
-        var ajax = new bull();
         var file_input_element = dom.objects.by_id('file_input');
         var form_data = new FormData();
 
         form_data.append('test_file', file_input_element.files[0]);
 
-        ajax.data('/framework/mvc/views/assets/misc/test.php', form_data, 'test_results', false);
+        var ajax_config = {
+                                "type"                  :   "data",
+                                "url"                   :   "/framework/mvc/views/assets/misc/test.php",
+                                "data"                  :   form_data,
+                                "element_id"            :   "test_results",
+                                "content_fill_mode"     :   "replace"
+                          };
+
+        ajax.run(ajax_config);
     }
 
     <?
         if (!isset($post_data))
         {
     ?>
-            ajax.data('/framework/mvc/views/assets/misc/test.php', 'id=1', 'test_results', false);
+            var ajax_config = {
+                                    "type"                  :   "data",
+                                    "url"                   :   "/framework/mvc/views/assets/misc/test.php",
+                                    "data"                  :   "id=1",
+                                    "element_id"            :   "test_results",
+                                    "content_fill_mode"     :   "replace"
+                                };
+
+            ajax.run(ajax_config);
     <?
         }
 

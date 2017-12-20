@@ -38,15 +38,15 @@ ultron(function(event)
                                                     "data"                  :   "x2y",
                                                     "response_timeout"      :   100,                                                            // RESPONSE TIMEOUT: Waiting time of response until timeout in milliseconds
                                                     "callbacks"             :   {
-                                                                                    success     :   function()
+                                                                                    "success"   :   function()
                                                                                                     {
                                                                                                         console.log('SUCCESS: 2nd task');
                                                                                                     },
-                                                                                    fail        :   function()                                  // OPTIONAL (By design unless enforced by 'optional_task_callbacks')
+                                                                                    "fail"      :   function()                                  // OPTIONAL (By design unless enforced by 'optional_task_callbacks')
                                                                                                     {
                                                                                                         console.log('FAIL: 2nd task');
                                                                                                     },
-                                                                                    timeout     :   function()                                  // OPTIONAL (By design unless enforced by 'optional_task_callbacks')
+                                                                                    "timeout"   :   function()                                  // OPTIONAL (By design unless enforced by 'optional_task_callbacks')
                                                                                                     {
                                                                                                         console.log('TIMEOUT: 2nd task');
                                                                                                     }
@@ -67,15 +67,15 @@ ultron(function(event)
                                                     "data"                  :   "1",
                                                     "response_timeout"      :   400,
                                                     "callbacks"             :   {
-                                                                                    success     :   function()
+                                                                                    "success"       :   function()
                                                                                                     {
                                                                                                         console.log('SUCCESS: 1st task');
                                                                                                     },
-                                                                                    fail        :   function()
+                                                                                    "fail"          :   function()
                                                                                                     {
                                                                                                         console.log('FAIL: 1st task');
                                                                                                     },
-                                                                                    timeout     :   function()
+                                                                                    "timeout"       :   function()
                                                                                                     {
                                                                                                         console.log('TIMEOUT: 1st task');
                                                                                                     }
@@ -94,15 +94,15 @@ ultron(function(event)
                                                     "data"                  :   "d=30",
                                                     "response_timeout"      :   400,
                                                     "callbacks"             :   {
-                                                                                    success     :   function()
+                                                                                    "success"       :   function()
                                                                                                     {
                                                                                                         console.log('SUCCESS: n-th task');
                                                                                                     },
-                                                                                    fail        :   function()
+                                                                                    "fail"          :   function()
                                                                                                     {
                                                                                                         console.log('FAIL: n-th task');
                                                                                                     },
-                                                                                    timeout     :   function()
+                                                                                    "timeout"       :   function()
                                                                                                     {
                                                                                                         console.log('TIMEOUT: n-th task');
                                                                                                     }
@@ -119,15 +119,15 @@ ultron(function(event)
                                                     "data"                  :   "d=00",
                                                     "response_timeout"      :   400,
                                                     "callbacks"             :   {
-                                                                                    success     :   function()
+                                                                                    "success"       :   function()
                                                                                                     {
                                                                                                         console.log('SUCCESS: 3rd task');
                                                                                                     },
-                                                                                    fail        :   function()
+                                                                                    "fail"          :   function()
                                                                                                     {
                                                                                                         console.log('FAIL: 3rd task');
                                                                                                     },
-                                                                                    timeout     :   function()
+                                                                                    "timeout"       :   function()
                                                                                                     {
                                                                                                         console.log('TIMEOUT: 3rd task');
                                                                                                     }

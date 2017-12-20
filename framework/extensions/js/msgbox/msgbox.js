@@ -1,7 +1,7 @@
 /*
     MsgBox
 
-    File name: msgbox.js (Version: 0.5)
+    File name: msgbox.js (Version: 0.7)
     Description: This file contains the MsgBox - Message window.
 
     Coded by George Delaportas (G0D) 
@@ -19,99 +19,102 @@ function msgbox()
 
         this.draw_screen = function(container_id)
         {
-            var __button_object = null,
-                __container = utils.objects.by_id(container_id),
-                __html = null;
+            var button_object = null,
+                container = utils.objects.by_id(container_id),
+                html = null;
 
-            if (__container === false || utils.validation.misc.is_undefined(__container) || __container === null)
+            if (container === false || utils.validation.misc.is_undefined(container) || container === null)
                 return false;
 
-            msgbox_object = utils.objects.by_id('msgbox');
+            __msgbox_object = utils.objects.by_id('msgbox');
 
-            if (msgbox_object !== null)
-                __container.removeChild(msgbox_object);
+            if (__msgbox_object !== null)
+                container.removeChild(__msgbox_object);
 
-            msgbox_object = document.createElement('div');
+            __msgbox_object = document.createElement('div');
 
-            msgbox_object.id = 'msgbox';
-            msgbox_object.className = 'mb_screen'
+            __msgbox_object.id = 'msgbox';
+            __msgbox_object.className = 'mb_screen';
 
-            var win_title = msgbox_object.id + '_title',
-                button_title = msgbox_object.id + '_button';
+            var win_title = __msgbox_object.id + '_title',
+                button_title = __msgbox_object.id + '_button';
 
-            __html = '<div class="msg_window">' + 
+            html = '<div class="msg_window">' + 
                      '  <div id="' + win_title + '"></div>' + 
-                     '  <div id="' + msgbox_object.id + '_content"></div>' + 
+                     '  <div id="' + __msgbox_object.id + '_content"></div>' + 
                      '  <div id="' + button_title + '"></div>' + 
                      '</div>';
 
-            msgbox_object.innerHTML = __html;
+            __msgbox_object.innerHTML = html;
 
-            __container.appendChild(msgbox_object);
+            container.appendChild(__msgbox_object);
 
             content_fetcher(win_title, null, 
                             function(content)
                             {
-                                utils.objects.by_id(win_title).innerHTML = 'Pro4ia :: KBS';
                                 utils.objects.by_id(button_title).innerHTML = 'Close';
 
-                                __button_object = utils.objects.by_id(button_title);
+                                button_object = utils.objects.by_id(button_title);
 
-                                utils.events.attach(button_title, __button_object, 'click',  me.hide_win);
+                                utils.events.attach(button_title, button_object, 'click',  me.hide_win);
                             });
 
             return true;
         };
 
-        this.show_win = function(message)
+        this.show_win = function(title, message)
         {
-            if (timer !== null)
-                clearTimeout(timer);
+            if (__timer !== null)
+                clearTimeout(__timer);
 
-            msgbox_object.childNodes[0].childNodes[3].innerHTML = message;
+            __msgbox_object.childNodes[0].childNodes[1].innerHTML = title;
+            __msgbox_object.childNodes[0].childNodes[3].innerHTML = message;
 
-            msgbox_object.style.visibility = 'visible';
+            __msgbox_object.style.visibility = 'visible';
 
-            msgbox_object.classList.remove('mb_fade_out');
-            msgbox_object.classList.add('mb_fade_in');
+            __msgbox_object.classList.remove('mb_fade_out');
+            __msgbox_object.classList.add('mb_fade_in');
 
-            is_open = true;
+            __is_open = true;
         };
 
         this.hide_win = function()
         {
-            if (timer !== null)
-                clearTimeout(timer);
+            if (__timer !== null)
+                clearTimeout(__timer);
 
-            msgbox_object.style.visibility = 'visible';
+            __msgbox_object.style.visibility = 'visible';
 
-            msgbox_object.classList.remove('mb_fade_in');
-            msgbox_object.classList.add('mb_fade_out');
+            __msgbox_object.classList.remove('mb_fade_in');
+            __msgbox_object.classList.add('mb_fade_out');
 
-            timer = setTimeout(function() { msgbox_object.style.visibility = 'hidden'; }, 250);
+            __timer = setTimeout(function() { __msgbox_object.style.visibility = 'hidden'; }, 250);
 
-            is_open = false;
+            __is_open = false;
 
-            if (hide_callback !== null)
+            if (__hide_callback !== null)
             {
-                hide_callback.call(this);
+                __hide_callback.call(this);
 
-                hide_callback = null;
+                __hide_callback = null;
             }
         };
     }
 
-    // Show msgbox
-    this.show = function(message, callback)
+    // Show msgbox (with optional callback)
+    this.show = function(title, message, callback)
     {
-        if (!is_init || is_open || !utils.validation.alpha.is_string(message) || 
+        if (!__is_init || __is_open || 
+            !utils.validation.alpha.is_string(title) || 
+            !utils.validation.alpha.is_string(message) || 
             (!utils.validation.misc.is_invalid(callback) && 
              !utils.validation.misc.is_function(callback)))
             return false;
 
-        hide_callback = callback;
+        if (utils.validation.misc.is_function(callback))
+            __hide_callback = callback;
 
-        helpers.show_win(message);
+        helpers.show_win(title, message);
 
         return true;
     };
@@ -119,12 +122,13 @@ function msgbox()
     // Hide msgbox (with optional callback)
     this.hide = function(callback)
     {
-        if (!is_init || !is_open || 
+        if (!__is_init || !__is_open || 
             (!utils.validation.misc.is_invalid(callback) && 
              !utils.validation.misc.is_function(callback)))
             return false;
 
-        hide_callback = callback;
+        if (utils.validation.misc.is_function(callback))
+            __hide_callback = callback;
 
         helpers.hide_win();
 
@@ -134,16 +138,16 @@ function msgbox()
     // Get msgbox status
     this.is_open = function()
     {
-        if (!is_init)
+        if (!__is_init)
             return false;
 
-        return is_open;
+        return __is_open;
     };
 
     // Initialize
     this.init = function(container_id)
     {
-        if (is_init)
+        if (__is_init)
             return false;
 
         if (utils.validation.misc.is_invalid(container_id) || !utils.validation.alpha.is_string(container_id))
@@ -155,16 +159,16 @@ function msgbox()
         if (!helpers.draw_screen(container_id))
             return false;
 
-        is_init = true;
+        __is_init = true;
 
         return true;
     };
 
-    var is_init = false,
-        is_open = false,
-        msgbox_object = null,
-        hide_callback = null,
-        timer = null,
+    var __is_init = false,
+        __is_open = false,
+        __msgbox_object = null,
+        __hide_callback = null,
+        __timer = null,
         helpers = new general_helpers(),
         utils = new vulcan();
 }

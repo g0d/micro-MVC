@@ -2,7 +2,7 @@
 
     Aether (AJAX Traffic Controller [TC] / QoS for web apps)
 
-    File name: aether.js (Version: 2.4)
+    File name: aether.js (Version: 2.5)
     Description: This file contains the Aether - TC & QoS extension.
 
     Coded by George Delaportas (G0D) 
@@ -320,22 +320,33 @@ function aether()
                     __task_latency = null,
                     __task_bandwidth = null,
                     __index = 0,
+                    __ajax_config = {
+                                        "type"                  :   __task_type,
+                                        "url"                   :   __this_task.url,
+                                        "data"                  :   __this_task.data,
+                                        "response_timeout"      :   __this_task.response_timeout
+                                    },
                     ajax = new bull();
 
                 function ajax_call()
                 {
                     if (__task_type === 'data')
                     {
-                        ajax.data(__this_task.url, __this_task.data, __this_task.element_id, __this_task.content_fill_mode,
-                                  __this_task.success_callback, __this_task.fail_callback, 
-                                  __this_task.response_timeout, __this_task.timeout_callback);
+                        __ajax_config.element_id = __this_task.element_id;
+                        __ajax_config.content_fill_mode = __this_task.content_fill_mode;
+                        __ajax_config.on_success = __this_task.success_callback;
+                        __ajax_config.on_fail = __this_task.fail_callback;
+                        __ajax_config.on_timeout = __this_task.timeout_callback;
                     }
                     else
                     {
-                        ajax.request(__this_task.url, __this_task.data, __this_task.ajax_mode,
-                                     __this_task.success_callback, __this_task.fail_callback, 
-                                     __this_task.response_timeout, __this_task.timeout_callback);
+                        __ajax_config.ajax_mode = __this_task.ajax_mode;
+                        __ajax_config.on_success = __this_task.success_callback;
+                        __ajax_config.on_fail = __this_task.fail_callback;
+                        __ajax_config.on_timeout = __this_task.timeout_callback;
                     }
+
+                    ajax.run(__ajax_config);
                 }
 
                 function ajax_prepare_delegate()
@@ -382,7 +393,7 @@ function aether()
                         if ((__task_bandwidth.min !== system_constants.misc.IGNORE && __ajax_bandwidth < __task_bandwidth.min) || 
                             (__task_bandwidth.max !== system_constants.misc.IGNORE && __ajax_bandwidth > __task_bandwidth.max))
                         {
-                            sensei('Aether', 'Off-range bandwidth: ' + __ajax_bandwidth + ' bytes');
+                            sensei('Aether', 'Task ID: ' + task.id + '\nOff-range bandwidth: ' + __ajax_bandwidth + ' bytes');
 
                             return;
                         }
@@ -390,29 +401,36 @@ function aether()
 
                     if (!utils.validation.misc.is_invalid(__task_latency))
                     {
-                        var ping_tester = new centurion();
+                        var __qos_ajax_config = {
+                                                    "type"                  :   "request",
+                                                    "url"                   :   __this_task.url,
+                                                    "data"                  :   __this_task.data,
+                                                    "ajax_mode"             :   "asynchronous"
+                                                },
+                            ping_tester = new centurion();
+
+                        __qos_ajax_config.on_success = function()
+                                                       {
+                                                            ping_tester.benchmark.end();
+
+                                                            var __ajax_latency = ping_tester.benchmark.latency();
+
+                                                            if (((__task_latency.min !== system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) && 
+                                                                (__task_latency.max !== system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max)) || 
+                                                                (__task_latency.max === system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) || 
+                                                                (__task_latency.min === system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max))
+                                                                ajax_prepare_delegate();
+                                                            else
+                                                            {
+                                                                sensei('Aether', 'Task ID: ' + task.id + '\nOff-range latency: ' + __ajax_latency + ' ms');
+
+                                                                return;
+                                                            }
+                                                       };
 
                         ping_tester.benchmark.start();
 
-                        ajax.request(__this_task.url, __this_task.data, 1, 
-                                     function()
-                                     {
-                                        ping_tester.benchmark.end();
-
-                                        var __ajax_latency = ping_tester.benchmark.latency();
-
-                                        if (((__task_latency.min !== system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) && 
-                                            (__task_latency.max !== system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max)) || 
-                                            (__task_latency.max === system_constants.misc.IGNORE && __ajax_latency >= __task_latency.min) || 
-                                            (__task_latency.min === system_constants.misc.IGNORE && __ajax_latency <= __task_latency.max))
-                                            ajax_prepare_delegate();
-                                        else
-                                        {
-                                            sensei('Aether', 'Off-range latency: ' + __ajax_latency + ' ms');
-
-                                            return;
-                                        }
-                                     });
+                        ajax.run(__qos_ajax_config);
                     }
                     else
                         ajax_prepare_delegate();
@@ -758,14 +776,10 @@ function aether()
 
                 if (__this_config_task.hasOwnProperty('ajax_mode'))
                 {
-                    if (__this_config_task.ajax_mode === system_constants.tasks.ajax_mode.ASYNCHRONOUS)
-                        __new_task.ajax_mode = 1;
-                    else
-                    {
-                        __new_task.ajax_mode = 2;
+                    __new_task.ajax_mode = __this_config_task.ajax_mode;
 
+                    if (__this_config_task.ajax_mode === system_constants.tasks.ajax_mode.SYNCHRONOUS)
                         sensei('Aether', 'Warning: Use of synchronous AJAX causes unexpected\nscheduling in various cases!');
-                    }
                 }
 
                 if (__this_config_task.hasOwnProperty('element_id'))
@@ -783,12 +797,7 @@ function aether()
                 }
 
                 if (__this_config_task.hasOwnProperty('content_fill_mode'))
-                {
-                    if (__this_config_task.content_fill_mode === system_constants.tasks.content_fill_mode.REPLACE)
-                        __new_task.content_fill_mode = false;
-                    else
-                        __new_task.content_fill_mode = true;
-                }
+                    __new_task.content_fill_mode = __this_config_task.content_fill_mode;
 
                 if (__this_config_task.hasOwnProperty('priority'))
                 {

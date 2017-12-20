@@ -2,7 +2,7 @@
 
     J.A.P (JSON Argument Parser)
 
-    File name: jap.js (Version: 1.2)
+    File name: jap.js (Version: 1.3)
     Description: This file contains the J.A.P - JSON Argument Parser.
 
     Coded by George Delaportas (G0D)
@@ -410,8 +410,10 @@ function jap()
                     }
                     else
                     {
-                        if (!utils.validation.misc.is_undefined(config[__this_key.name]) && 
-                            typeof config[__this_key.name] !== __this_value.type)
+                        if (utils.validation.misc.is_undefined(config[__this_key.name]))
+                            continue;
+
+                        if (typeof config[__this_key.name] !== __this_value.type)
                         {
                             sensei('J.A.P', 'Argument: "' + __this_key.name + '" has a type mismatch!');
 
@@ -440,6 +442,9 @@ function jap()
                 }
                 else
                 {
+                    if (utils.validation.misc.is_undefined(config[__this_key.name]))
+                        continue;
+
                     if (!utils.misc.contains(config[__this_key.name], __this_value.choices))
                     {
                         sensei('J.A.P', 'Argument: "' + __this_key.name + '" does not contain any\ndefined choices!');

@@ -69,9 +69,16 @@ var splash = function(action, file, mode, misc, func)
                      else
                      {
                          var ajax = new bull();
-                         var data = 'splash_ajax_post=1&splash_ajax_action=' + action;
-                         
-                         ajax.data(file, data, misc, false, func);
+                         var ajax_config = {
+                                                "type"                  :   "data",
+                                                "url"                   :   file,
+                                                "data"                  :   "splash_ajax_post=1&splash_ajax_action=" + action,
+                                                "element_id"            :   misc,
+                                                "content_fill_mode"     :   "replace",
+                                                "on_success"            :   func
+                                           };
+
+                         ajax.run(ajax_config);
                      }
                      
                      return true;

@@ -2,7 +2,7 @@
 
     Stopwatch (High precision timer for JS)
 
-    File name: stopwatch.js (Version: 0.4)
+    File name: stopwatch.js (Version: 0.5)
     Description: This file contains the Stopwatch extension.
 
     Coded by George Delaportas (G0D)

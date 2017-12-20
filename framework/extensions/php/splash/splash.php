@@ -22,7 +22,9 @@
     if (!defined('micro_mvc'))
         exit();
 
-    // Load AJAX support
+    // Load utilities and AJAX support
+    UTIL::Load_Extension('vulcan', 'js');
+    UTIL::Load_Extension('jap', 'js');
     UTIL::Load_Extension('bull', 'js');
 
     // Include HELPERS class
