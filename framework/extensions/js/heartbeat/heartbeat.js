@@ -2,7 +2,7 @@
 
     Heartbeat
 
-    File name: heartbeat.js (Version: 0.5)
+    File name: heartbeat.js (Version: 0.7)
     Description: This file contains the Heartbeat extension (Ping services).
 
     Coded by George Delaportas (G0D)
@@ -12,43 +12,99 @@
 */
 
 // Heartbeat
-function heartbeat(interval, url, service_name, response_timeout, success_callback, fail_callback, timeout_callback)
+function heartbeat(user_config)
 {
     var utils = new vulcan(),
         timer = new stopwatch(),
         ajax = new bull(),
+        config_parser = new jap(),
+        config_definition_model = { "arguments" : [
+                                                        {
+                                                            "key"     :   { "name" : "interval", "optional" : false },
+                                                            "value"   :   { "type" :  "number" }
+                                                        },
+                                                        {
+                                                            "key"     :   { "name" : "url", "optional" : false },
+                                                            "value"   :   { "type" : "string" }
+                                                        },
+                                                        {
+                                                            "key"     :   { "name" : "service_name", "optional" : false },
+                                                            "value"   :   { "type" : "string" }
+                                                        },
+                                                        {
+                                                            "key"     :   { "name" : "response_timeout", "optional" : false },
+                                                            "value"   :   { "type" : "number" }
+                                                        },
+                                                        {
+                                                            "key"     :   { "name" : "on_success", "optional" : false },
+                                                            "value"   :   { "type" : "function" }
+                                                        },
+                                                        {
+                                                            "key"     :   { "name" : "on_fail", "optional" : true },
+                                                            "value"   :   { "type" : "function" }
+                                                        },
+                                                        {
+                                                            "key"     :   { "name" : "on_timeout", "optional" : true },
+                                                            "value"   :   { "type" : "function" }
+                                                        }
+                                                  ]
+                                  },
         ajax_config = {
-                            "type"                  :   "request",
-                            "data"                  :   "1",
-                            "ajax_mode"             :   "asynchronous"
+                            "type"          :   "request",
+                            "data"          :   "1",
+                            "ajax_mode"     :   "asynchronous"
                       };
 
-    if (!utils.validation.numerics.is_integer(interval) || interval < 1 || 
-        utils.validation.misc.is_invalid(url) || !utils.validation.alpha.is_string(url) || 
-        utils.validation.misc.is_invalid(service_name) || !utils.validation.alpha.is_string(service_name) || 
-        !utils.validation.numerics.is_integer(response_timeout) || response_timeout < 1 || 
-        !utils.validation.misc.is_function(success_callback) || 
-        !utils.validation.misc.is_function(fail_callback) || 
-        !utils.validation.misc.is_function(timeout_callback))
+    if (!config_parser.verify(config_definition_model, user_config))
+        return false;
+
+    if (!utils.validation.numerics.is_integer(user_config.interval) || user_config.interval < 1 || 
+        utils.validation.misc.is_nothing(user_config.url) || 
+        utils.validation.misc.is_nothing(user_config.service_name) || 
+        !utils.validation.numerics.is_integer(user_config.response_timeout) || user_config.response_timeout < 1)
         return false;
 
     function message(service, status, callback)
     {
-        console.log('----- Heartbeat -----');
-        console.log(service + ': <' + status + '>');
-        console.log('-------- *** --------');
-        console.log('');
+        sensei(service, 'Status: <' + status + '>');
 
-        callback.call(this);
+        callback.call(this, service);
     }
 
-    ajax_config.url = url;
-    ajax_config.on_success = function() { message(service_name, 'SUCCESS', success_callback); };
-    ajax_config.on_fail = function() { message(service_name, 'FAIL', fail_callback); };
-    ajax_config.on_timeout = function() { message(service_name, 'TIMEOUT', timeout_callback); };
-    ajax_config.response_timeout = response_timeout;
+    ajax_config.url = user_config.url;
+    ajax_config.response_timeout = user_config.response_timeout;
 
-    timer.start(interval, function() { ajax.run(ajax_config); });
+    ajax_config.on_success = function(service_name, callback)
+                             {
+                                 return function()
+                                        {
+                                            message(service_name, 'SUCCESS', callback);
+                                        };
+                             }(user_config.service_name, user_config.on_success);
+
+    if (!utils.validation.misc.is_invalid(user_config.on_fail))
+    {
+        ajax_config.on_fail = function(service_name, callback)
+                              {
+                                 return function()
+                                 {
+                                    message(service_name, 'FAIL', callback);
+                                 };
+                              }(user_config.service_name, user_config.on_fail);
+    }
+
+    if (!utils.validation.misc.is_invalid(user_config.on_timeout))
+    {
+        ajax_config.on_timeout = function(service_name, callback)
+                                 {
+                                    return function()
+                                    {
+                                        message(service_name, 'TIMEOUT', callback);
+                                    };
+                                 }(user_config.service_name, user_config.on_timeout);
+    }
+
+    timer.start(user_config.interval, function() { ajax.run(ajax_config); });
 
     return true;
 }
