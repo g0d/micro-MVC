@@ -1,10 +1,10 @@
-<?
+<?php
 	/*
 		Portal (REST Framework using POST)
-		
-		File name: portal.php (Version: 1.0)
+
+		File name: portal.php (Version: 2.0)
 		Description: This file contains the Portal - REST Framework (POST).
-		
+
 		Coded by George Delaportas (ViR4X)
 		Copyright (C) 2016
 		Open Software License (OSL 3.0)
@@ -12,16 +12,18 @@
 
     // Check for direct access
     if (!defined('micro_mvc'))
-        exit();
-    
-	function Portal($url, $params_list = array(), $timeout_options = array())
+		exit();
+
+	function Portal($url, $mode, $params_list = array(), $cookies_list = array(), $timeout_options = array())
 	{
-		if (empty($url))
+		if (empty($url) || empty($mode) || 
+			($mode !== 'get' && $mode !== 'post'))
 			return false;
 
 		$connect_timeout = 30;
 		$opt_timeout = 60;
 		$params = null;
+		$cookies = null;
 
 		$curl = curl_init();
 
@@ -47,14 +49,26 @@
 		if (!empty($params_list))
 		{
 			foreach ($params_list as $key => $value)
-				$params .=  $key . '=' . $value . '&';
+				$params .= $key . '=' . $value . '&';
 
 			rtrim($params, '&');
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_POST, count($params_list));
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+
+		if ($mode === 'post')
+		{
+			curl_setopt($curl, CURLOPT_POST, count($params_list));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+		}
+
+		if (!empty($cookies_list))
+		{
+			foreach ($cookies_list as $cookie)
+				$cookies .= $cookie;
+
+			curl_setopt($curl, CURLOPT_COOKIE, $cookies);
+		}
 
 		$result = curl_exec($curl);
 
