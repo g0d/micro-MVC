@@ -24,6 +24,9 @@ RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 # Manage pages
 RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
 
+# Enable CSP
+Header set Content-Security-Policy "default-src 'self';"
+
 # Enable CORS for AJAX requests (Web services)
 Header set Access-Control-Allow-Origin "*"
 
