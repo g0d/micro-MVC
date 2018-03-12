@@ -1,5 +1,5 @@
 # HTACCESS configuration file
-# Copyright (C) 2016
+# Copyright (C) 2016 - 2018
 # Open Software License (OSL 3.0)
 
 Options All -Indexes
@@ -11,6 +11,7 @@ DirectoryIndex index.php
 RewriteEngine on
 RewriteBase /
 
+#RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK) [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !(.*)/$
@@ -24,26 +25,35 @@ RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 # Manage pages
 RewriteRule ^(.*)/$ index.php?req=$1 [QSA,L]
 
-# Enable CSP
-Header set Content-Security-Policy "script-src 'self' 'unsafe-inline';"
-
-# Enable CORS for AJAX requests (Web services)
-Header set Access-Control-Allow-Origin "*"
-
 # Add types aliases for web fonts
 AddType application/vnd.ms-fontobject .eot
 AddType font/ttf .ttf
 AddType font/otf .otf
 AddType application/x-font-woff .woff
 
-# Use caching with headers module (1 day)
+# Check for headers module
 <ifModule mod_headers.c>
+  # Enable CORS for AJAX requests (Web services)
+  Header set Access-Control-Allow-Origin "*"
+
+  # Enable CSP
+  Header set Content-Security-Policy "script-src 'self' 'unsafe-inline';"
+
+  # Enable X-FRAME protection
+  Header always set X-Frame-Options SAMEORIGIN
+
+  # Enable XSS protection
+  Header set X-XSS-Protection "1; mode=block"
+
+  # !!! Enable Cookie protection (Only HTTPS) !!!
+  #Header set Set-Cookie HttpOnly;Secure
+
   # Support varying encoding for compressed served files (GZip)
   <FilesMatch ".(js|css|xml|html?|gz)$">
     Header append Vary: Accept-Encoding
   </FilesMatch>
 
-  # Expire multimedia
+  # Expire multimedia (1 day)
   <filesMatch "\.(ico|jpe?g|png|gif|mp4|webm)$">
     Header set Cache-Control "max-age=86400, public"
   </filesMatch>
@@ -53,23 +63,23 @@ AddType application/x-font-woff .woff
 		Header add Access-Control-Allow-Origin "*"
 	</FilesMatch>
 
-  # Expire CSS
+  # Expire CSS (1 day)
   <filesMatch "\.(css)$">
     Header set Cache-Control "max-age=86400, public"
   </filesMatch>
 
-  # Expire JS
+  # Expire JS (1 day)
   <filesMatch "\.(js)$">
     Header set Cache-Control "max-age=86400, private"
   </filesMatch>
 
-  # Expire HTM(L) & PHP
+  # Expire HTM(L) & PHP (1 day)
   <filesMatch "\.(html?|php)$">
     Header set Cache-Control "max-age=86400, private, must-revalidate"
   </filesMatch>
 </ifModule>
 
-# Use caching with expires module (1 day)
+# Use caching with expiration module (1 day)
 <ifModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 day"
@@ -96,10 +106,9 @@ AddType application/x-font-woff .woff
   </filesMatch>
 
   # Special files
-  AddOutputFilterByType DEFLATE font/ttf application/x-font-ttf font/otf application/x-font-otf font/opentype
+  #AddOutputFilterByType DEFLATE font/ttf application/x-font-ttf font/otf application/x-font-otf font/opentype
 </ifModule>
 
-# Enable short open tags in PHP
 <IfModule mod_php5.c>
   php_value short_open_tag 1
 </IfModule>
