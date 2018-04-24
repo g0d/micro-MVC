@@ -18,7 +18,7 @@
 {
     font-weight: bold;
     text-align: center;
-    background-color: #FFB322;
+    background-color: #88BDE6;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -67,7 +67,7 @@
     height: 100%;
     left: 0px;
     top: 0px;
-    z-index: 10;
+    z-index: 999;
 }
 
 .msg_window

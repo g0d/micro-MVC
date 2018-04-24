@@ -1,7 +1,7 @@
 /*
     MsgBox
 
-    File name: msgbox.js (Version: 0.7)
+    File name: msgbox.js (Version: 0.8)
     Description: This file contains the MsgBox - Message window.
 
     Coded by George Delaportas (G0D) 
@@ -101,18 +101,18 @@ function msgbox()
         };
     }
 
-    // Show msgbox (with optional callback)
-    this.show = function(title, message, callback)
+    // Show msgbox (with optional callback on hide)
+    this.show = function(title, message, hide_callback)
     {
         if (!__is_init || __is_open || 
             !utils.validation.alpha.is_string(title) || 
             !utils.validation.alpha.is_string(message) || 
-            (!utils.validation.misc.is_invalid(callback) && 
-             !utils.validation.misc.is_function(callback)))
+            (!utils.validation.misc.is_invalid(hide_callback) && 
+             !utils.validation.misc.is_function(hide_callback)))
             return false;
 
-        if (utils.validation.misc.is_function(callback))
-            __hide_callback = callback;
+        if (utils.validation.misc.is_function(hide_callback))
+            __hide_callback = hide_callback;
 
         helpers.show_win(title, message);
 

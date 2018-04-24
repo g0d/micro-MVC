@@ -2,7 +2,7 @@
 
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.2)
+    File name: vulcan.js (Version: 1.3)
     Description: This file contains the Vulcan - General JS Programming Utilities.
 
     Coded by George Delaportas (G0D)
@@ -588,7 +588,7 @@ function vulcan()
 
             __dynamic_object = document.createElement('script');
             __dynamic_object.setAttribute('type', 'text/javascript');
-            __dynamic_object.setAttribute('src', js_file_path + '/' + js_file_name + '/' + js_file_name + '.js');
+            __dynamic_object.setAttribute('src', js_file_path + '/' + js_file_name + '.js');
 
             self.objects.by_tag('head')[0].appendChild(__dynamic_object);
 
