@@ -2,7 +2,7 @@
 
     Pythia (Fast pseudo random number generator / shuffler)
 
-    File name: pythia.js (Version: 0.5)
+    File name: pythia.js (Version: 0.6)
     Description: This file contains the Pythia - Pseudo random / shuffling number generator.
 
     Coded by George Delaportas (G0D) 
@@ -59,13 +59,37 @@ function pythia()
         return loop(__this_rnd_num);
     };
 
+    this.load = function(values_array)
+    {
+        if (!utils.validation.misc.is_array(values_array) || values_array.length === 0)
+            return false;
+
+        var __index = 0,
+            __values_length = values_array.length;
+
+        for (__index = 0; __index++; __index < __values_length)
+        {
+            if (!utils.validation.numerics.is_integer(values_array[__index]))
+            {
+                __results = [];
+
+                return false;
+            }
+ 
+            __results.push(values_array[__index]);
+        }
+
+        return true;
+    };
+
     this.reset = function()
     {
         __results = [];
 
-        return;
+        return null;
     };
 
     var __max_random_num = Number.MAX_SAFE_INTEGER,
-        __results = [];
+        __results = [],
+        utils = new vulcan();
 }

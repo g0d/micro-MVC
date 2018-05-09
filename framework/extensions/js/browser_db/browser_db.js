@@ -1,8 +1,8 @@
 /*
 	Browser DB
 
-	File: browser_db.js (Version: 0.5)
-	Description: This is the browser DB JS file.
+	File: browser_db.js (Version: 0.7)
+	Description: This is the Browser DB JS file.
 
 	Coded by George Delaportas (G0D)
     Copyright (C) 2017
@@ -42,22 +42,35 @@ function browser_db()
 	{
 		var __self = this;
 
+		// Generate UID
+		function generate_uid()
+		{
+			var __record_id = rnd_gen.generate();
+
+			if (__self.duplicates_exist(__record_id))
+			{
+				var __index = 0,
+					__records_length = bdb.model.db_records.length,
+					__id_array = [];
+
+				for (__index = 0; __index < __records_length; __index++)
+					__id_array.push(bdb.model.db_records[__index].id);
+
+				rnd_gen.load(__id_array);
+
+				__record_id = rnd_gen.generate();
+			}
+
+			return __record_id;
+		}
+
 		// Add record
 		this.add_record = function(record)
 		{
-			if (!utils.validation.misc.is_object(record))
+			if (!utils.validation.misc.is_object(record) || record.hasOwnProperty('id'))
 				return false;
 
-			if (__self.check_duplicates(record.id))
-				return false;
-
-			var __new_record_id = 1,
-				__max_record_id = bdb.model.db_records.length - 1;
-
-			if (bdb.model.db_records.length > 0)
-				__new_record_id = bdb.model.db_records[__max_record_id].id + 1;
-
-			record.id = __new_record_id;
+			record.id = generate_uid();
 
 			bdb.model.db_records.push(record);
 
@@ -78,13 +91,14 @@ function browser_db()
 			if (!bdb.view.reload_data())
 				return false;
 
-			var __index = 0;
+			var __index = 0,
+				__records_length = bdb.model.db_records.length;
 
-			for (__index = 0; __index < bdb.model.db_records.length; __index++)
+			for (__index = 0; __index < __records_length; __index++)
 			{
 				if (bdb.model.db_records[__index].id == record_id)
 				{
-					bd.model.selected_record = bdb.model.db_records[__index];
+					bdb.model.selected_record = bdb.model.db_records[__index];
 
 					return bdb.model.selected_record;
 				}
@@ -99,17 +113,18 @@ function browser_db()
 			if (!utils.validation.misc.is_object(record))
 				return false;
 
-			if (!__self.check_duplicates(record.id))
+			if (!record.hasOwnProperty('id') || !__self.duplicates_exist(record.id))
 				return false;	
 
-			var __index = 0;
+			var __index = 0,
+				__records_length = bdb.model.db_records.length;
 
-			for (__index = 0; __index < bdb.model.db_records.length; __index++)
+			for (__index = 0; __index < __records_length; __index++)
 			{
 				if (bdb.model.db_records[__index].id == record.id)
 				{
 					bdb.model.db_records[__index] = record;
-					
+
 					localStorage.setItem('db_records', JSON.stringify(bdb.model.db_records));
 
 					if (!bdb.view.reload_data())
@@ -128,9 +143,10 @@ function browser_db()
 			if (!utils.validation.numerics.is_number(record_id))
 				return false;
 
-			var __index = 0;
+			var __index = 0,
+				__records_length = bdb.model.db_records.length;
 
-			for (__index = 0; __index < bdb.model.db_records.length; __index++)
+			for (__index = 0; __index < __records_length; __index++)
 			{
 				if (bdb.model.db_records[__index].id == record_id)
 				{
@@ -150,6 +166,12 @@ function browser_db()
 			return false;
 		};
 
+		// Get DB
+		this.get_db = function()
+		{
+			return bdb.model.db_records;
+		};
+
 		// Empty storage
 		this.empty_storage = function()
 		{
@@ -161,7 +183,7 @@ function browser_db()
 		};
 
 		// Check for duplicates
-		this.check_duplicates = function(record_id)
+		this.duplicates_exist = function(record_id)
 		{
 			if (!utils.validation.numerics.is_number(record_id))
 				return false;
@@ -169,9 +191,10 @@ function browser_db()
 			if (!bdb.view.reload_data())
 				return false;
 
-			var __index = 0;
+			var __index = 0,
+				__records_length = bdb.model.db_records.length;
 
-			for (__index = 0; __index < bdb.model.db_records.length; __index++)
+			for (__index = 0; __index < __records_length; __index++)
 			{
 				if (bdb.model.db_records[__index].id == record_id)
 					return true;
@@ -199,7 +222,8 @@ function browser_db()
 	}
 
 	var bdb = this,
-		utils = new vulcan();
+		utils = new vulcan(),
+		rnd_gen = new pythia();
 
 	// Intialize
 	init();
