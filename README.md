@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (2.4)
+# micro-MVC (2.5)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3246d5ff1c745c4a77e5f15a4893378)](https://www.codacy.com/app/g.delaportas/micro-MVC?utm_source=github.com&utm_medium=referral&utm_content=g0d/micro-MVC&utm_campaign=badger)
 
@@ -16,7 +16,7 @@ and solves roughly 95% of all the everyday issues you face under development wit
 
 micro-MVC version 2.x has been upgraded and optimized to be secure, lightning fast and use as less resource as possible.
 The new framework can now run in embedded systems. It has been tested extensively in several hardware configurations 
-and the minimum requirements are CPU: 300MHz, RAM: 32MB, DISK: 600KB. Finally, the framework comes with enterprise ready 
+and the minimum requirements are CPU: 300MHz, RAM: 32MB, DISK: 800KB. Finally, the framework comes with enterprise ready 
 HTTP/S configurations for Apache and NGINX offering smart caching and compression.
 
 Enjoy!
@@ -25,6 +25,6 @@ Best,
 
 George Delaportas (G0D)
 
-Copyright (C) 2015-2018 micro-MVC
+Copyright (C) 2015-2019 micro-MVC
 
 Open Software License (OSL 3.0)
