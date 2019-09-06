@@ -3,9 +3,9 @@
         Active Directory integration (ADi)
 
         File name: adi.php (Version: 0.1)
-        Description: This file contains the "ADi" extension.
+        Description: This file contains the ADi extension.
 
-		Coded by George Delaportas (ViR4X)
+		Coded by George Delaportas (G0D)
 		Copyright (C) 2017
 		Open Software License (OSL 3.0)
     */

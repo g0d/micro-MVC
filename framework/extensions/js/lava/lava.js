@@ -1,14 +1,13 @@
 /*
-
     L.A.Va (LIVE Argument Validator)
 
     File name: lava.js (Version: 1.2)
-    Description: This file contains the L.A.Va - LIVE Argument Validator.
+    Description: This file contains the L.A.Va extension.
+    Dependencies: Vulcan and Sensei.
 
     Coded by George Delaportas (G0D) 
     Copyright (C) 2016
     Open Software License (OSL 3.0)
-
 */
 
 // L.A.Va

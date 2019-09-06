@@ -1,14 +1,13 @@
 /*
-
     Pythia (Fast pseudo random number generator / shuffler)
 
     File name: pythia.js (Version: 0.6)
-    Description: This file contains the Pythia - Pseudo random / shuffling number generator.
+    Description: This file contains the Pythia extension.
+    Dependencies: Vulcan.
 
     Coded by George Delaportas (G0D) 
     Copyright (C) 2014
     Open Software License (OSL 3.0)
-
 */
 
 // Pythia

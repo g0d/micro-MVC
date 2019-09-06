@@ -3,7 +3,7 @@
         Ultra Cache (Data, Files & DB factory class for caching with APC[u] and Memcache)
         
         File name: ultra_cache.php (Version: 3.0)
-        Description: This file contains the Ultra Cache - Data, Files & DB opcode caching tool.
+        Description: This file contains the Ultra Cache extension.
         
         Coded by George Delaportas (G0D)
         Copyright (c) 2017

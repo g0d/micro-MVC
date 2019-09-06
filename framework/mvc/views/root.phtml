@@ -1,12 +1,15 @@
-<?
+<?php
     UTIL::Load_Extension('vulcan', 'js');
+    UTIL::Load_Extension('jap', 'js');
+    UTIL::Load_Extension('bull', 'js');
     UTIL::Load_Extension('sensei', 'js');
+    UTIL::Load_Extension('content_fetcher', 'js');
     UTIL::Load_Extension('ultron', 'js');
-    UTIL::Load_Extension('root_js', 'js');
+    UTIL::Load_Extension('splash', 'php');
 ?>
             <div id="root" class="page">
                 <div class="content">
-                    <?UTIL::Load_Content('root', 'dynamic');?>
+                    <?php UTIL::Load_Content('root', 'dynamic'); ?>
                     <div class="controls">
                         <br>
                         <div class="control_item">
@@ -17,3 +20,10 @@
                     </div>
                 </div>
             </div>
+
+<script>
+    var dom = new vulcan();
+    var ajax = new bull();
+
+    dom.system.require('/framework/mvc/views/assets/js', 'root');
+</script>

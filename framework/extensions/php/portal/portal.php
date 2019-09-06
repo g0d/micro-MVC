@@ -3,9 +3,9 @@
 		Portal (REST Framework using POST)
 
 		File name: portal.php (Version: 2.0)
-		Description: This file contains the Portal - REST Framework (POST).
+		Description: This file contains the Portal extension.
 
-		Coded by George Delaportas (ViR4X)
+		Coded by George Delaportas (G0D)
 		Copyright (C) 2016
 		Open Software License (OSL 3.0)
 	*/

@@ -5,7 +5,7 @@
         File name: lang.php
         Description: This file contains the "LANG" class.
         
-        Coded by George Delaportas (ViR4X)
+        Coded by George Delaportas (G0D)
         Copyright (C) 2015
         Open Software License (OSL 3.0)
     */
@@ -34,14 +34,14 @@
         {
             if ($option === null)
                 return self::$__langs[0];
-            elseif ($option === 'this')
+            else if ($option === 'this')
             {
                 if (UTIL::Check_Route_Lang() === false)
                     return self::$__langs[0];
                 else
                     return UTIL::Fetch_Route_Lang();
             }
-            elseif ($option === 'all')
+            else if ($option === 'all')
                 return self::$__langs;
             else
                 return false;

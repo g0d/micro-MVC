@@ -1,12 +1,12 @@
 <?php
     /*
-        MS SQL
+        MS-SQL
 
         Version: 1.2
         File name: ms_sql.php
-        Description: This file contains the "MS SQL" extension.
+        Description: This file contains the MS-SQL extension.
 
-		Coded by George Delaportas (ViR4X)
+		Coded by George Delaportas (G0D)
 		Copyright (C) 2017
 		Open Software License (OSL 3.0)
     */

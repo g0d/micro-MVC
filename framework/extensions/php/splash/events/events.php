@@ -1,23 +1,14 @@
 <?php
-
     /*
+        spl@sh (Wrapper)
 
-        localhost Ltd - spl@sh
-
-        Version: 4.3
-
-        File name: events.php
+        File name: events.php (Version: 4.4)
         Description: This file contains the "EVENTS" wrapper.
 
         Coded by George Delaportas (G0D)
-
-        localhost Ltd
         Copyright (C) 2013
         Open Software License (OSL 3.0)
-
     */
-
-
 
     /* ------------------------ BEGIN ------------------------ */
 
@@ -56,5 +47,4 @@
     }
 
     /* ------------------------- END ------------------------- */
-
 ?>

@@ -18,7 +18,7 @@
 {
     font-weight: bold;
     text-align: center;
-    background-color: #88BDE6;
+    background-color: #ff069e;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -37,11 +37,11 @@
 #msgbox_button
 {
     color: #d8d8d8;
-    background-color: #4B4242;
+    background-color: #45454a;
     text-align: center;
-    border: solid 1px #F9C446;
+    border: solid 1px #FFB322;
     cursor: pointer;
-    width: 30%;
+    width: 24%;
     margin-left: auto;
     margin-right: auto;
     padding: 8px;
@@ -52,7 +52,7 @@
 
 #msgbox_button:hover
 {
-    background-color: #635a5a;
+    background-color: #5b5a63;
     transition: background .25s ease-in-out;
     -moz-transition: background .25s ease-in-out;
     -webkit-transition: background .25s ease-in-out;

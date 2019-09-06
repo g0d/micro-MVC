@@ -1,15 +1,13 @@
 /*
-
     Content Fetcher (Universal content loader)
 
     File name: content_fetcher.js (Version: 0.3)
-    Description: This file contains the Content Fetcher - Universal content loader.
+    Description: This file contains the Content Fetcher extension.
     Dependencies: BULL and Vulcan.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2016
     Open Software License (OSL 3.0)
-
 */
 
 // Content Fetcher

@@ -4,7 +4,7 @@
     File name: main.css
     Description: This file contains the main CSS.
 
-    Coded by George Delaportas (ViR4X)
+    Coded by George Delaportas (G0D)
     Copyright (C) 2015
     Open Software License (OSL 3.0)
 */
@@ -66,6 +66,31 @@ a
 #err_404
 {
     min-height: 509px;
+}
+
+#test_elements
+{
+    float: none;
+    clear: both;
+    height: 210px;
+}
+
+#left_elements
+{
+    float: left;
+    clear: left;
+}
+
+#right_elements
+{
+    float: right;
+    clear: right;
+}
+
+#test_results
+{
+    float: none;
+    clear: both;
 }
 
 .logo
@@ -167,6 +192,11 @@ a
     padding: 6px;
 }
 
+.button_alt
+{
+    min-width: 177px;
+}
+
 .text
 {
     font-size: 14px;
@@ -197,7 +227,7 @@ a
 
 .note
 {
-    color: #403516;
+    color: #1b1b1b;
     background-color: #FFFF6A;
     border: 1px grey solid;
     border-radius: 4px;

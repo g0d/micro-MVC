@@ -1,8 +1,9 @@
 /*
-    MsgBox
+    MsgBox (Message Window)
 
-    File name: msgbox.js (Version: 0.8)
-    Description: This file contains the MsgBox - Message window.
+    File name: msgbox.js (Version: 1.2)
+    Description: This file contains the MsgBox extension.
+    Dependencies: Vulcan and Content Fetcher.
 
     Coded by George Delaportas (G0D) 
     Copyright (C) 2017
@@ -15,7 +16,7 @@ function msgbox()
     // General helpers
     function general_helpers()
     {
-        var me = this;
+        var self = this;
 
         this.draw_screen = function(container_id)
         {
@@ -56,7 +57,7 @@ function msgbox()
 
                                 button_object = utils.objects.by_id(button_title);
 
-                                utils.events.attach(button_title, button_object, 'click',  me.hide_win);
+                                utils.events.attach(button_title, button_object, 'click',  self.hide_win);
                             });
 
             return true;

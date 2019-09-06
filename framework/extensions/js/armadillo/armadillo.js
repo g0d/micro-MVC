@@ -2,7 +2,8 @@
 	Armadillo (JSON DB over the browser)
 
 	File: armadillo.js (Version: 1.0)
-	Description: This is the Armadillo JSON DB file.
+	Description: This file contains the Armadillo extension.
+	Dependencies: Vulcan, Pythia and Sensei.
 
 	Coded by George Delaportas (G0D)
     Copyright (C) 2017

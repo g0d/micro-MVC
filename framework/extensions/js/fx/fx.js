@@ -1,14 +1,13 @@
 /*
-
     FX (Colection of high quality fx for web apps)
 
     File name: fx.js (Version: 2.0)
-    Description: This file contains the FX - High quality fx tools extension.
+    Description: This file contains the FX extension.
+    Dependencies: Vulcan.
 
     Coded by George Delaportas (G0D) 
     Copyright (C) 2014
     Open Software License (OSL 3.0)
-
 */
 
 // FX

@@ -1,14 +1,13 @@
 /*
-
     Parallel programming (Task parallelism)
 
     File name: parallel.js (Version: 1.6)
-    Description: This file contains the Parallel framework for JS.
+    Description: This file contains the Parallel framework extension.
+    Dependencies: Vulcan and Pythia.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2015
     Open Software License (OSL 3.0)
-
 */
 
 // Parallel

@@ -5,7 +5,7 @@
         File name: util.php
         Description: This file contains the "UTIL" class.
         
-        Coded by George Delaportas (ViR4X)
+        Coded by George Delaportas (G0D)
         Copyright (C) 2015
         Open Software License (OSL 3.0)
     */
@@ -17,19 +17,34 @@
     // UTIL class
     class UTIL
     {
+        // Check extension cache
+        private static function Check_Extension_Cache($extension)
+        {
+            $cached_extensions = self::Get_Session_Variable('extensions_cache');
+            
+            if (in_array($extension, $cached_extensions))
+                return true;
+            
+            array_push($cached_extensions, $extension);
+            
+            self::Set_Session_Variable('extensions_cache', $cached_extensions);
+            
+            return false;
+        }
+        
         // Configuration importer
         public static function Config_Importer($config_file, $delimiter = null)
         {
             $file_result = file_get_contents(self::Absolute_Path('framework/config/') . $config_file . '.cfg');
-
+            
             if ($file_result === false)
                 return false;
-
+            
             if ($delimiter === null)
                 $results = trim($file_result);
             else
                 $results = explode($delimiter, trim($file_result));
-
+            
             return $results;
         }
 
@@ -58,11 +73,22 @@
         // Load registered activities (Fortress gates)
         public static function Load_Activities()
         {
-            $result = json_decode(self::Config_Importer('gates'), true);
+            $gates_json_array = null;
+            $gates_array = self::Config_Importer('gates', ',');
+            
+            $gates_json_array = '[';
 
+            foreach ($gates_array as $gate)
+                $gates_json_array .= '"' . $gate . '",';
+            
+            $gates_json_array = rtrim($gates_json_array, ',');
+            $gates_json_array .= ']';
+            
+            $result = json_decode($gates_json_array, true);
+            
             if (json_last_error() !== JSON_ERROR_NONE)
                 return false;
-
+            
             return $result;
         }
         
@@ -120,8 +146,8 @@
             return str_replace('_', '-', str_replace('_', '/', $mvc_route));
         }
         
-        // Get data from a previously set variable
-        public static function Get_Variable($variable_name)
+        // Get data from a previously set session variable
+        public static function Get_Session_Variable($variable_name)
         {
             if (empty($variable_name))
                 return null;
@@ -132,8 +158,8 @@
             return $_SESSION['micro_mvc'][$variable_name];
         }
         
-        // Set a new variable and put data (optional)
-        public static function Set_Variable($variable_name, $variable_data = null)
+        // Set a new session variable and put data (optional)
+        public static function Set_Session_Variable($variable_name, $variable_data = null)
         {
             if (empty($variable_name))
                 return false;
@@ -159,7 +185,7 @@
             else
                 $this_lang = LANG::Get('this');
             
-            $filename = self::Absolute_Path('framework/mvc/views/content/') . $this_lang . '/' . $content_code . '.phtml';
+            $filename = self::Absolute_Path('framework/content/') . $this_lang . '/' . $content_code . '.phtml';
             
             if (file_exists($filename) === false)
                 return false;
@@ -390,15 +416,14 @@
             else
                 return false;
         }
-
+        
         // Load extension
         public static function Load_Extension($extension, $ext_type)
         {
             if (empty($extension))
                 return false;
             
-            // PHP extensions
-            if ($ext_type === 'php')
+            if ($ext_type === 'php')            // PHP extensions
             {
                 if ($extension === 'all')
                 {
@@ -417,7 +442,8 @@
                         {
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                             
-                            require_once($file['dirpath'] . '/' . $file['filename']);
+                            if (!self::Check_Extension_Cache($file_name))
+                                require_once($file['dirpath'] . '/' . $file['filename']);
                         }
                     }
                     
@@ -440,9 +466,8 @@
                             
                             if ($file_ext === 'php')
                             {
-                                $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
-                                
-                                require_once($file['dirpath'] . '/' . $file['filename']);
+                                if (!self::Check_Extension_Cache($extension))
+                                    require_once($file['dirpath'] . '/' . $file['filename']);
                                 
                                 break;
                             }
@@ -452,9 +477,7 @@
                     return true;
                 }
             }
-            
-            // Javascript extensions
-            elseif ($ext_type === 'js')
+            else if ($ext_type === 'js')        // Javascript extensions
             {
                 if ($extension === 'all')
                 {
@@ -467,15 +490,15 @@
                     // Load all the extensions
                     foreach ($result as $file)
                     {
-                        $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
+                        $file_ext = mb_substr($file['filename'], -2, 2, 'utf8');
                         
-                        if ($file_ext === '.js')
+                        if ($file_ext === 'js')
                         {
                             $dir_path = mb_substr($file['dirpath'], strrpos($file['dirpath'], '/') + 1);
-                            
                             $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
                             
-                            echo '<script src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
+                            if (!self::Check_Extension_Cache($file_name))
+                                echo '<script src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
                         }
                     }
                     
@@ -494,13 +517,12 @@
                     {
                         if (mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8') === $extension)
                         {
-                            $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
+                            $file_ext = mb_substr($file['filename'], -2, 2, 'utf8');
                             
-                            $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
-                            
-                            if ($file_ext === '.js')
+                            if ($file_ext === 'js')
                             {
-                                echo '<script src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
+                                if (!self::Check_Extension_Cache($extension))
+                                    echo '<script src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
                                 
                                 break;
                             }

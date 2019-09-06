@@ -1,0 +1,18 @@
+/*
+    Regy
+
+    File name: style.css
+    Description: This file contains the main style CSS.
+
+    Coded by George Delaportas (G0D)
+    Copyright (C) 2019
+    Open Software License (OSL 3.0)
+*/
+
+#registration_control
+{
+    float: none;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}

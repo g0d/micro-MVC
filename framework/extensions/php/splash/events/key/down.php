@@ -1,23 +1,14 @@
 <?php
-
     /*
+        spl@sh (Class)
 
-        localhost Ltd - spl@sh
-
-        Version: 4.3
-
-        File name: down.php
-        Description: This file contains the server KEY DOWN event actions.
+        File name: down.php (Version: 4.4)
+        Description: This file contains the "Server - KEY DOWN" actions.
 
         Coded by George Delaportas (G0D)
-
-        localhost Ltd
         Copyright (C) 2013
         Open Software License (OSL 3.0)
-
     */
-
-
 
     /* ------------------------ BEGIN ------------------------ */
 
@@ -36,5 +27,4 @@
     }
 
     /* ------------------------- END ------------------------- */
-
 ?>

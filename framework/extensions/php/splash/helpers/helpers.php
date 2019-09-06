@@ -1,23 +1,14 @@
 <?php
-
     /*
+        spl@sh (Class)
 
-        localhost Ltd - spl@sh
-
-        Version: 4.3
-
-        File name: helpers.php
-        Description: This file contains the HELPERS class.
+        File name: helpers.php (Version: 4.4)
+        Description: This file contains the "HELPERS" class.
 
         Coded by George Delaportas (G0D)
-
-        localhost Ltd
         Copyright (C) 2013
         Open Software License (OSL 3.0)
-
     */
-
-
 
     /* ------------------------ BEGIN ------------------------ */
 
@@ -328,79 +319,79 @@
             $error = null;
 
             if ($code_key === 1)
-               $error = 'Empty content.';
+               $error = 'Empty content';
 
             else if ($code_key === 2)
-               $error = 'Invalid structure of attributes or events.';
+               $error = 'Invalid structure of attributes or events';
 
             else if ($code_key === 3)
-               $error = 'Missing "type" attribute.';
+               $error = 'Missing "type" attribute';
 
             else if ($code_key === 4)
                $error = 'The "type" attribute has an invalid value ("button", "submit" or "reset" expected)';
 
             else if ($code_key === 5)
-                $error = 'Empty attribute.';
+                $error = 'Empty attribute';
 
             else if ($code_key === 6)
-                $error = 'Invalid HTML5 attribute.';
+                $error = 'Invalid HTML5 attribute';
 
             else if ($code_key === 7)
-                $error = 'Empty event.';
+                $error = 'Empty event';
 
             else if ($code_key === 8)
-                $error = 'Invalid Javascript event.';    
+                $error = 'Invalid Javascript event';    
 
             else if ($code_key === 9)
-                $error = 'Invalid structure of attributes or events in fetch function.';    
+                $error = 'Invalid structure of attributes or events in fetch function';    
 
             else if ($code_key === 10)
-                $error = 'Invalid HTML5 attribute in fetch function.';    
+                $error = 'Invalid HTML5 attribute in fetch function';    
 
             else if ($code_key === 11)
-                $error = 'Invalid Javascript event in fetch function.';
+                $error = 'Invalid Javascript event in fetch function';
 
             else if ($code_key === 12)
-                $error = 'Missing "href" attribute.';
+                $error = 'Missing "href" attribute';
 
             else if ($code_key === 13)
-                $error = 'Empty "href" attribute.';  
+                $error = 'Empty "href" attribute';  
 
             else if ($code_key === 14)
                 $error = 'Content in fetch function is invalid (Boolean expected)';
 
             else if ($code_key === 15)
-                $error = 'Missing "src" attribute.';
+                $error = 'Missing "src" attribute';
 
             else if ($code_key === 16)
-                $error = 'Empty "src" attribute.';  
+                $error = 'Empty "src" attribute';  
 
             else if ($code_key === 17)
-                $error = 'Missing "src" or "alt" attribute.';
+                $error = 'Missing "src" or "alt" attribute';
 
             else if ($code_key === 18)
-                $error = 'Empty "src" or "alt" attribute.';
+                $error = 'Empty "src" or "alt" attribute';
 
             else if ($code_key === 19)
-                $error = 'Missing "name" or "value" attribute.';
+                $error = 'Missing "name" or "value" attribute';
 
             else if ($code_key === 20)
-                $error = 'Empty "name" or "value" attribute.';
+                $error = 'Empty "name" or "value" attribute';
 
             else if ($code_key === 21)
-                $error = 'Missing "size" attribute.';
+                $error = 'Missing "size" attribute';
 
             else if ($code_key === 22)
-                $error = 'Invalid value for "size" attribute.';
+                $error = 'Invalid value for "size" attribute';
 
             else if ($code_key === 23)
-                $error = 'Invalid value for "type" attribute.';
+                $error = 'Invalid value for "type" attribute';
 
             else if ($code_key === 24)
-                $error = 'Missing "for" attribute.';
+                $error = 'Missing "for" attribute';
 
             else if ($code_key === 25)
-                $error = 'Empty "for" attribute.';
+                $error = 'Empty "for" attribute';
 
             echo '<div style="padding: 2px; background-color: #F56E6E; text-align: center; color: #FFFFFF;">
                     <span style="font-weight: 600;">SPLASH ERROR</span> - 
@@ -413,5 +404,4 @@
     }
 
     /* ------------------------- END ------------------------- */
-
 ?>

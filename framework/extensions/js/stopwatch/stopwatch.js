@@ -1,14 +1,13 @@
 /*
-
     Stopwatch (High precision timer for JS)
 
     File name: stopwatch.js (Version: 0.5)
     Description: This file contains the Stopwatch extension.
+    Dependencies: Vulcan.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2017
     Open Software License (OSL 3.0)
-
 */
 
 // Stopwatch (High precision timer)

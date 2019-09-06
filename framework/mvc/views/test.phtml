@@ -1,4 +1,4 @@
-<?
+<?php
     if (!empty($_POST))
     {
         $post_data = $_POST;
@@ -6,23 +6,21 @@
         $_POST = null;
     }
 
-    UTIL::Load_Extension('splash', 'php');
     UTIL::Load_Extension('vulcan', 'js');
-    UTIL::Load_Extension('sensei', 'js');
-    UTIL::Load_Extension('pythia', 'js');
     UTIL::Load_Extension('jap', 'js');
-    UTIL::Load_Extension('lava', 'js');
+    UTIL::Load_Extension('bull', 'js');
+    UTIL::Load_Extension('sensei', 'js');
     UTIL::Load_Extension('stopwatch', 'js');
     UTIL::Load_Extension('heartbeat', 'js');
-    UTIL::Load_Extension('centurion', 'js');
-    UTIL::Load_Extension('snail', 'js');
-    UTIL::Load_Extension('parallel', 'js');
-    UTIL::Load_Extension('aether', 'js');
     UTIL::Load_Extension('msgbox', 'js');
-    UTIL::Load_Extension('armadillo', 'js');
+    UTIL::Load_Extension('workbox', 'js');
+    UTIL::Load_Extension('key_manager', 'js');
+    UTIL::Load_Extension('ajax_factory', 'js');
     UTIL::Load_Extension('content_fetcher', 'js');
     UTIL::Load_Extension('ultron', 'js');
-    UTIL::Load_Extension('test_js', 'js');
+    UTIL::Load_Extension('splash', 'php');
+    UTIL::Load_Extension('keycard', 'php');
+    UTIL::Load_Extension('regy', 'php');
 ?>
             <div id="test" class="page">
                 <div class="content">
@@ -41,10 +39,11 @@
 
                                     $test_text = UTIL::Load_Content('test_button_text', 'static');
 
+                                    echo '<div id="left_elements">';
                                     echo '<div class="control_item">';
                                     echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX request)',
                                                                          'type'     =>  'button',
-                                                                         'class'    =>  'button'),
+                                                                         'class'    =>  'button button_alt'),
                                                                    array('onclick'  => 'ajax_fetch_content(\'motto\')'));
                                     echo '</div>';
                                     //print_r($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
@@ -52,34 +51,68 @@
                                     echo '<div class="control_item">';
                                     echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX response)',
                                                                          'type'     =>  'button',
-                                                                         'class'    =>  'button'),
+                                                                         'class'    =>  'button button_alt'),
                                                                    array('onajaxserverclick'   => 
                                                                    array('Server_Mouse_Click(Hello micro-MVC! (AJAX))', 
                                                                          'test_results')));
                                     echo '</div>';
                                     //print_r($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
-                                    
+
                                     echo '<div class="control_item">';
                                     echo $splash->Button('create', array('value'    =>  $test_text . ' (Form post)',
                                                                          'type'     =>  'button',
-                                                                         'class'    =>  'button'),
+                                                                         'class'    =>  'button button_alt'),
                                                                    array('onserverclick'        => 
                                                                    array('Server_Mouse_Click(Hello micro-MVC! (POST))', 
                                                                          '../test/')));
                                     echo '</div>';
                                     //print_r($splash->Button('debug', array('value', 'id'), array('onserverclick')));
-                                    
-                                    echo '<br>
-                                          <div class="control_item">
+
+                                    echo '<br><div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (Login form)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button button_alt'),
+                                                                   array('onclick'  =>  'show_login_box()'));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
+
+                                    echo '<div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (Registration form)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button button_alt'),
+                                                                   array('onclick'  =>  'show_register_box()'));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
+                                    echo '</div>';
+
+                                    echo '<div id="right_elements">';
+                                    echo '<div class="control_item">
                                           <input id="file_input" name="file" type="file" class="button" required>
                                           </div>';
-                                    echo '<div class="control_item">';
+                                    echo '<div class="control_item" style="margin-bottom: 44px;">';
                                     echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX file post)',
                                                                          'type'     =>  'button',
                                                                          'class'    =>  'button'),
                                                                    array('onclick'  =>  'send_data_to_server()'));
                                     echo '</div>';
                                     //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
+
+                                    echo '<br><div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (Logout button)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button button_alt'),
+                                                                   array('onclick'  =>  'logout()'));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
+
+                                    echo '<div class="control_item">';
+                                    echo $splash->Button('create', array('value'    =>  $test_text . ' (Send email)',
+                                                                         'type'     =>  'button',
+                                                                         'class'    =>  'button button_alt'),
+                                                                   array('onclick'  =>  'send_email()'));
+                                    echo '</div>';
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
+                                    echo '</div>';
                                 ?>
                             </div>
                             <br>
@@ -102,19 +135,25 @@
             </div>
 
 <script>
+    var dom = new vulcan();
     var ajax = new bull();
-    var msg_box = new msgbox();
+    var work_box = new workbox();
+    var key_card= new keycard();
+    var regy_form= new regy();
 
-    msg_box.init('main');
+    work_box.init('main', 'micro-MVC', 'Close');
 
     function ajax_fetch_content(content_id)
     {
+        var msg_box = new msgbox();
+
+        msg_box.init('main');
+
         content_fetcher(content_id, '<?=LANG::Get('this');?>', function(response) { msg_box.show('micro-MVC', response); });
     }
 
     function send_data_to_server()
     {
-        var dom = new vulcan();
         var file_input_element = dom.objects.by_id('file_input');
         var form_data = new FormData();
 
@@ -122,7 +161,7 @@
 
         var ajax_config = {
                                 "type"                  :   "data",
-                                "url"                   :   "/framework/mvc/views/assets/misc/test.php",
+                                "url"                   :   "/framework/mvc/views/assets/php/ajax_test.php",
                                 "data"                  :   form_data,
                                 "element_id"            :   "test_results",
                                 "content_fill_mode"     :   "replace"
@@ -137,8 +176,8 @@
     ?>
             var ajax_config = {
                                     "type"                  :   "data",
-                                    "url"                   :   "/framework/mvc/views/assets/misc/test.php",
-                                    "data"                  :   "id=1",
+                                    "url"                   :   "/framework/mvc/views/assets/php/ajax_test.php",
+                                    "data"                  :   "ajax_check=1",
                                     "element_id"            :   "test_results",
                                     "content_fill_mode"     :   "replace"
                                 };
@@ -149,4 +188,83 @@
 
         unset($post_data);
     ?>
+
+    function show_login_box()
+    {
+        var login_form = '<?=KeyCard::Show_Login_Form();?>';
+
+        blur_screen('show');
+
+        work_box.show(login_form, null, function() { blur_screen('hide'); });
+
+        key_card.init('login');
+    }
+
+    function show_register_box()
+    {
+        var register_form = '<?=Regy::Show_Form();?>';
+
+        blur_screen('show');
+
+        work_box.show(register_form, null, function() { blur_screen('hide'); });
+
+        regy_form.init();
+    }
+
+    function logout()
+    {
+        var logout_button = '<?=KeyCard::Show_Logout_Button();?>';
+
+        blur_screen('show');
+
+        work_box.show(logout_button, null, function() { blur_screen('hide'); });
+
+        key_card.init('logout');
+    }
+
+    function send_email()
+    {
+        var ajax_config = {
+                                "type"                  :   "data",
+                                "url"                   :   "/",
+                                "data"                  :   "gate=send_email&send=1",
+                                "element_id"            :   "test_results",
+                                "content_fill_mode"     :   "replace"
+                          };
+
+        ajax.run(ajax_config);
+    }
+
+    // Use this function when logged-in to avoid session hijacking or utilize Anti-Hijack extension straight from PHP
+    function hijack_protection()
+    {
+        var data = 'gate=hijack_protection';
+
+        ajax_factory(data, function()
+                           {
+                                // OK
+                           },
+                           function()
+                           {
+                                location.assign('/');
+                           },
+                           function(response)
+                           {
+                                console.log('Anti-Hijack response:')
+                                console.log(response);
+                                console.log('');
+                           });
+    }
+
+    function blur_screen(mode)
+    {
+        var main_body = dom.objects.by_id('test');
+
+        if (mode === 'show')
+            main_body.style.filter = 'blur(8px)';
+        else
+            main_body.style.filter = 'none';
+    }
+
+    dom.system.require('/framework/mvc/views/assets/js', 'test');
 </script>

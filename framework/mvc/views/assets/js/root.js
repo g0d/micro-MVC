@@ -1,5 +1,4 @@
 /*
-
     Root JS
 
     File name: root_js.js
@@ -8,10 +7,6 @@
     Coded by George Delaportas (G0D) 
     Copyright (C) 2017
     Open Software License (OSL 3.0)
-
 */
 
-ultron(function(event)
-{
-     
-});
+// Write your stuff here...

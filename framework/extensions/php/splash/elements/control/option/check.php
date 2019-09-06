@@ -1,23 +1,14 @@
 <?php
-
     /*
+        spl@sh (Class)
 
-        localhost Ltd - spl@sh
-
-        Version: 4.3
-
-        File name: check.php
+        File name: check.php (Version: 4.4)
         Description: This file contains the "CHECK" class.
 
         Coded by George Delaportas (G0D)
-
-        localhost Ltd
         Copyright (C) 2013
         Open Software License (OSL 3.0)
-
     */
-
-
 
     /* ------------------------ BEGIN ------------------------ */
 
@@ -622,5 +613,4 @@
     }
 
     /* ------------------------- END ------------------------- */
-
 ?>

@@ -1,14 +1,13 @@
 /*
-
-    Sensei - Logger & Informer
+    Sensei (Logger & Informer)
 
     File name: sensei.js (Version: 0.1)
     Description: This file contains the Sensei extension.
+    Dependencies: Vulcan.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2017
     Open Software License (OSL 3.0)
-
 */
 
 // Sensei

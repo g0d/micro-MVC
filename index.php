@@ -5,12 +5,12 @@
         File name: index.php
         Description: This file contains the index (bootstrapping).
 
-        Coded by George Delaportas (ViR4X)
+        Coded by George Delaportas (G0D)
         Copyright (C) 2015
         Open Software License (OSL 3.0)
     */
 
-    // Enable: 1 / Disable: 0 errors
+    // Enable: 1 / Disable: 0 - error reporting
     error_reporting(0);
 
     // Enable sessions
@@ -22,6 +22,6 @@
     // Include the config loader
     require('framework/misc/config_loader.php');
 
-    // Include the languages and routes supervisor
+    // Include the supervisor
     require('framework/misc/supervisor.php');
 ?>

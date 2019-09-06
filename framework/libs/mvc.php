@@ -5,7 +5,7 @@
         File name: mvc.php
         Description: This file contains the "MVC" class.
         
-        Coded by George Delaportas (ViR4X)
+        Coded by George Delaportas (G0D)
         Copyright (C) 2015
         Open Software License (OSL 3.0)
     */
@@ -71,7 +71,7 @@
                 if ($lang_relative === true && !self::Route_Exists($result))
                     return false;
             }
-            elseif ($option === 'all')
+            else if ($option === 'all')
             {
                 if ($lang_relative === false)
                     return false;

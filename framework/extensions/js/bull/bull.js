@@ -1,14 +1,13 @@
 /*
-
     BULL (AJAX System/Framework)
 
     File name: bull.js (Version: 17.0)
-    Description: This file contains the BULL - AJAX System/Framework.
+    Description: This file contains the BULL extension.
+    Dependencies: Vulcan and JAP.
 
     Coded by George Delaportas (G0D) / Contributions by Catalin Maftei
     Copyright (C) 2013
     Open Software License (OSL 3.0)
-
 */
 
 // BULL

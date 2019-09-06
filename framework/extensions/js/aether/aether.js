@@ -1,14 +1,13 @@
 /*
-
     Aether (AJAX Traffic Controller [TC] / QoS for web apps)
 
     File name: aether.js (Version: 2.5)
-    Description: This file contains the Aether - TC & QoS extension.
+    Description: This file contains the Aether extension.
+    Dependencies: Vulcan, BULL, Pythia, JAP, Centurion, Stopwatch and Sensei.
 
     Coded by George Delaportas (G0D) 
     Copyright (C) 2014
     Open Software License (OSL 3.0)
-
 */
 
 // Aether
@@ -943,7 +942,6 @@ function aether()
                 __this_task = null,
                 __all_tasks = system_models.tasks.list,
                 __modes_list = system_constants.settings.chain_mode,
-                __task_delay = -1,
                 __task_config_map = null,
                 __scheduled_tasks_list = [];
 
@@ -1015,9 +1013,6 @@ function aether()
 
                 function repeater(mode)
                 {
-                    var __task_entry = null,
-                        __task_delay = null;
-
                     if (mode === __modes_list.SERIAL || mode === __modes_list.DELAY || mode === __modes_list.CALLBACK)
                         repeater_delegate(mode, -1);
                     else
@@ -1032,7 +1027,7 @@ function aether()
                         process_callback.call(this);
                 }
 
-                repeater(system_models.settings.chain_mode);
+                repeater(mode);
             }
 
             for (__index in __all_tasks)

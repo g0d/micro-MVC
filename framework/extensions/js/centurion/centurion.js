@@ -1,14 +1,12 @@
 /*
-
     Centurion (Benchmarking facility)
 
     File name: centurion.js (Version: 1.6)
-    Description: This file contains the Centution - Benchmarking facility extension.
+    Description: This file contains the Centurion extension.
 
     Coded by George Delaportas (G0D)
     Copyright (c) 2014
     Open Software License (OSL 3.0)
-
 */
 
 // Centurion

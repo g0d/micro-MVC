@@ -3,9 +3,9 @@
         Anti-Hijack
 
         File name: anti_hijack.php (Version: 0.3)
-        Description: This file contains the "Anti-Hijack" extension.
+        Description: This file contains the Anti-Hijack extension.
 
-		Coded by George Delaportas (ViR4X)
+		Coded by George Delaportas (G0D)
 		Copyright (C) 2017
 		Open Software License (OSL 3.0)
     */
@@ -58,5 +58,4 @@
 
         return false;
     }
-
 ?>

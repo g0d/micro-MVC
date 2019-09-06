@@ -1,14 +1,12 @@
 /*
-
     Vulcan (General JS Programming Utilities)
 
     File name: vulcan.js (Version: 1.3)
-    Description: This file contains the Vulcan - General JS Programming Utilities.
+    Description: This file contains the Vulcan extension.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2014
     Open Software License (OSL 3.0)
-
 */
 
 // Vulcan

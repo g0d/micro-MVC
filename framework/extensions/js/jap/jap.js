@@ -1,14 +1,13 @@
 /*
-
     J.A.P (JSON Argument Parser)
 
     File name: jap.js (Version: 1.3)
-    Description: This file contains the J.A.P - JSON Argument Parser.
+    Description: This file contains the J.A.P extension.
+    Dependencies: Vulcan and Sensei.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2016
     Open Software License (OSL 3.0)
-
 */
 
 // J.A.P

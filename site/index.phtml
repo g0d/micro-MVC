@@ -8,7 +8,7 @@
     </head>
     <body>
         <div id="main">
-        <?
+        <?php
             UTIL::Load_Section('header');
             
             $this_route = MVC::Get_Route('this');
@@ -26,7 +26,7 @@
                     MVC::Go_To($this_route, $args);
                 }
             }
-
+            
             unset($this_route);
             
             UTIL::Load_Section('footer');

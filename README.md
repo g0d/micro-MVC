@@ -23,7 +23,7 @@ Enjoy!
 
 Best,
 
-George Delaportas (G0D/ViR4X)
+George Delaportas (G0D)
 
 Copyright (C) 2015-2018 micro-MVC
 

@@ -1,14 +1,13 @@
 /*
-
-    Heartbeat
+    Heartbeat (Ping Services)
 
     File name: heartbeat.js (Version: 0.7)
-    Description: This file contains the Heartbeat extension (Ping services).
+    Description: This file contains the Heartbeat extension.
+    Dependencies: Vulcan, BULL, JAP, Stopwatch and Sensei.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2017
     Open Software License (OSL 3.0)
-
 */
 
 // Heartbeat
