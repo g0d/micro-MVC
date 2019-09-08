@@ -123,7 +123,7 @@ function keycard()
                                 };
 
         heartbeat_config.url = '/';
-        heartbeat_config.service_name = 'micro-MVC';
+        heartbeat_config.service_name = 'KeyCard';
 
         heartbeat(heartbeat_config);
     }

@@ -17,13 +17,15 @@
 	// Load extensions
 	UTIL::Load_Extension('woody', 'php');
 
-	if (!empty($_POST['send']) && $_POST['send'] === '1')
+	if (!empty($_POST['send']) && $_POST['send'] === '1' && !empty($_POST['email']))
 	{
-		$result = Woody::Send_Mail('hello@micro-mvc.co', 'test@testmail.com', 'micro-MVC');
+		$result = Woody::Send_Mail('hello@micro-mvc.co', $_POST['email'], 'micro-MVC');
 
 		if (!empty($result))
 			echo 'E-mail successfully sent!';
 		else
 			echo 'E-mail was not sent!';
 	}
+	else
+		echo '-1';
 ?>

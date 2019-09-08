@@ -1,7 +1,7 @@
 /*
     Test JS
 
-    File name: test_js.js
+    File name: test.js
     Description: This file contains the test js code for the test view.
 
     Coded by George Delaportas (G0D) 

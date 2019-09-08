@@ -1,7 +1,7 @@
 /*
     Root JS
 
-    File name: root_js.js
+    File name: root.js
     Description: This file contains the root js code for the root view.
 
     Coded by George Delaportas (G0D) 

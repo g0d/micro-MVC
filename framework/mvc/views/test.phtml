@@ -224,15 +224,24 @@
 
     function send_email()
     {
-        var ajax_config = {
-                                "type"                  :   "data",
-                                "url"                   :   "/",
-                                "data"                  :   "gate=send_email&send=1",
-                                "element_id"            :   "test_results",
-                                "content_fill_mode"     :   "replace"
-                          };
+        var data = 'gate=send_email&send=1&email=test@testdomain.com';
 
-        ajax.run(ajax_config);
+        ajax_factory(data, function(response)
+                           {
+                                dom.objects.by_id('test_results').innerHTML = response;
+
+                                console.log('[Woody response]')
+                                console.log('OK');
+                                console.log('');
+                           },
+                           function()
+                           {
+                                // Nothing to do...
+                           },
+                           function()
+                           {
+                                // Nothing to do...
+                           });
     }
 
     // Use this function when logged-in to avoid session hijacking or utilize Anti-Hijack extension straight from PHP
@@ -240,19 +249,19 @@
     {
         var data = 'gate=hijack_protection';
 
-        ajax_factory(data, function()
+        ajax_factory(data, function(response)
                            {
-                                // OK
+                                console.log('[Anti-Hijack response]')
+                                console.log(response);
+                                console.log('');
                            },
                            function()
                            {
                                 location.assign('/');
                            },
-                           function(response)
+                           function()
                            {
-                                console.log('Anti-Hijack response:')
-                                console.log(response);
-                                console.log('');
+                               // Nothing to do...
                            });
     }
 
