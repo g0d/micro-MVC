@@ -1,7 +1,7 @@
 /*
     Regy (Registration form)
 
-    File name: regy.js (Version: 1.0)
+    File name: regy.js (Version: 1.2)
     Description: This file contains the Regy extension.
     Dependencies: Vulcan, MsgBox, Key Manager and AJAX Factory.
 
@@ -42,6 +42,16 @@ function regy()
         var username = utils.objects.by_id('register_username_text');
         var password = utils.objects.by_id('register_password_text');
         var confirm_password = utils.objects.by_id('register_password_confirm_text');
+
+        if (!utils.validation.utilities.is_email(username.value))
+        {
+            content_object.style.filter = 'blur(8px)';
+
+            msg_box.show('micro-MVC', 'The email format is invalid!', 
+                         function() { content_object.style.filter = 'none'; });
+
+            return;
+        }
 
         if (username.value.length < 3 || password.value.length < 8)
         {

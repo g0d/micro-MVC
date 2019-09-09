@@ -1,7 +1,7 @@
 /*
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.3)
+    File name: vulcan.js (Version: 1.4)
     Description: This file contains the Vulcan extension.
 
     Coded by George Delaportas (G0D)
@@ -136,23 +136,21 @@ function vulcan()
         {
             this.is_email = function(val)
             {
-                var __pattern = new RegExp(['^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|', 
-                                            '(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|',
-                                            '(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'].join(''));
+                var __pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-                return __pattern.test(val);
+                return __pattern.test(String(val).toLowerCase());
             };
 
             this.is_phone = function(val)
             {
                 var __pattern = /^\+?\d{2}[- ]?\d{3}[- ]?\d{5}$/;
 
-                return __pattern.test(val);
+                return __pattern.test(String(val).toLowerCase());
             };
 
             this.reg_exp = function(pattern, expression)
             {
-                return pattern.test(expression);
+                return pattern.test(String(expression)).toLowerCase();
             };
         }
 

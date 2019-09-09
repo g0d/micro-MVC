@@ -2,7 +2,7 @@
     /*
         KeyCard (Login form and logout button manager)
 
-        File name: keycard.php (Version: 1.0)
+        File name: keycard.php (Version: 1.2)
         Description: This file contains the KeyCard extension.
 
 		Coded by George Delaportas (G0D)
@@ -25,7 +25,7 @@
         {
             self::$__login_form_active = true;
 
-            // Load login form template
+            // Load login from template
             $searches = array('{login}', '{login_button_text}');
             $replaces = array(UTIL::Load_Content('login', 'static'),
                               UTIL::Load_Content('login_button_text', 'static'));

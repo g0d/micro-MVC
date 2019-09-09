@@ -2,7 +2,7 @@
     /*
         Regy (Registration Manager)
 
-        File name: regy.php (Version: 1.0)
+        File name: regy.php (Version: 1.2)
         Description: This file contains the Regy extension.
 
         Coded by George Delaportas (G0D)
@@ -20,7 +20,7 @@
         // Show registration form
         public static function Show_Form()
         {
-            // Load registration form template
+            // Load registration from template
             $searches = array('{register}', '{register_button_text}');
             $replaces = array(UTIL::Load_Content('register', 'static'),
                               UTIL::Load_Content('register_button_text', 'static'));
