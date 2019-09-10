@@ -17,14 +17,9 @@
     // KeyCard class
     class KeyCard
     {
-        // Consistency flag
-        private static $__login_form_active = false;
-
         // Show login form
         public static function Show_Login_Form()
         {
-            self::$__login_form_active = true;
-
             // Load login from template
             $searches = array('{login}', '{login_button_text}');
             $replaces = array(UTIL::Load_Content('login', 'static'),
@@ -38,9 +33,6 @@
         // Show logout button
         public static function Show_Logout_Button()
         {
-            if (self::$__login_form_active === false)
-                return null;
-
             // Load logout button template
             $searches = array('{logout_button_text}');
             $replaces = array(UTIL::Load_Content('logout_button_text', 'static'));
