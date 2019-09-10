@@ -14,7 +14,7 @@
     if (!defined('micro_mvc'))
 		exit();
 	
-	// Put your default dispatching conditions in here or add new files under conditions folder for customization
+	// Put your default dispatching conditions in here or add new files under conditions folder for further customization
 
 	
 

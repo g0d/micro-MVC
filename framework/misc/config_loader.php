@@ -30,7 +30,9 @@
 	UTIL::Set_Session_Variable('this_route', $this_route);
 	UTIL::Set_Session_Variable('all_routes', $all_routes);
 	UTIL::Set_Session_Variable('extensions_cache', array());
-	UTIL::Set_Session_Variable('auth', null);
+	
+	if (empty(UTIL::Get_Session_Variable('auth')))
+		UTIL::Set_Session_Variable('auth', null);
 	
 	unset($this_lang);
 	unset($all_langs);
