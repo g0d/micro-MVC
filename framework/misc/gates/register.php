@@ -81,7 +81,7 @@
 				return false;
 			}
 
-			$secure_query = 'INSERT INTO `users` 
+			$secure_query = 'INSERT INTO `users`(`username`, `password`)
 							 VALUES("' . $username . '", "' . mysqli_real_escape_string($db_conn_link, md5($password)) . '")';
 
 			$result = DB::Exec_SQL_Command($secure_query);

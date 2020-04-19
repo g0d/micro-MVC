@@ -170,15 +170,17 @@
             if ($mysql_result === false)
                 return false;
             
-            $final_result = array();
-            
             if (!is_bool($mysql_result))
             {
+                $array_result = array();
+
                 while ($mysql_row = mysqli_fetch_array($mysql_result))
-                    $final_result[] = $mysql_row;
+                    $array_result[] = $mysql_row;
+                
+                $mysql_result = $array_result;
             }
             
-            return $final_result;
+            return $mysql_result;
         }
         
         // Execute SQL script files

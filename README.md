@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (2.5)
+# micro-MVC (3.0)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3246d5ff1c745c4a77e5f15a4893378)](https://www.codacy.com/app/g.delaportas/micro-MVC?utm_source=github.com&utm_medium=referral&utm_content=g0d/micro-MVC&utm_campaign=badger)
 
@@ -12,12 +12,10 @@ usually end up to become too complicated as they are stuffed with a bunch of inf
 5% of devs really use them.
 
 micro-MVC is trying to be hassle free, straightforward and helps you stay on track. micro-MVC API is robust 
-and solves roughly 95% of all the everyday issues you face under development with PHP.
+and solves roughly 95% of all the everyday issues you face under development with PH and JS.
 
-micro-MVC version 2.x has been upgraded and optimized to be secure, lightning fast and use as less resource as possible.
-The new framework can now run in embedded systems. It has been tested extensively in several hardware configurations 
-and the minimum requirements are CPU: 300MHz, RAM: 32MB, DISK: 800KB. Finally, the framework comes with enterprise ready 
-HTTP/S configurations for Apache and NGINX offering smart caching and compression.
+micro-MVC is optimized, secure, lightning fast and consumes the least resources possible.
+The framework runs on nearly any platform including embedded systems and has been tested extensively in several hardware configurations. Finally, the framework comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
 
 Enjoy!
 
@@ -25,6 +23,8 @@ Best,
 
 George Delaportas (G0D)
 
-Copyright (C) 2015-2019 micro-MVC
+Copyright (C) 2015-2020 micro-MVC
 
 Open Software License (OSL 3.0)
+
+Supported by [ProboTEK](https://probotek.eu/)
