@@ -23,7 +23,7 @@
     *
     *
     *  @author George Delaportas (G0D) <g.delaportas@gmail.com>
-    *  @copyright  2015-2017 micro-MVC
+    *  @copyright  2015-2020 micro-MVC
     *  @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
     *  International Registered Trademark & Property of George Delaportas (G0D)
     */

@@ -61,15 +61,17 @@
             if ($mssql_result === false)
                 return false;
 
-            $final_result = array();
-
             if (!is_bool($mssql_result))
             {
+                $array_result = array();
+
                 while ($mssql_row = sqlsrv_fetch_array($mssql_result))
-                    $final_result[] = $mssql_row;
+                    $array_result[] = $mssql_row;
+
+                $mssql_result = $array_result;
             }
 
-            return $final_result;
+            return $mssql_result;
         }
 
         // Execute SQL script files
