@@ -8,11 +8,11 @@ An agile, small, productive and robust MVC framework for PHP (with integrated AJ
 
 micro-MVC is a simple, agile and powerful MVC framework that empowers developers to write 
 MVC-based code very quickly. Although there are tons of free and open source MVC frameworks out there, they 
-usually end up to become too complicated as they are stuffed with a bunch of infinite extensions that only 
-5% of devs really use them.
+usually end up becoming too complicated as they are stuffed with a bunch of infinite extensions that only 
+5% of devs really use them at some point.
 
 micro-MVC is trying to be hassle free, straightforward and helps you stay on track. micro-MVC API is robust 
-and solves roughly 95% of all the everyday issues you face under development with PH and JS.
+and solves roughly 95% of all the everyday issues you face under development with PHP and JS.
 
 micro-MVC is optimized, secure, lightning fast and consumes the least resources possible.
 The framework runs on nearly any platform including embedded systems and has been tested extensively in several hardware configurations. Finally, the framework comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
