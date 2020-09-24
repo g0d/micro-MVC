@@ -27,4 +27,4 @@ Copyright (C) 2015-2020 micro-MVC
 
 Open Software License (OSL 3.0)
 
-Supported by [ProboTEK](https://probotek.eu/)
+Supported by [PROBOTEK](https://probotek.eu/)
