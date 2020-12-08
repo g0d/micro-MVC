@@ -58,6 +58,7 @@
             if ($option === 'this')
             {
                 $result = UTIL::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
+                $is_fb = strpos($result, 'fbclid');
                 
                 if ($lang_relative === true)
                     $result = substr($result, 3);
@@ -67,6 +68,9 @@
                 
                 if ($result === '' || $result === false)
                     $result = 'root';
+                
+                if ($is_fb)
+                    $result = substr($result, 0, strpos($result, '&'));
                 
                 if ($lang_relative === true && !self::Route_Exists($result))
                     return false;

@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (3.0)
+# micro-MVC (3.1)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3246d5ff1c745c4a77e5f15a4893378)](https://www.codacy.com/app/g.delaportas/micro-MVC?utm_source=github.com&utm_medium=referral&utm_content=g0d/micro-MVC&utm_campaign=badger)
 
@@ -27,4 +27,4 @@ Copyright (C) 2015-2020 micro-MVC
 
 Open Software License (OSL 3.0)
 
-Supported by [ProboTEK](https://probotek.eu/)
+Supported by [PROBOTEK](https://probotek.eu/)
