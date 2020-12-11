@@ -16,7 +16,7 @@ and solves roughly 95% of all the everyday issues you face under development wit
 
 micro-MVC is optimized, secure, lightning fast and consumes the least resources possible.
 The framework runs on nearly any platform including embedded systems and has been tested extensively in several hardware configurations. 
-Also, comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
+Also, it comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
 
 Finally, on Dec-10-2020, micro-MVC has been audited, tested thoroughly for security vulnerabilities and put under stress with 
 thousands of requests per minute from all over the globe. The results proved that micro-MVC is dependable and highly secure.
