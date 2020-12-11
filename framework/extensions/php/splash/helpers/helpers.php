@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: helpers.php (Version: 4.4)
+        File name: helpers.php (Version: 4.5)
         Description: This file contains the "HELPERS" class.
 
         Coded by George Delaportas (G0D)
@@ -288,9 +288,7 @@
             $function = substr($action_string, 0, $parenthesis_pos);
             $parameters = substr($action_string, $parenthesis_pos + 1, -1);
 
-            call_user_func($function, $parameters);
-
-            return true;
+            return call_user_func($function, $parameters);
 
         }
 
@@ -343,13 +341,13 @@
                 $error = 'Invalid Javascript event';    
 
             else if ($code_key === 9)
-                $error = 'Invalid structure of attributes or events in fetch function';    
+                $error = 'Invalid structure of attributes or events in debug mode';    
 
             else if ($code_key === 10)
-                $error = 'Invalid HTML5 attribute in fetch function';    
+                $error = 'Invalid HTML5 attribute in debug mode';    
 
             else if ($code_key === 11)
-                $error = 'Invalid Javascript event in fetch function';
+                $error = 'Invalid Javascript event in debug mode';
 
             else if ($code_key === 12)
                 $error = 'Missing "href" attribute';
@@ -358,7 +356,7 @@
                 $error = 'Empty "href" attribute';  
 
             else if ($code_key === 14)
-                $error = 'Content in fetch function is invalid (Boolean expected)';
+                $error = 'Content in debug mode is invalid (Boolean expected)';
 
             else if ($code_key === 15)
                 $error = 'Missing "src" attribute';

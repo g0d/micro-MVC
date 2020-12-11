@@ -2,7 +2,7 @@
     /*
         spl@sh (Wrapper)
 
-        File name: events_list.php (Version: 4.4)
+        File name: events_list.php (Version: 4.5)
         Description: This file contains the "EVENTS LIST" wrapper.
 
         Coded by George Delaportas (G0D)

@@ -1,7 +1,7 @@
 /*
     spl@sh (JS Utility for AJAX)
 
-    File name: splash.js (Version: 4.4)
+    File name: splash.js (Version: 4.5)
     Description: This file contains the spl@sh JS utility.
     Dependencies: Vulcan and BULL.
 
@@ -10,16 +10,15 @@
     Open Software License (OSL 3.0)
 */
 
-var splash = function(action, file, mode, misc, func)
+var splash = function(action, mode, misc, func)
              {
                  // spl@sh post
-                 function splash_post(action, file, mode, misc, func)
+                 function splash_post(action, mode, misc, func)
                  {
                      var utils = new vulcan();
                      var dynamic_element = null;
 
                      if (action === null || action == '' || 
-                         file === null || file == '' || 
                          mode === null || isNaN(mode) || mode < 1 || mode > 2 || 
                          misc === null || misc == '' || 
                          (func !== undefined && typeof func !== 'function'))
@@ -67,8 +66,8 @@ var splash = function(action, file, mode, misc, func)
                          var ajax = new bull();
                          var ajax_config = {
                                                 "type"                  :   "data",
-                                                "url"                   :   file,
-                                                "data"                  :   "splash_ajax_post=1&splash_ajax_action=" + action,
+                                                "url"                   :   '/',
+                                                "data"                  :   "gate=splash_event&splash_ajax_post=1&splash_ajax_action=" + action,
                                                 "element_id"            :   misc,
                                                 "content_fill_mode"     :   "replace",
                                                 "on_success"            :   func
@@ -109,5 +108,5 @@ var splash = function(action, file, mode, misc, func)
                      return dynamic_element;
                  }
 
-                 return splash_post(action, file, mode, misc, func);
+                 return splash_post(action, mode, misc, func);
              };

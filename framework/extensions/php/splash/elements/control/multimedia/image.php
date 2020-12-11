@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: image.php (Version: 4.4)
+        File name: image.php (Version: 4.5)
         Description: This file contains the "IMAGE" class.
 
         Coded by George Delaportas (G0D)
@@ -221,9 +221,7 @@
                             if (empty($value[0]))
                                 return false;
 
-                            $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         '/framework/extensions/php/splash/events/events.php' . 
-                                         '\'' . ', 1, ';
+                            $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', 1, ';
 
                             if (empty($value[1]))
                                 $html_tag .= 'null' . ');" ';
@@ -241,9 +239,7 @@
                             if (empty($value[0]))
                                 return false;
 
-                            $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         '/framework/extensions/php/splash/events/events.php' . 
-                                         '\'' . ', 2, ';
+                            $html_tag .= 'onclick="splash(' . '\'' . $value[0] . '\'' . ', 2, ';
 
                             if (empty($value[1]))
                                 $html_tag .= 'null' . ');" ';
@@ -347,9 +343,7 @@
                             if (empty($value[0]))
                                 return false;
 
-                            $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         '/framework/extensions/php/splash/events/events.php' . 
-                                         '\'' . ', 1, ';
+                            $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', 1, ';
 
                             if (empty($value[1]))
                                 $html_tag .= 'null' . ');" ';
@@ -367,9 +361,7 @@
                             if (empty($value[0]))
                                 return false;
 
-                            $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', ' . '\'' . 
-                                         '/framework/extensions/php/splash/events/events.php' . 
-                                         '\'' . ', 2, ';
+                            $html_tag .= 'onkeydown="splash(' . '\'' . $value[0] . '\'' . ', 2, ';
 
                             if (empty($value[1]))
                                 $html_tag .= 'null' . ');" ';
@@ -438,7 +430,7 @@
 
         }
 
-        public function Fetch($attributes = null, $events = null)
+        public function Debug($attributes = null, $events = null)
         {
 
             if (!empty($attributes))
@@ -462,49 +454,49 @@
             if (HELPERS::Is_Valid_Array($attributes))
             {
 
-                foreach ($attributes as $item)
+                foreach ($attributes as $key => $value)
                 {
 
-                    if ($item == 'id')
+                    if ($key == 'id')
                         array_push($attributes_array, $this->__attr_id);
 
-                    else if ($item == 'class')
+                    else if ($key == 'class')
                         array_push($attributes_array, $this->__attr_class);
 
-                    else if ($item == 'style')
+                    else if ($key == 'style')
                         array_push($attributes_array, $this->__attr_style);
 
-                    else if ($item == 'title')
+                    else if ($key == 'title')
                         array_push($attributes_array, $this->__attr_title);
 
-                    else if ($item == 'lang')
+                    else if ($key == 'lang')
                         array_push($attributes_array, $this->__attr_lang);
 
-                    else if ($item == 'accesskey')
+                    else if ($key == 'accesskey')
                         array_push($attributes_array, $this->__attr_accesskey);
 
-                    else if ($item == 'tabindex')
+                    else if ($key == 'tabindex')
                         array_push($attributes_array, $this->__attr_tabindex);
 
-                    else if ($item == 'data')
+                    else if ($key == 'data')
                         array_push($attributes_array, $this->__attr_data);
 
-                    else if ($item == 'src')
+                    else if ($key == 'src')
                         array_push($attributes_array, $this->__attr_src);
 
-                    else if ($item == 'alt')
+                    else if ($key == 'alt')
                         array_push($attributes_array, $this->__attr_alt);
 
-                    else if ($item == 'width')
+                    else if ($key == 'width')
                         array_push($attributes_array, $this->__attr_width);
 
-                    else if ($item == 'height')
+                    else if ($key == 'height')
                         array_push($attributes_array, $this->__attr_height);
 
-                    else if ($item == 'usemap')
+                    else if ($key == 'usemap')
                         array_push($attributes_array, $this->__attr_usemap);
 
-                    else if ($item == 'ismap')
+                    else if ($key == 'ismap')
                         array_push($attributes_array, $this->__attr_ismap);
 
                     else
@@ -523,58 +515,58 @@
             if (HELPERS::Is_Valid_Array($events))
             {
 
-                foreach ($events as $item)
+                foreach ($events as $key => $value)
                 {
 
-                    if ($item == 'onserverclick')
+                    if ($key == 'onserverclick')
                         array_push($events_array, $this->__event_server_mouse);
 
-                    else if ($item == 'onajaxserverclick')
+                    else if ($key == 'onajaxserverclick')
                         array_push($events_array, $this->__event_ajax_server_mouse);
 
-                    else if ($item == 'onclick')
+                    else if ($key == 'onclick')
                         array_push($events_array, $this->__event_click);
 
-                    else if ($item == 'ondblclick')
+                    else if ($key == 'ondblclick')
                         array_push($events_array, $this->__event_dblclick);
 
-                    else if ($item == 'onmousedown')
+                    else if ($key == 'onmousedown')
                         array_push($events_array, $this->__event_mousedown);
 
-                    else if ($item == 'onmousemove')
+                    else if ($key == 'onmousemove')
                         array_push($events_array, $this->__event_mousemove);
 
-                    else if ($item == 'onmouseout')
+                    else if ($key == 'onmouseout')
                         array_push($events_array, $this->__event_mouseout);
 
-                    else if ($item == 'onmouseover')
+                    else if ($key == 'onmouseover')
                         array_push($events_array, $this->__event_mouseover);
 
-                    else if ($item == 'onmouseup')
+                    else if ($key == 'onmouseup')
                         array_push($events_array, $this->__event_mouseup);
 
-                    else if ($item == 'onfocus')
+                    else if ($key == 'onfocus')
                         array_push($events_array, $this->__event_focus);
 
-                    else if ($item == 'onblur')
+                    else if ($key == 'onblur')
                         array_push($events_array, $this->__event_blur);
 
-                    else if ($item == 'onserverkeydown')
+                    else if ($key == 'onserverkeydown')
                         array_push($events_array, $this->__event_server_key);
 
-                    else if ($item == 'onajaxserverkeydown')
+                    else if ($key == 'onajaxserverkeydown')
                         array_push($events_array, $this->__event_ajax_server_key);
 
-                    else if ($item == 'onkeydown')
+                    else if ($key == 'onkeydown')
                         array_push($events_array, $this->__event_keydown);
 
-                    else if ($item == 'onkeypress')
+                    else if ($key == 'onkeypress')
                         array_push($events_array, $this->__event_keypress);
 
-                    else if ($item == 'onkeyup')
+                    else if ($key == 'onkeyup')
                         array_push($events_array, $this->__event_keyup);
 
-                    else if ($item == 'onabort')
+                    else if ($key == 'onabort')
                         array_push($events_array, $this->__event_abort);
 
                     else

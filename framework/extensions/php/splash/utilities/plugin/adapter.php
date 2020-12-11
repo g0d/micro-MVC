@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: adapter.php (Version: 4.4)
+        File name: adapter.php (Version: 4.5)
         Description: This file contains the "ADAPTER" abstract class.
 
         Coded by George Delaportas (G0D)

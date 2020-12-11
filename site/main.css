@@ -12,7 +12,7 @@
 body
 {
     font: 15px Verdana;
-    background: #F5F5F5 url('/site/pix/bg.png') repeat fixed 50% 50%;
+    background: #F5F5F5;
     cursor: default;
     margin: 10px;
     padding: 0px;

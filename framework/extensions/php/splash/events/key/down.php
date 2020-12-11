@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: down.php (Version: 4.4)
+        File name: down.php (Version: 4.5)
         Description: This file contains the "Server - KEY DOWN" actions.
 
         Coded by George Delaportas (G0D)
@@ -20,9 +20,7 @@
         if ($message === false)
             return false;
 
-        echo $message;
-
-        return true;
+        return $message;
 
     }
 

@@ -1,11 +1,4 @@
 <?php
-    if (!empty($_POST))
-    {
-        $post_data = $_POST;
-
-        $_POST = null;
-    }
-
     UTIL::Load_Extension('vulcan', 'js');
     UTIL::Load_Extension('jap', 'js');
     UTIL::Load_Extension('bull', 'js');
@@ -21,6 +14,13 @@
     UTIL::Load_Extension('splash', 'php');
     UTIL::Load_Extension('keycard', 'php');
     UTIL::Load_Extension('regy', 'php');
+
+    if (!empty($_POST))
+    {
+        $post_data = $_POST;
+
+        $_POST = null;
+    }
 ?>
             <div id="test" class="page">
                 <div class="content">
@@ -46,7 +46,7 @@
                                                                          'class'    =>  'button button_alt'),
                                                                    array('onclick'  => 'ajax_fetch_content(\'motto\')'));
                                     echo '</div>';
-                                    //print_r($splash->Button('debug', array('value', 'id'), array('onajaxserverclick')));
+                                    //print_r($splash->Button('debug', array('value', 'id'), array('onclick')));
 
                                     echo '<div class="control_item">';
                                     echo $splash->Button('create', array('value'    =>  $test_text . ' (AJAX response)',
@@ -63,7 +63,7 @@
                                                                          'type'     =>  'button',
                                                                          'class'    =>  'button button_alt'),
                                                                    array('onserverclick'        => 
-                                                                   array('Server_Mouse_Click(Hello micro-MVC! (POST))', 
+                                                                   array('Server_Mouse_Click(Hello micro-MVC! (Form post))', 
                                                                          '../test/')));
                                     echo '</div>';
                                     //print_r($splash->Button('debug', array('value', 'id'), array('onserverclick')));
@@ -120,12 +120,17 @@
                             <?
                                 if (isset($post_data))
                                 {
-                                    $searches = array('{message}');
-                                    $replaces = array(print_r($post_data, true));
-                                    $arguments = array($searches, $replaces);
-                                    $info_template = UTIL::Fetch_Template('info', $arguments);
+                                    if (!empty($post_data['splash_post_result']))
+                                        echo $post_data['splash_post_result'];
+                                    else
+                                    {
+                                        $searches = array('{message}');
+                                        $replaces = array(print_r($post_data, true));
+                                        $arguments = array($searches, $replaces);
+                                        $info_template = UTIL::Fetch_Template('info', $arguments);
 
-                                    echo $info_template;
+                                        echo $info_template;
+                                    }
                                 }
                             ?>
                             </div>

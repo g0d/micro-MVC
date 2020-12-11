@@ -2,7 +2,7 @@
     /*
         spl@sh (Server-side HTML5 controls framework)
 
-        File name: splash.php (Version: 4.4)
+        File name: splash.php (Version: 4.5)
         Description: This file contains the "SPLASH" wrapper class.
         Dependencies: micro-MVC framework, Vulcan, BULL and JAP.
 
@@ -182,7 +182,7 @@
                     $result = $this->__link->Show($content, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__link->Fetch($content, $attributes, $events);
+                    $result = $this->__link->Debug($content, $attributes, $events);
 
                 else
                     return false;
@@ -211,7 +211,7 @@
                     $result = $this->__button->Show($attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__button->Fetch($attributes, $events);
+                    $result = $this->__button->Debug($attributes, $events);
 
                 else
                     return false;
@@ -240,7 +240,7 @@
                     $result = $this->__div->Show($content, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__div->Fetch($content, $attributes, $events);
+                    $result = $this->__div->Debug($content, $attributes, $events);
 
                 else
                     return false;
@@ -269,7 +269,7 @@
                     $result = $this->__table->Show($matrix, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__table->Fetch($matrix, $attributes, $events);
+                    $result = $this->__table->Debug($matrix, $attributes, $events);
 
                 else
                     return false;
@@ -298,7 +298,7 @@
                     $result = $this->__fieldset->Show($content, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__fieldset->Fetch($content, $attributes, $events);
+                    $result = $this->__fieldset->Debug($content, $attributes, $events);
 
                 else
                     return false;
@@ -327,7 +327,7 @@
                     $result = $this->__select->Show($options, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__select->Fetch($options, $attributes, $events);
+                    $result = $this->__select->Debug($options, $attributes, $events);
 
                 else
                     return false;
@@ -356,7 +356,7 @@
                     $result = $this->__list->Show($options, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__list->Fetch($options, $attributes, $events);
+                    $result = $this->__list->Debug($options, $attributes, $events);
 
                 else
                     return false;
@@ -385,7 +385,7 @@
                     $result = $this->__check->Show($attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__check->Fetch($attributes, $events);
+                    $result = $this->__check->Debug($attributes, $events);
 
                 else
                     return false;
@@ -414,7 +414,7 @@
                     $result = $this->__radio->Show($attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__radio->Fetch($attributes, $events);
+                    $result = $this->__radio->Debug($attributes, $events);
 
                 else
                     return false;
@@ -443,7 +443,7 @@
                     $result = $this->__label->Show($content, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__label->Fetch($content, $attributes, $events);
+                    $result = $this->__label->Debug($content, $attributes, $events);
 
                 else
                     return false;
@@ -472,7 +472,7 @@
                     $result = $this->__input->Show($attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__input->Fetch($attributes, $events);
+                    $result = $this->__input->Debug($attributes, $events);
 
                 else
                     return false;
@@ -501,7 +501,7 @@
                     $result = $this->__textbox->Show($content, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__textbox->Fetch($content, $attributes, $events);
+                    $result = $this->__textbox->Debug($content, $attributes, $events);
 
                 else
                     return false;
@@ -530,7 +530,7 @@
                     $result = $this->__image->Show($attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__image->Fetch($attributes, $events);
+                    $result = $this->__image->Debug($attributes, $events);
 
                 else
                     return false;
@@ -559,7 +559,7 @@
                     $result = $this->__audio->Show($options, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__audio->Fetch($options, $attributes, $events);
+                    $result = $this->__audio->Debug($options, $attributes, $events);
 
                 else
                     return false;
@@ -588,7 +588,7 @@
                     $result = $this->__video->Show($options, $attributes, $events);
 
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
-                    $result = $this->__video->Fetch($options, $attributes, $events);
+                    $result = $this->__video->Debug($options, $attributes, $events);
 
                 else
                     return false;

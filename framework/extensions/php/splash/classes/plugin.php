@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: plugin.php (Version: 4.4)
+        File name: plugin.php (Version: 4.5)
         Description: This file contains the "PLUGIN" abstract class.
 
         Coded by George Delaportas (G0D)
