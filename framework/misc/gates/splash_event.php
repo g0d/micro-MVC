@@ -1,9 +1,9 @@
 <?php
 	/*
-		Splash-Event (Programmable gate for Spl@sh extension actions)
+		spl@sh-Event (Programmable gate for spl@sh extension actions)
 		
 		File name: splash_event.php
-		Description: This file contains the Splash-Event gate (AJAX).
+		Description: This file contains the spl@sh-Event gate (AJAX).
 		
 		Coded by George Delaportas (G0D)
 		Copyright (C) 2020

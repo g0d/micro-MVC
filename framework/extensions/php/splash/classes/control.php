@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: control.php (Version: 4.5)
+        File name: control.php (Version: 4.6)
         Description: This file contains the "CONTROL" abstract class.
 
         Coded by George Delaportas (G0D)
@@ -18,7 +18,6 @@
     // Class: [CONTROL]
     abstract class CONTROL
     {
-
         // Attributes
         protected $__attr_id = null;
         protected $__attr_class = null;
@@ -46,7 +45,6 @@
         protected $__event_server_key = null;
         protected $__event_ajax_server_mouse = null;
         protected $__event_ajax_server_key = null;
-
     }
 
     /* ------------------------- END ------------------------- */

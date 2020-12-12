@@ -131,10 +131,10 @@
         // Normalize route
         public static function Normalize_Route($mvc_route)
         {
-            if (empty($mvc_route))
+            if (empty($mvc_route) || strpos($mvc_route, '_'))
                 return false;
             
-            return str_replace('-', '_', str_replace('/', '_', $mvc_route));
+            return str_replace('/', '_', $mvc_route);
         }
         
         // Denormalize route
@@ -143,7 +143,7 @@
             if (empty($mvc_route))
                 return false;
             
-            return str_replace('_', '-', str_replace('_', '/', $mvc_route));
+            return str_replace('_', '/', $mvc_route);
         }
         
         // Get data from a previously set session variable

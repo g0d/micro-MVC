@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: option.php (Version: 4.5)
+        File name: option.php (Version: 4.6)
         Description: This file contains the "OPTION" abstract class.
 
         Coded by George Delaportas (G0D)
@@ -18,7 +18,6 @@
     // Utility: [OPTION]
     abstract class OPTION extends CONTROL
     {
-
         // Attributes
         protected $__attr_name = null;
         protected $__attr_form = null;
@@ -30,7 +29,6 @@
         protected $__event_focus = null;
         protected $__event_blur = null;
         protected $__event_change = null;
-
     }
 
     /* ------------------------- END ------------------------- */

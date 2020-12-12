@@ -2,7 +2,7 @@
     /*
         spl@sh (Server-side HTML5 controls framework)
 
-        File name: splash.php (Version: 4.5)
+        File name: splash.php (Version: 4.6)
         Description: This file contains the "SPLASH" wrapper class.
         Dependencies: micro-MVC framework, Vulcan, BULL and JAP.
 
@@ -15,7 +15,7 @@
     if (!defined('micro_mvc'))
         exit();
 
-    // Load utilities and AJAX support
+    // Load JS utilities and AJAX support
     UTIL::Load_Extension('vulcan', 'js');
     UTIL::Load_Extension('jap', 'js');
     UTIL::Load_Extension('bull', 'js');
@@ -74,7 +74,6 @@
     // Wrapper class: [SPLASH]
     class SPLASH
     {
-
         // [ACTION]
         private $__link;
         private $__button;
@@ -116,9 +115,8 @@
 
         public function __construct()
         {
-
             /* ------------------------ [CONTROL] ------------------------ */
-            
+
             // [ACTION]
             $this->__link = new LINK();
             $this->__button = new BUTTON();
@@ -167,32 +165,27 @@
             // $this->__banner = new BANNER();
 
             /* ------------------------- END ------------------------- */
-
         }
+
+
 
         /* ------------------------ LINK ------------------------ */
 
         public function Link($mode, $content, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__link->Show($content, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__link->Debug($content, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -203,25 +196,19 @@
 
         public function Button($mode, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__button->Show($attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__button->Debug($attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -232,25 +219,19 @@
 
         public function Div($mode, $content, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__div->Show($content, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__div->Debug($content, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -261,25 +242,19 @@
 
         public function Table($mode, $matrix, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__table->Show($matrix, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__table->Debug($matrix, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -290,25 +265,18 @@
 
         public function Fieldset($mode, $content, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__fieldset->Show($content, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__fieldset->Debug($content, $attributes, $events);
-
                 else
                     return false;
-
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -319,25 +287,19 @@
 
         public function Select($mode, $options, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__select->Show($options, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__select->Debug($options, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -348,25 +310,19 @@
 
         public function CList($mode, $options, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__list->Show($options, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__list->Debug($options, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -377,25 +333,19 @@
 
         public function Check($mode, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__check->Show($attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__check->Debug($attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -406,25 +356,19 @@
 
         public function Radio($mode, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__radio->Show($attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__radio->Debug($attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -435,25 +379,19 @@
 
         public function Label($mode, $content, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__label->Show($content, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__label->Debug($content, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -464,25 +402,19 @@
 
         public function Input($mode, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__input->Show($attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__input->Debug($attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -493,25 +425,19 @@
 
         public function Textbox($mode, $content, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__textbox->Show($content, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__textbox->Debug($content, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -522,25 +448,19 @@
 
         public function Image($mode, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__image->Show($attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__image->Debug($attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -551,25 +471,19 @@
 
         public function Audio($mode, $options, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__audio->Show($options, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__audio->Debug($options, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */
@@ -580,25 +494,19 @@
 
         public function Video($mode, $options, $attributes = null, $events = null)
         {
-
             if (HELPERS::Is_Valid_Mode($mode))
             {
-
                 if (HELPERS::Mode_Matches_Case($mode, 1))
                     $result = $this->__video->Show($options, $attributes, $events);
-
                 else if (HELPERS::Mode_Matches_Case($mode, 2))
                     $result = $this->__video->Debug($options, $attributes, $events);
-
                 else
                     return false;
 
                 return $result;
-
             }
 
             return false;
-
         }
 
         /* ------------------------- END ------------------------- */

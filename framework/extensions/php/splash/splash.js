@@ -1,7 +1,7 @@
 /*
     spl@sh (JS Utility for AJAX)
 
-    File name: splash.js (Version: 4.5)
+    File name: splash.js (Version: 4.6)
     Description: This file contains the spl@sh JS utility.
     Dependencies: Vulcan and BULL.
 
@@ -35,29 +35,19 @@ var splash = function(action, mode, misc, func)
                              dynamic_element.setAttribute('method', 'post');
 
                              form = dynamic_element;
-
                              dynamic_element = __set_input(1);
-
                              form.appendChild(dynamic_element);
-
                              dynamic_element = __set_input(2, action);
-
                              form.appendChild(dynamic_element);
-
                              document.body.appendChild(form);
-
                              form.submit();
                          }
                          else
                          {
                              dynamic_element = __set_input(1);
-
                              form[0].appendChild(dynamic_element);
-
                              dynamic_element = __set_input(2, action);
-
                              form[0].appendChild(dynamic_element);
-
                              form[0].submit();
                          }
                      }

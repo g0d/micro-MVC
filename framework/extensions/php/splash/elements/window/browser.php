@@ -2,7 +2,7 @@
     /*
         spl@sh (Class)
 
-        File name: browser.php (Version: 4.5)
+        File name: browser.php (Version: 4.6)
         Description: This file contains the "BROWSER" abstract class.
 
         Coded by George Delaportas (G0D)
@@ -18,10 +18,7 @@
     // Class: [BROWSER]
     class BROWSER extends WINDOW
     {
-
-        // To Do:
-        // Code here...
-
+        // To Do: Code here...
     }
 
     /* ------------------------- END ------------------------- */
