@@ -24,13 +24,8 @@ thousands of requests per minute from all over the globe. The results proved tha
 Enjoy!
 
 Best,
-
 George Delaportas (G0D)
-
 Copyright (C) 2015-2020 micro-MVC
-
 Open Software License (OSL 3.0)
-
 Supported by [PROBOTEK](https://probotek.eu/)
-
 Audited for web security & certified by [OCTAGON](https://octagonsec.gr/)
