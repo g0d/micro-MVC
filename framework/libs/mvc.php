@@ -57,22 +57,20 @@
         {
             if ($option === 'this')
             {
-                $result = UTIL::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
-                $is_fb = strpos($result, 'fbclid');
+                $full_url = UTIL::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
                 
                 if ($lang_relative === true)
-                    $result = substr($result, 3);
+                    $url = substr($full_url, 3);
                 
-                if ($result === 'root')
+                if ($url === 'root')
                     return false;
                 
-                if ($result === '' || $result === false)
-                    $result = 'root';
+                if ($url === '' || $url === false)
+                    $url = 'root';
                 
-                if ($is_fb)
-                    $result = substr($result, 0, strpos($result, '&'));
+                $url = UTIL::Check_Valid_Params($url);
                 
-                if ($lang_relative === true && !self::Route_Exists($result))
+                if ($lang_relative === true && !self::Route_Exists($url))
                     return false;
             }
             else if ($option === 'all')
@@ -80,12 +78,12 @@
                 if ($lang_relative === false)
                     return false;
                 
-                $result = self::$__mvc_routes;
+                $url = self::$__mvc_routes;
             }
             else
                 return false;
             
-            return $result;
+            return $url;
         }
         
         // Set a virtual MVC route

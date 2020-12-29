@@ -15,7 +15,7 @@
         exit();
 
 	// Auto search and load dispatching conditions
-	$available_conditions = UTIL::Process_Dir(UTIL::Absolute_Path('framework/misc/conditions'), true);
+	$available_conditions = UTIL::Process_Dir(UTIL::Absolute_Path('framework/misc/dispatchers/conditions'), true);
 
 	// Close on error
 	if (empty($available_conditions))

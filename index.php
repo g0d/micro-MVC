@@ -10,7 +10,7 @@
         Open Software License (OSL 3.0)
     */
 
-    // Enable: 1 (report typical errors) | -1 (report all errors) / Disable: 0 (no error reporting)
+    // Enable: E_WARNING | E_PARSE (report typical errors), -1 (report all errors) / Disable: 0 (no error reporting)
     error_reporting(0);
 
     // Enable sessions

@@ -20,13 +20,16 @@
         // Shared database connection
         private static $__db_con = null;
         
+        // Shared result set identifier
+        private static $__result_set_id = null;
+        
         // Shared database configuration file
         private static $__db_conf = 'framework/config/db.cfg';
         
         // Connect to the database
-        public static function Connect($user, $pass, $domain, $db, $port = 3306)
+        public static function Connect($user, $pass, $domain, $db = null, $port = 3306)
         {
-            if (empty($user) || empty($domain) || empty($db))
+            if (empty($user) || empty($domain))
                 return false;
             
             $mysql_con = mysqli_connect($domain, $user, $pass, $db, $port);
@@ -170,10 +173,12 @@
             if ($mysql_result === false)
                 return false;
             
+            self::$__result_set_id = $mysql_result;
+            
             if (!is_bool($mysql_result))
             {
                 $array_result = array();
-
+                
                 while ($mysql_row = mysqli_fetch_array($mysql_result))
                     $array_result[] = $mysql_row;
                 
@@ -204,6 +209,20 @@
             self::Disconnect($mysql_con);
             
             return $mysql_result;
+        }
+        
+        // Get object
+        public static function Get_Object($class)
+        {
+            if (empty(self::$__result_set_id) || empty($class))
+                return false;
+            
+            $result = array();
+            
+            while ($object = mysqli_fetch_object(self::$__result_set_id, $class))
+                $result[] = $object;
+            
+            return $result;
         }
     }
 ?>

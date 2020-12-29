@@ -25,7 +25,7 @@
         {
             if (empty($lang) || !ctype_alpha($lang) || strlen($lang) != 2)
                 return false;
-
+            
             return true;
         }
         
@@ -65,13 +65,13 @@
         {
             if (self::Is_Country_Code($lang) === false)
                 return false;
-
+            
             if (!in_array($lang, self::$__langs))
                 return false;
-
+            
             return true;
         }
-
+        
         // Check if the language code exists in config
         public static function Exists($lang)
         {
@@ -80,7 +80,7 @@
             
             if (in_array($lang, self::$__langs))
                 return true;
-
+            
             return false;
         }
     }

@@ -1,0 +1,22 @@
+{
+    "ajax_factory"      :   "core",
+    "bull"              :   "core",
+    "centurion"         :   "core",
+    "content_fetcher"   :   "core",
+    "heartbeat"         :   "core",
+    "jap"               :   "core",
+    "key_manager"       :   "core",
+    "msgbox"            :   "core",
+    "pythia"            :   "core",
+    "sensei"            :   "core",
+    "stopwatch"         :   "core",
+    "vulcan"            :   "core",
+    "aether"            :   "user",
+    "armadillo"         :   "user",
+    "fx"                :   "user",
+    "lava"              :   "user",
+    "parallel"          :   "user",
+    "snail"             :   "user",
+    "ultron"            :   "user",
+    "workbox"           :   "user"
+}

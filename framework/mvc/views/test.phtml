@@ -14,6 +14,7 @@
     UTIL::Load_Extension('splash', 'php');
     UTIL::Load_Extension('keycard', 'php');
     UTIL::Load_Extension('regy', 'php');
+    UTIL::Load_Extension('ra', 'php');
 
     if (!empty($_POST))
     {
@@ -21,6 +22,21 @@
 
         $_POST = null;
     }
+
+    $RA = new RA();
+    $result = $RA::ORM('my')
+              ->Initialize('root', '', 'localhost')
+              ->Use_DB_Model('test_odb')
+              ->Save_DB()
+              ->Use_Table_Model('test_table_1')
+              ->New_Model_Property('Surname', 'Smith')
+              ->Delete_Model_Property('name')
+              ->Save_Table('test_table_1')
+              ->Use_Table_Model('test_table_2')
+              ->New_Model_Property('Surname', 'Stalone')
+              ->Edit_Model_Property('Surname', 'Statham')
+              ->Save_Table('test_table_2')
+              ->Result();
 ?>
             <div id="test" class="page">
                 <div class="content">

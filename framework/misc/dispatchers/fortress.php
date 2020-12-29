@@ -25,7 +25,7 @@
 	}
 
 	// Include corresponding gate
-	require('framework/misc/gates/' . $_POST['gate'] . '.php');
+	require('framework/misc/dispatchers/gates/' . $_POST['gate'] . '.php');
 
 	// ----------------------------
 ?>

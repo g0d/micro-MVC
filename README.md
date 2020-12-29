@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (3.3)
+# micro-MVC (4.0)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3246d5ff1c745c4a77e5f15a4893378)](https://www.codacy.com/app/g.delaportas/micro-MVC?utm_source=github.com&utm_medium=referral&utm_content=g0d/micro-MVC&utm_campaign=badger)
 
@@ -18,19 +18,18 @@ micro-MVC is optimized, secure, lightning fast and consumes the least resources 
 The framework runs on nearly any platform including embedded systems and has been tested extensively in several hardware configurations. 
 Also, it comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
 
+The latest relase comes with the "Awesome!" platform that acts as a shorthand for micro-MVC folder structure and provides an easy way 
+for developers to access and manage their front-end and back-end code separately and the designers to work without conflicts almost in parallel.
+
 Finally, on Dec-10-2020, micro-MVC has been audited, tested thoroughly for security vulnerabilities and put under stress with 
 thousands of requests per minute from all over the globe. The results proved that micro-MVC is dependable and highly secure.
 
 Enjoy!
 
 Best,
-
 George Delaportas (G0D)
-
 Copyright (C) 2015-2020 micro-MVC
-
 Open Software License (OSL 3.0)
-
 Supported by [PROBOTEK](https://probotek.eu/)
-
 Audited for web security & certified by [OCTAGON](https://octagonsec.gr/)
+

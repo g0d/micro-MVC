@@ -32,10 +32,23 @@
             return false;
         }
         
-        // Configuration importer
-        public static function Config_Importer($config_file, $delimiter = null)
+        // Fetch extensions registry
+        private static function Fetch_Extensions_Registry($ext_type)
         {
-            $file_result = file_get_contents(self::Absolute_Path('framework/config/') . $config_file . '.cfg');
+            $ext_registry_path = self::Absolute_Path('framework/config/registry/' . $ext_type . '.json');
+            $ext_registry_data = file_get_contents($ext_registry_path);
+            $result = json_decode($ext_registry_data, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE)
+                return false;
+            
+            return $result;
+        }
+        
+        // Configuration importer
+        public static function Config_Importer($config_file, $sub_dir = '', $delimiter = null)
+        {
+            $file_result = file_get_contents(self::Absolute_Path('framework/config/') . $sub_dir . '/' . $config_file . '.cfg');
             
             if ($file_result === false)
                 return false;
@@ -47,11 +60,11 @@
             
             return $results;
         }
-
+        
         // Setup languages
         public static function Setup_Languages()
         {
-            $langs_array = self::Config_Importer('langs', ',');
+            $langs_array = self::Config_Importer('langs', '', ',');
             
             foreach ($langs_array as $lang)
                 LANG::Set($lang);
@@ -62,7 +75,7 @@
         // Setup routes
         public static function Setup_Routes()
         {
-            $routes_array = self::Config_Importer('routes', ',');
+            $routes_array = self::Config_Importer('routes', '', ',');
             
             foreach ($routes_array as $route)
                 MVC::Set_Route($route);
@@ -74,10 +87,10 @@
         public static function Load_Activities()
         {
             $gates_json_array = null;
-            $gates_array = self::Config_Importer('gates', ',');
+            $gates_array = self::Config_Importer('gates', '', ',');
             
             $gates_json_array = '[';
-
+            
             foreach ($gates_array as $gate)
                 $gates_json_array .= '"' . $gate . '",';
             
@@ -113,7 +126,7 @@
                 $lang = substr($normalized_route, 0);
             else
                 $lang = substr($normalized_route, 0, $dash_pos);
-
+            
             return $lang;
         }
         
@@ -144,6 +157,26 @@
                 return false;
             
             return str_replace('_', '/', $mvc_route);
+        }
+        
+        // Check valid params
+        public static function Check_Valid_Params($url)
+        {
+            $params_array = self::Config_Importer('params', '', ',');
+            
+            foreach ($params_array as $param)
+            {
+                $param_exists = strpos($url, $param);
+                
+                if ($param_exists)
+                {
+                    $url = substr($url, 0, strpos($url, '&'));
+                    
+                    break;
+                }
+            }
+            
+            return $url;
         }
         
         // Get data from a previously set session variable
@@ -197,19 +230,19 @@
         public static function Load_Content($content_code, $mode, $lang = null)
         {
             $load_modes = array('dynamic', 'static');
-
+            
             if (!in_array($mode, $load_modes))
                 return false;
             
             $filename = self::Content_Data($content_code, $lang);
-
+            
             if ($filename === false)
                 return false;
             
             if ($mode === 'dynamic')
             {
                 require($filename);
-
+                
                 return true;
             }
             else
@@ -228,7 +261,7 @@
                 return false;
             
             require($filename);
-
+            
             return true;
         }
         
@@ -257,7 +290,7 @@
         public static function Log($log_data, $log_type)
         {
             $log_types = array('info', 'error');
-
+            
             if (empty($log_data) || empty($log_type) || !in_array($log_type, $log_types))
                 return false;
             
@@ -425,14 +458,17 @@
             
             if ($ext_type === 'php')            // PHP extensions
             {
+                $absolute_path = self::Absolute_Path('framework/extensions/php');
+                $result = self::Process_Dir($absolute_path, true);
+                
+                // Close on error
+                if (empty($result))
+                    return false;
+                
+                $ext_reg = self::Fetch_Extensions_Registry($ext_type);
+                
                 if ($extension === 'all')
                 {
-                    $result = self::Process_Dir(self::Absolute_Path('framework/extensions/php'), true);
-                    
-                    // Close on error
-                    if (empty($result))
-                        return false;
-                    
                     // Load all the extensions
                     foreach ($result as $file)
                     {
@@ -440,10 +476,14 @@
                         
                         if ($file_ext === 'php')
                         {
-                            $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
+                            $dir_path_name = mb_substr($file['dirpath'], strrpos($file['dirpath'], '/') + 1);
+                            $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 4, 'utf8');
                             
-                            if (!self::Check_Extension_Cache($file_name))
-                                require_once($file['dirpath'] . '/' . $file['filename']);
+                            if ($dir_path_name === $file_name && !self::Check_Extension_Cache($file_name))
+                            {
+                                require_once($absolute_path . '/' . $ext_reg[$file_name] . '/' . 
+                                             $file_name . '/' . $file['filename']);
+                            }
                         }
                     }
                     
@@ -451,25 +491,24 @@
                 }
                 else
                 {
-                    $result = self::Process_Dir(self::Absolute_Path('framework/extensions/php/' . $extension), false);
-                    
-                    // Close on error
-                    if (empty($result))
-                        return false;
-                    
                     // Load this extension
                     foreach ($result as $file)
                     {
-                        if (mb_substr($file['filename'], 0, strlen($file['filename']) - 4, 'utf8') === $extension)
+                        $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 4, 'utf8');
+
+                        if ($file_name === $extension)
                         {
                             $file_ext = mb_substr($file['filename'], -3, 3, 'utf8');
                             
                             if ($file_ext === 'php')
                             {
                                 if (!self::Check_Extension_Cache($extension))
-                                    require_once($file['dirpath'] . '/' . $file['filename']);
-                                
-                                break;
+                                {
+                                    require_once($absolute_path . '/' . $ext_reg[$file_name] . '/' . 
+                                                 $extension . '/' . $file['filename']);
+                                    
+                                    break;
+                                }
                             }
                         }
                     }
@@ -479,14 +518,17 @@
             }
             else if ($ext_type === 'js')        // Javascript extensions
             {
+                $absolute_path = self::Absolute_Path('framework/extensions/js');
+                $result = self::Process_Dir($absolute_path, true);
+                
+                // Close on error
+                if (empty($result))
+                    return false;
+                
+                $ext_reg = self::Fetch_Extensions_Registry($ext_type);
+                
                 if ($extension === 'all')
                 {
-                    $result = self::Process_Dir(self::Absolute_Path('framework/extensions/js'), true);
-                    
-                    // Close on error
-                    if (empty($result))
-                        return false;
-                    
                     // Load all the extensions
                     foreach ($result as $file)
                     {
@@ -494,11 +536,14 @@
                         
                         if ($file_ext === 'js')
                         {
-                            $dir_path = mb_substr($file['dirpath'], strrpos($file['dirpath'], '/') + 1);
-                            $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 2, 'utf8');
+                            $dir_path_name = mb_substr($file['dirpath'], strrpos($file['dirpath'], '/') + 1);
+                            $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
                             
-                            if (!self::Check_Extension_Cache($file_name))
-                                echo '<script src="/framework/extensions/js/' . $dir_path . '/' . $file['filename'] . '"></script>';
+                            if ($dir_path_name === $file_name && !self::Check_Extension_Cache($file_name))
+                            {
+                                echo '<script src="/framework/extensions/js/' . $ext_reg[$file_name] . '/' . 
+                                      $dir_path_name . '/' . $file['filename'] . '"></script>';
+                            }
                         }
                     }
                     
@@ -506,23 +551,22 @@
                 }
                 else
                 {
-                    $result = self::Process_Dir(self::Absolute_Path('framework/extensions/js/' . $extension), false);
-                    
-                    // Close on error
-                    if (empty($result))
-                        return false;
-                    
                     // Load this extension
                     foreach ($result as $file)
                     {
-                        if (mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8') === $extension)
+                        $file_name = mb_substr($file['filename'], 0, strlen($file['filename']) - 3, 'utf8');
+                        
+                        if ($file_name === $extension)
                         {
                             $file_ext = mb_substr($file['filename'], -2, 2, 'utf8');
                             
                             if ($file_ext === 'js')
                             {
                                 if (!self::Check_Extension_Cache($extension))
-                                    echo '<script src="/framework/extensions/js/' . $extension . '/' . $file['filename'] . '"></script>';
+                                {
+                                    echo '<script src="/framework/extensions/js/' . $ext_reg[$file_name] . '/' . 
+                                          $extension . '/' . $file['filename'] . '"></script>';
+                                }
                                 
                                 break;
                             }
@@ -531,8 +575,6 @@
                     
                     return true;
                 }
-                
-                echo '<noscript>Your browser does not support JavaScript!</noscript>';
             }
             else
                 return false;
