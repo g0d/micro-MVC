@@ -18,7 +18,7 @@ micro-MVC is optimized, secure, lightning fast and consumes the least resources 
 The framework runs on nearly any platform including embedded systems and has been tested extensively in several hardware configurations. 
 Also, it comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
 
-The latest relase comes with the "Awesome!" platform that acts as a shorthand for micro-MVC folder structure and provides an easy way 
+The latest release comes with the "Awesome!" platform that acts as a shorthand for micro-MVC folder structure and provides an easy way 
 for developers to access and manage their front-end and back-end code separately and the designers to work without conflicts almost in parallel.
 
 Finally, on Dec-10-2020, micro-MVC has been audited, tested thoroughly for security vulnerabilities and put under stress with 
