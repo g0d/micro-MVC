@@ -17,10 +17,16 @@
     // LANG class
     class LANG
     {
-        // Default language code
+        /** @var static Default language code */
         private static $__langs = array(0 => 'en');
         
-        // Check if the argument is a valid country code
+        /**
+        * LANG::Is_Country_Code - Check if supplied argument is a valid country code
+        *
+        * @param string $lang A 2 letter international country code
+        *
+        * @return bool
+        */
         public static function Is_Country_Code($lang)
         {
             if (empty($lang) || !ctype_alpha($lang) || strlen($lang) != 2)
@@ -29,7 +35,13 @@
             return true;
         }
         
-        // Get current or all physical and virtual language codes ("this" / "all") [Returns 'en' if option is null or language is missing from route]
+        /**
+        * LANG::Get - Get current or all physical and virtual language codes
+        *
+        * @param string $option "this" / "all" (default: null)
+        *
+        * @return mixed Returns 'en' if option is null or language is missing from route, otherwise current language
+        */
         public static function Get($option = null)
         {
             if ($option === null)
@@ -47,7 +59,13 @@
                 return false;
         }
         
-        // Set a new virtual language code
+        /**
+        * LANG::Set - Set a new virtual language code
+        *
+        * @param string $lang A 2 letter international country code
+        *
+        * @return bool
+        */
         public static function Set($lang)
         {
             $fixed_lang = trim($lang);
@@ -60,7 +78,13 @@
             return true;
         }
         
-        // Verify the language code is valid
+        /**
+        * LANG::Verify - Verify the language code is valid
+        *
+        * @param string $lang A 2 letter international country code
+        *
+        * @return bool
+        */
         public static function Verify($lang)
         {
             if (self::Is_Country_Code($lang) === false)
@@ -72,7 +96,13 @@
             return true;
         }
         
-        // Check if the language code exists in config
+        /**
+        * LANG::Exists - Check if the language code exists in config
+        *
+        * @param string $lang A 2 letter international country code
+        *
+        * @return bool
+        */
         public static function Exists($lang)
         {
             if (self::Is_Country_Code($lang) === false)

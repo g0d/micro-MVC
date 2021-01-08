@@ -20,7 +20,7 @@ console.log('DB set: ' + my_armadillo.db.set('New DB'));
 console.log('DB use: ' + my_armadillo.db.use('New DB'));
 
 console.log('Record 1 inserted: ' + my_armadillo.records.insert(new_rec_1));
-console.log('Record 2 inserted: ' + my_armadillo.records.insert(new_rec_2))
+console.log('Record 2 inserted: ' + my_armadillo.records.insert(new_rec_2));
 
 console.log('Records fetched: ');
 console.log(my_armadillo.records.fetch());

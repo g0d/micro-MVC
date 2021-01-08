@@ -156,7 +156,7 @@ function keycard()
         }
         else if (mode === 'logout')
         {
-            logout_button_object = utils.objects.by_id('logout_button')
+            logout_button_object = utils.objects.by_id('logout_button');
 
             utils.events.attach('logout', logout_button_object, 'click', logout);
         }

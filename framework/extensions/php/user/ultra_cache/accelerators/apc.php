@@ -106,7 +106,7 @@
                 
                 $contents = file_get_contents($filename);
                 
-                if (!$result)
+                if (!$contents)
                     return false;
                 
                 $cache_result = apcu_store($key, $contents, $ttl);
@@ -127,7 +127,7 @@
             if (!$exists)
                 return false;
             
-            return apcu_store($key, $contents, $ttl);
+            return apcu_store($key, $filename, $ttl);
         }
     }
 ?>

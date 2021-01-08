@@ -17,16 +17,26 @@
     // DB class
     class DB
     {
-        // Shared database connection
+        /** @var static Shared DB connection */
         private static $__db_con = null;
         
-        // Shared result set identifier
+        /** @var static Shared result set identifier */
         private static $__result_set_id = null;
         
-        // Shared database configuration file
+        /** @var static Shared database configuration file */
         private static $__db_conf = 'framework/config/db.cfg';
         
-        // Connect to the database
+        /**
+        * DB::Connect - Grants you access to a MySQL RDBMS
+        *
+        * @param string $user RDBMS user
+        * @param string $pass RDBMS password
+        * @param string $domain Domain name or IP where RDBMS is installed
+        * @param string $db Database you want to work on after connection is established (optional parameter / default: null)
+        * @param int $port RDBMS port number (optional parameter / default: 3306)
+        *
+        * @return resource A connection ID for the RDBS
+        */
         public static function Connect($user, $pass, $domain, $db = null, $port = 3306)
         {
             if (empty($user) || empty($domain))
@@ -54,7 +64,13 @@
             return self::$__db_con;
         }
         
-        // Disconnect from the database
+        /**
+        * DB::Disconnect - Close connection to a MySQL RDBMS
+        *
+        * @param string $connection_id A connection ID for the RDBS
+        *
+        * @return bool
+        */
         public static function Disconnect($connection_id)
         {
             if (empty($connection_id))
@@ -70,8 +86,18 @@
             return true;
         }
         
-        // Store a database connection
-        public static function Store_Connection($user, $pass, $domain, $db, $port)
+        /**
+        * DB::Store_Connection - Store a conection ID for a MySQL RDBMS
+        *
+        * @param string $user RDBMS user
+        * @param string $pass RDBMS password
+        * @param string $domain Domain name or IP where RDBMS is installed
+        * @param string $db Database you want to work on after connection is established (optional parameter / default: null)
+        * @param int $port RDBMS port number (optional parameter / default: 3306)
+        *
+        * @return bool
+        */
+        public static function Store_Connection($user, $pass, $domain, $db = null, $port = 3306)
         {
             if (empty($user) || empty($domain) || empty($db))
                 return false;
@@ -91,7 +117,11 @@
             return true;
         }
         
-        // Restore the database connection
+        /**
+        * DB::Restore_Connection - Restore a connection to MySQL RDBMS
+        *
+        * @return array Array of connection parameters
+        */
         public static function Restore_Connection()
         {
             $result = array();
@@ -113,7 +143,11 @@
             return $result;
         }
         
-        // Use the current database connection
+        /**
+        * DB::Use_Connection - Use an already initialized connection to MySQL RDBMS
+        *
+        * @return resource A connection ID for the RDBS
+        */
         public static function Use_Connection()
         {
             if (empty(self::$__db_con))
@@ -136,7 +170,11 @@
             return self::$__db_con;
         }
         
-        // Delete the database connection
+        /**
+        * DB::Delete_Connection - Delete connection to MySQL RDBMS
+        *
+        * @return bool
+        */
         public static function Delete_Connection()
         {
             $file_handler = fopen(UTIL::Absolute_Path(self::$__db_conf), 'w');
@@ -157,7 +195,13 @@
             return true;
         }
         
-        // Execute SQL commands
+        /**
+        * DB::Exec_SQL_Command - Execute an SQL command
+        *
+        * @param string $sql_com An SQL query
+        *
+        * @return mixed
+        */
         public static function Exec_SQL_Command($sql_com)
         {
             if (empty($sql_com))
@@ -188,7 +232,13 @@
             return $mysql_result;
         }
         
-        // Execute SQL script files
+        /**
+        * DB::Exec_SQL_Script - Execute an SQL script
+        *
+        * @param string $sql_file An SQL file
+        *
+        * @return mixed
+        */
         public static function Exec_SQL_Script($sql_file)
         {
             if (empty($sql_file))
@@ -211,7 +261,13 @@
             return $mysql_result;
         }
         
-        // Get object
+        /**
+        * DB::Get_Object - Get an object representation (class) of an SQL table
+        *
+        * @param string $class An SQL table
+        *
+        * @return object
+        */
         public static function Get_Object($class)
         {
             if (empty(self::$__result_set_id) || empty($class))

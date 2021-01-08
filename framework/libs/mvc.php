@@ -20,13 +20,20 @@
     // MVC class
     class MVC
     {
-        // MVC - Routes
+        /** @var static MVC routes (array) */
         private static $__mvc_routes = array(0 => 'root');
         
-        // MVC - Variables
+        /** @var static MVC variables (array) */
         private static $__mvc_vars = array();
         
-        // Go to the specified virtual MVC route passing any arguments
+        /**
+        * MVC::Go_To - Go to the specified virtual MVC route passing any arguments
+        *
+        * @param string $method A method to call (if exists) for this specific route [method = route]
+        * @param mixed $args Any arguments for this method / route (default: null)
+        *
+        * @return bool
+        */
         public static function Go_To($method, $args = null)
         {
             if (empty($method))
@@ -52,7 +59,14 @@
             return true;
         }
         
-        // Get current or all virtual MVC routes ("this" / "all") choosing if route is relative or absolute to language code
+        /**
+        * MVC::Get_Route - Get current or all virtual MVC routes
+        *
+        * @param string $option "this" / "all"
+        * @param bool $lang_relative Set whether route is relative or absolute to language code (default: true)
+        *
+        * @return string The route URL
+        */
         public static function Get_Route($option, $lang_relative = true)
         {
             if ($option === 'this')
@@ -86,7 +100,13 @@
             return $url;
         }
         
-        // Set a virtual MVC route
+        /**
+        * MVC::Set_Route - Set a virtual MVC route
+        *
+        * @param string $mvc_route A route
+        *
+        * @return bool
+        */
         public static function Set_Route($mvc_route)
         {
             $fixed_route = trim($mvc_route);
@@ -99,7 +119,13 @@
             return true;
         }
         
-        // Check if a route exists
+        /**
+        * MVC::Route_Exists - Check if a route exists
+        *
+        * @param string $this_route A route
+        *
+        * @return bool
+        */
         public static function Route_Exists($this_route)
         {
             if (!in_array($this_route, self::$__mvc_routes))
@@ -107,8 +133,15 @@
             
             return true;
         }
-
-        // Store an MVC content
+        
+        /**
+        * MVC::Store_Content - Store an MVC content
+        *
+        * @param string $mvc_var A variable
+        * @param string $content Any content
+        *
+        * @return bool
+        */
         public static function Store_Content($mvc_var, $content)
         {
             if (empty($mvc_var))
@@ -119,7 +152,13 @@
             return true;
         }
         
-        // Restore an MVC content
+        /**
+        * MVC::Restore_Content - Restore an MVC content
+        *
+        * @param string $mvc_var A variable
+        *
+        * @return mixed
+        */
         public static function Restore_Content($mvc_var)
         {
             if (empty($mvc_var))

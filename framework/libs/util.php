@@ -17,7 +17,13 @@
     // UTIL class
     class UTIL
     {
-        // Check extension cache
+        /**
+        * UTIL::Check_Extension_Cache - Check extension cache
+        *
+        * @param string $extension An extension name
+        *
+        * @return bool
+        */
         private static function Check_Extension_Cache($extension)
         {
             $cached_extensions = self::Get_Session_Variable('extensions_cache');
@@ -32,12 +38,18 @@
             return false;
         }
         
-        // Fetch extensions registry
-        private static function Fetch_Extensions_Registry($ext_type)
+        /**
+        * UTIL::Fetch_Extensions - Fetch all extensions of a type
+        *
+        * @param string $ext_type An extension type ("php" / "js")
+        *
+        * @return array
+        */
+        private static function Fetch_Extensions($ext_type)
         {
-            $ext_registry_path = self::Absolute_Path('framework/config/registry/' . $ext_type . '.json');
-            $ext_registry_data = file_get_contents($ext_registry_path);
-            $result = json_decode($ext_registry_data, true);
+            $ext_path = self::Absolute_Path('framework/config/registry/' . $ext_type . '.json');
+            $ext_data = file_get_contents($ext_path);
+            $result = json_decode($ext_data, true);
             
             if (json_last_error() !== JSON_ERROR_NONE)
                 return false;
@@ -45,7 +57,15 @@
             return $result;
         }
         
-        // Configuration importer
+        /**
+        * UTIL::Config_Importer - Configuration importer
+        *
+        * @param string $config_file Name of the configuration file
+        * @param string $sub_dir Subdirectory path (default: '')
+        * @param string $delimiter Delimiter to use (default: null)
+        *
+        * @return array
+        */
         public static function Config_Importer($config_file, $sub_dir = '', $delimiter = null)
         {
             $file_result = file_get_contents(self::Absolute_Path('framework/config/') . $sub_dir . '/' . $config_file . '.cfg');
@@ -61,7 +81,11 @@
             return $results;
         }
         
-        // Setup languages
+        /**
+        * UTIL::Setup_Languages - Setup languages
+        *
+        * @return bool
+        */
         public static function Setup_Languages()
         {
             $langs_array = self::Config_Importer('langs', '', ',');
@@ -72,7 +96,11 @@
             return true;
         }
         
-        // Setup routes
+        /**
+        * UTIL::Setup_Routes - Setup routes
+        *
+        * @return bool
+        */
         public static function Setup_Routes()
         {
             $routes_array = self::Config_Importer('routes', '', ',');
@@ -82,8 +110,12 @@
             
             return true;
         }
-
-        // Load registered activities (Fortress gates)
+        
+        /**
+        * UTIL::Load_Activities - Load registered activities (Fortress gates)
+        *
+        * @return array
+        */
         public static function Load_Activities()
         {
             $gates_json_array = null;
@@ -105,7 +137,13 @@
             return $result;
         }
         
-        // Absolute system path of a relative file path
+        /**
+        * UTIL::Absolute_Path - Absolute system path of a relative file path
+        *
+        * @param string $file_path A file path (default: null)
+        *
+        * @return string
+        */
         public static function Absolute_Path($file_path = null)
         {
             $final_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $file_path;
@@ -116,7 +154,11 @@
             return $final_path;
         }
         
-        // Fetch the language code from route
+        /**
+        * UTIL::Fetch_Route_Lang - Fetch the language code from route
+        *
+        * @return string
+        */
         public static function Fetch_Route_Lang()
         {
             $normalized_route = self::Normalize_Route(substr($_SERVER['QUERY_STRING'], 4));
@@ -130,7 +172,11 @@
             return $lang;
         }
         
-        // Check for language code in route
+        /**
+        * UTIL::Check_Route_Lang - Check for language code in route
+        *
+        * @return bool
+        */
         public static function Check_Route_Lang()
         {
             $lang = self::Fetch_Route_Lang();
@@ -141,7 +187,13 @@
             return true;
         }
         
-        // Normalize route
+        /**
+        * UTIL::Normalize_Route - Normalize route
+        *
+        * @param string $mvc_route A denormalized MVC route
+        *
+        * @return string A normalized route
+        */
         public static function Normalize_Route($mvc_route)
         {
             if (empty($mvc_route) || strpos($mvc_route, '_'))
@@ -150,7 +202,13 @@
             return str_replace('/', '_', $mvc_route);
         }
         
-        // Denormalize route
+        /**
+        * UTIL::Denormalize_Route - Denormalize route
+        *
+        * @param string $mvc_route A normalized MVC route
+        *
+        * @return string A denormalized route
+        */
         public static function Denormalize_Route($mvc_route)
         {
             if (empty($mvc_route))
@@ -159,7 +217,13 @@
             return str_replace('_', '/', $mvc_route);
         }
         
-        // Check valid params
+        /**
+        * UTIL::Check_Valid_Params - Check valid parameters for a URL
+        *
+        * @param string $url A URL
+        *
+        * @return string A clean URL without parameters
+        */
         public static function Check_Valid_Params($url)
         {
             $params_array = self::Config_Importer('params', '', ',');
@@ -179,7 +243,13 @@
             return $url;
         }
         
-        // Get data from a previously set session variable
+        /**
+        * UTIL::Get_Session_Variable - Get data from a previously set session variable
+        *
+        * @param string $variable_name A variable name
+        *
+        * @return mixed
+        */
         public static function Get_Session_Variable($variable_name)
         {
             if (empty($variable_name))
@@ -191,7 +261,14 @@
             return $_SESSION['micro_mvc'][$variable_name];
         }
         
-        // Set a new session variable and put data (optional)
+        /**
+        * UTIL::Set_Session_Variable - Set a new session variable and put any data
+        *
+        * @param string $variable_name A variable name
+        * @param mixed $variable_data Data
+        *
+        * @return bool
+        */
         public static function Set_Session_Variable($variable_name, $variable_data = null)
         {
             if (empty($variable_name))
@@ -202,7 +279,14 @@
             return true;
         }
         
-        // Check if content code has data and return the filename for a specific language code (optional)
+        /**
+        * UTIL::Content_Data - Check if content code has data and return the filename for a specific language code
+        *
+        * @param string $content_code A content code
+        * @param string $lang A 2 letter international country code (default: null)
+        *
+        * @return string A filename with content corresponding to the default or selected language
+        */
         public static function Content_Data($content_code, $lang = null)
         {
             if (empty($content_code))
@@ -226,7 +310,15 @@
             return $filename;
         }
         
-        // Load content choosing a loading mode and using a specific language code (optional)
+        /**
+        * UTIL::Load_Content - Load content choosing a loading mode and using a specific language code
+        *
+        * @param string $content_code A content code
+        * @param string $mode Dynamic or static loading of contents ("dynamic" / "static")
+        * @param string $lang A 2 letter international country code (default: null)
+        *
+        * @return string HTML
+        */
         public static function Load_Content($content_code, $mode, $lang = null)
         {
             $load_modes = array('dynamic', 'static');
@@ -249,7 +341,13 @@
                 return trim(file_get_contents($filename));
         }
         
-        // Load the specified site section
+        /**
+        * UTIL::Load_Section - Load the specified site section
+        *
+        * @param string $section A section name
+        *
+        * @return mixed
+        */
         public static function Load_Section($section)
         {
             if (empty($section))
@@ -265,7 +363,14 @@
             return true;
         }
         
-        // Fetch a template passing arguments (optional)
+        /**
+        * UTIL::Fetch_Template - Fetch a template passing any arguments
+        *
+        * @param string $template_name A templates name
+        * @param string $arguments_array An array of arguments (default: null)
+        *
+        * @return string Template contents
+        */
         public static function Fetch_Template($template_name, $arguments_array = null)
         {
             if (empty($template_name) || ($arguments_array !== null && is_array($arguments_array) && count($arguments_array) !== 2))
@@ -286,7 +391,14 @@
             return $result;
         }
         
-        // Log info and error messages
+        /**
+        * UTIL::Log - Log info and error messages
+        *
+        * @param string $log_data Log data
+        * @param string $log_type Log type ("info" / "error")
+        *
+        * @return bool 
+        */
         public static function Log($log_data, $log_type)
         {
             $log_types = array('info', 'error');
@@ -300,7 +412,15 @@
             return true;
         }
         
-        // Convert any associative array mapped with one or more elements to an XML
+        /**
+        * UTIL::Convert_Array_To_XML - Convert any associative array mapped with one or more elements to an XML
+        *
+        * @param array $elements XML elements array
+        * @param array $data_array Array of "key : value" data
+        * @param array $xml_file Output XML file
+        *
+        * @return bool 
+        */
         public static function Convert_Array_To_XML($elements, $data_array, $xml_file)
         {
             if (empty($elements) || empty($data_array) || empty($xml_file))
@@ -354,7 +474,15 @@
             return true;
         }
         
-        // Convert any valid XML file into an associative array map
+        /**
+        * UTIL::Convert_XML_To_Array - Convert any valid XML file into an associative array map
+        *
+        * @param string $xml XML file or a valid XML string
+        * @param string $callback A callback function (default: null)
+        * @param bool $recursive Set if the method functions in recursive mode (default: false)
+        *
+        * @return array Associative array map
+        */
         public static function Convert_XML_To_Array($xml, $callback = null, $recursive = false)
         {
             $new_data = (!$recursive && file_get_contents(self::Absolute_Path($xml)))? simplexml_load_file($xml): $xml;
@@ -371,7 +499,14 @@
             return (!is_array($new_data) && is_callable($callback))? call_user_func($callback, $new_data): $new_data;
         }
         
-        // Process a directory
+        /**
+        * UTIL::Process_Dir - Process a directory
+        *
+        * @param string $dir Directory to process
+        * @param bool $recursive Set if the method functions in recursive mode (default: false)
+        *
+        * @return mixed Array of filepaths on success or false otherwise
+        */
         public static function Process_Dir($dir, $recursive = false)
         {
             if (is_dir($dir))
@@ -412,7 +547,13 @@
                 return false;
         }
         
-        // Recursively delete directories
+        /**
+        * UTIL::Delete_Dir - Recursively delete directories
+        *
+        * @param string $dir Directory to delete
+        *
+        * @return bool
+        */
         public static function Delete_Dir($dir)
         {
             if (is_dir($dir))
@@ -450,7 +591,14 @@
                 return false;
         }
         
-        // Load extension
+        /**
+        * UTIL::Load_Extension - Load extension by type
+        *
+        * @param string $extension Extension name
+        * @param string $ext_type Extension type ("php" / "js")
+        *
+        * @return bool
+        */
         public static function Load_Extension($extension, $ext_type)
         {
             if (empty($extension))
@@ -465,7 +613,7 @@
                 if (empty($result))
                     return false;
                 
-                $ext_reg = self::Fetch_Extensions_Registry($ext_type);
+                $ext_reg = self::Fetch_Extensions($ext_type);
                 
                 if ($extension === 'all')
                 {
@@ -525,7 +673,7 @@
                 if (empty($result))
                     return false;
                 
-                $ext_reg = self::Fetch_Extensions_Registry($ext_type);
+                $ext_reg = self::Fetch_Extensions($ext_type);
                 
                 if ($extension === 'all')
                 {

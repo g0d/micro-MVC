@@ -35,7 +35,7 @@ function workbox()
             __workbox_object = document.createElement('div');
 
             __workbox_object.id = 'workbox';
-            __workbox_object.className = 'wb_screen'
+            __workbox_object.className = 'wb_screen';
 
             var win_title_id = __workbox_object.id + '_title',
                 button_title_id = __workbox_object.id + '_button';
