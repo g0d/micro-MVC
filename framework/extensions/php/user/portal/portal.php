@@ -2,7 +2,7 @@
 	/*
 		Portal (REST Framework using POST)
 
-		File name: portal.php (Version: 2.0)
+		File name: portal.php (Version: 2.2)
 		Description: This file contains the Portal extension.
 
 		Coded by George Delaportas (G0D)
@@ -14,7 +14,7 @@
     if (!defined('micro_mvc'))
 		exit();
 
-	function Portal($url, $mode, $params_list = array(), $cookies_list = array(), $timeout_options = array())
+	function Portal($url, $mode, $params_list = array(), $credentials = array(), $cookies_list = array(), $timeout_options = array())
 	{
 		if (empty($url) || empty($mode) || 
 			($mode !== 'get' && $mode !== 'post'))
@@ -53,6 +53,13 @@
 				$params .= $key . '=' . $value . '&';
 
 			rtrim($params, '&');
+		}
+
+		if (!empty($credentials) && count($credentials) == 2 && 
+			isset($credentials['username']) && isset($credentials['password']))
+		{
+			curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+			curl_setopt($curl, CURLOPT_USERPWD, $credentials['username'] . ':' . $credentials['password']);
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);

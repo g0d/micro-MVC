@@ -2,7 +2,7 @@
     /*
         RA (Easy ORM & Secure SQL)
 
-        File name: ra.php (Version: 1.0)
+        File name: ra.php (Version: 1.1)
         Description: This file contains the RA extension.
         Dependencies: micro-MVC framework, MS-SQL.
 

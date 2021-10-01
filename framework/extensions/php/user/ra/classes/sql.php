@@ -2,7 +2,7 @@
     /*
         SQL (RA class)
 
-        File name: sql.php (Version: 1.0)
+        File name: sql.php (Version: 1.1)
         Description: This file contains the SQL - RA class.
 
         Coded by George Delaportas (G0D)
@@ -68,21 +68,21 @@
         public function Initialize($user, $pass, $server_domain_name, $db = '', $port = 3306)
         {
             if (self::$__is_init)
-                return false;
+                return $this;
 
             if (self::$__sql_type == 'my')
             {
                 self::$__db_con = DB::Connect($user, $pass, $server_domain_name, $db, $port);
 
                 if (!self::$__db_con)
-                    return false;
+                    return $this;
             }
             else
             {
                 self::$__db_con = MS_SQL::Connect($user, $pass, $server_domain_name, $db);
 
                 if (!self::$__db_con)
-                    return false;
+                    return $this;
             }
 
             self::$__is_init = true;

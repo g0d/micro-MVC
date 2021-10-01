@@ -23,6 +23,8 @@
         $_POST = null;
     }
 
+    // Uncomment to test the RA ORM (MySQL or MSSQL running service is required)
+    /*
     $RA = new RA();
     $result = $RA::ORM('my')
               ->Initialize('root', '', 'localhost')
@@ -37,6 +39,7 @@
               ->Edit_Model_Property('Surname', 'Statham')
               ->Save_Table('test_table_2')
               ->Result();
+    */
 ?>
             <div id="test" class="page">
                 <div class="content">

@@ -2,7 +2,7 @@
     /*
         ORM (RA class)
 
-        File name: orm.php (Version: 1.0)
+        File name: orm.php (Version: 1.1)
         Description: This file contains the ORM - RA class.
 
         Coded by George Delaportas (G0D)
@@ -55,24 +55,25 @@
             self::$__sql_type = $sql_type;
         }
 
+        // Initialize connection to the RDBMS
         public function Initialize($user, $pass, $server_domain_name, $db = '', $port = 3306)
         {
             if (self::$__is_init)
-                return false;
+                return $this;
 
             if (self::$__sql_type == 'my')
             {
                 self::$__db_con = DB::Connect($user, $pass, $server_domain_name, $db, $port);
 
                 if (!self::$__db_con)
-                    return false;
+                    return $this;
             }
             else
             {
                 self::$__db_con = MS_SQL::Connect($user, $pass, $server_domain_name, $db);
 
                 if (!self::$__db_con)
-                    return false;
+                    return $this;
             }
 
             self::$__is_init = true;
@@ -81,6 +82,7 @@
             return self::$__instance;
         }
 
+        // Use existing DB model
         public function Use_DB_Model($db_model)
         {
             if (!self::$__is_init || empty($db_model))
@@ -102,6 +104,7 @@
             return $this;
         }
 
+        // Use a table model from an existing table in DB
         public function Use_Table_Model($table)
         {
             if (!self::$__is_use_db || empty($table))
@@ -118,6 +121,7 @@
             return $this;
         }
 
+        // Create a new model property
         public function New_Model_Property($name, $value = null)
         {
             if (!self::$__is_use_table || empty($name))
@@ -135,6 +139,7 @@
             return $this;
         }
 
+        // Edit a model property
         public function Edit_Model_Property($name, $value)
         {
             if (!self::$__is_use_table || empty($name) || empty($value))
@@ -168,6 +173,7 @@
             return $this;
         }
 
+        // Delete a model property
         public function Delete_Model_Property($name)
         {
             if (!self::$__is_use_table || empty($name))
@@ -186,6 +192,7 @@
             return $this;
         }
 
+        // Load an existing DB
         public function Load_DB($db)
         {
             if (!self::$__is_init || empty($db))
@@ -282,6 +289,7 @@
             return $this;
         }
 
+        // Save changes to a DB
         public function Save_DB($db_model = null)
         {
             if (!self::$__is_init)
@@ -369,6 +377,7 @@
             return $this;
         }
 
+        // Delete an existing DB
         public function Delete_DB($db = null)
         {
             if (!self::$__is_init)
@@ -403,6 +412,7 @@
             return $this;
         }
 
+        // Save table to a DB model
         public function Save_Table($table, $db_model = null)
         {
             if (!self::$__is_use_db || empty($table))
@@ -561,6 +571,7 @@
             return $this;
         }
 
+        // Clear an existing table in DB
         public function Clear_Table($table = null)
         {
             if (!self::$__is_use_db)
@@ -618,6 +629,7 @@
             return $this;
         }
 
+        // Delete an existing table in DB
         public function Delete_Table($table = null)
         {
             if (!self::$__is_use_db)
@@ -675,6 +687,7 @@
             return $this;
         }
 
+        // Execute a user function in DB
         public function User_Function($function, $args = null)
         {
             if (!self::$__is_init || empty($function))
@@ -689,6 +702,7 @@
             return $this;
         }
 
+        // Get result
         public function Result()
         {
             if (!self::$__is_init)
