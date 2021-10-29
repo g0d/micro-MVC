@@ -1,11 +1,11 @@
 /*
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.4)
+    File name: vulcan.js (Version: 1.5)
     Description: This file contains the Vulcan extension.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2014
+    Copyright (C) 2021
     Open Software License (OSL 3.0)
 */
 
@@ -583,7 +583,6 @@ function vulcan()
             var __dynamic_object = null;
 
             __dynamic_object = document.createElement('script');
-            __dynamic_object.setAttribute('type', 'text/javascript');
             __dynamic_object.setAttribute('src', js_file_path + '/' + js_file_name + '.js');
 
             self.objects.by_tag('head')[0].appendChild(__dynamic_object);

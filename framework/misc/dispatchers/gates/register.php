@@ -38,7 +38,7 @@
 	*/
 
 	// Actions / Choices
-	if ($_POST['mode'] === 'reg')									// Register
+	if ($_POST['mode'] === 'reg')	// Register
 	{
 		if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm']))
 			register($_POST['username'], $_POST['password'], $_POST['confirm']);
