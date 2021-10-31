@@ -4,14 +4,10 @@
         <meta charset="UTF-8">
         <link rel="icon" type="image/png" href="/site/pix/micro_mvc_icon.png">
         <link rel="stylesheet" href="/site/css/main.css">
-        <script src="/site/js/main.js"></script>
         <title><?=UTIL::Load_Content('title', 'static');?></title>
     </head>
     <body>
         <div id="main">
-        <script>
-            // Write your global JS code here...
-        </script>
         <?php
             UTIL::Load_Section('header');
             
@@ -35,6 +31,7 @@
             
             UTIL::Load_Section('footer');
         ?>
+            <script src="/site/js/main.js"></script>
         </div>
     </body>
 </html>

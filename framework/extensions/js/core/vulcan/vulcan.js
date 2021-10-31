@@ -5,7 +5,7 @@
     Description: This file contains the Vulcan extension.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2021
+    Copyright (C) 2014
     Open Software License (OSL 3.0)
 */
 
