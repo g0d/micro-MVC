@@ -1,7 +1,7 @@
 /*
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.5)
+    File name: vulcan.js (Version: 1.6)
     Description: This file contains the Vulcan extension.
 
     Coded by George Delaportas (G0D)
@@ -31,7 +31,7 @@ function vulcan()
                 if (!__self.is_string(val))
                     return false;
 
-                if (val.match(/[!$%^&*()+|~=`{}\[\]:";'<>?,\/]/))
+                if (val.match(/[!$%^&*()+\-|~=`{}\[\]:";'<>?,\/]/))
                     return true;
 
                 return false;

@@ -3,7 +3,7 @@
 
     File name: content_fetcher.js (Version: 0.3)
     Description: This file contains the Content Fetcher extension.
-    Dependencies: BULL and Vulcan.
+    Dependencies: Vulcan and BULL.
 
     Coded by George Delaportas (G0D)
     Copyright (C) 2016
