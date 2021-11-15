@@ -1,7 +1,7 @@
 /*
     Vulcan (General JS Programming Utilities)
 
-    File name: vulcan.js (Version: 1.6)
+    File name: vulcan.js (Version: 1.8)
     Description: This file contains the Vulcan extension.
 
     Coded by George Delaportas (G0D)
@@ -297,7 +297,8 @@ function vulcan()
 
         this.attach = function(caller_id, object, func, handler)
         {
-            if (self.validation.alpha.is_symbol(caller_id) || self.validation.misc.is_invalid(object) || 
+            if (self.validation.alpha.is_symbol(caller_id) || 
+                self.validation.misc.is_invalid(object) || !self.validation.misc.is_object(object) || 
                 self.validation.alpha.is_symbol(func) || !self.validation.misc.is_function(handler))
                 return false;
 
@@ -329,7 +330,8 @@ function vulcan()
 
         this.detach = function(caller_id, object, func, handler)
         {
-            if (self.validation.alpha.is_symbol(caller_id) || self.validation.misc.is_invalid(object) || 
+            if (self.validation.alpha.is_symbol(caller_id) || 
+                self.validation.misc.is_invalid(object) || !self.validation.misc.is_object(object) ||
                 self.validation.alpha.is_symbol(func))
                 return false;
 
