@@ -1,7 +1,7 @@
 /*
     Key Manager
 
-    File name: key_manager.js (Version: 0.3)
+    File name: key_manager.js (Version: 0.4)
     Description: This file contains the Key Manager extension.
 
     Coded by George Delaportas (G0D)
@@ -17,7 +17,10 @@ function key_manager()
     {
         this.ENTER = 13;
         this.BACKSPACE = 8;
+        this.TAB = 9;
         this.SHIFT = 16;
+        this.CONTROL = 17;
+        this.ALT = 18;
     }
 
     // Constants
