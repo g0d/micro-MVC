@@ -2,7 +2,7 @@
     /*
         KeyCard (Login form and logout button manager)
 
-        File name: keycard.php (Version: 1.2)
+        File name: keycard.php (Version: 1.4)
         Description: This file contains the KeyCard extension.
 
 		Coded by George Delaportas (G0D)

@@ -1,7 +1,7 @@
 /*
     KeyCard (Login form and logout button)
 
-    File name: keycard.js (Version: 1.2)
+    File name: keycard.js (Version: 1.4)
     Description: This file contains the KeyCard extension.
     Dependencies: Vulcan, MsgBox, Key Manager, Heartbeat and AJAX Factory.
 
@@ -26,7 +26,7 @@ function keycard()
     {
         content_object = utils.objects.by_class('content')[0];
 
-        utils.graphics.apply_theme('/framework/extensions/php/user/keycard', 'style');
+        utils.graphics.apply_theme('/framework/extensions/php/user/keycard', 'keycard');
 
         setTimeout(function(){ run_heartbeat(); }, 2500);
     }
@@ -141,7 +141,6 @@ function keycard()
     this.init = function(mode)
     {
         msg_box = new msgbox();
-
         msg_box.init('main');
 
         if (mode === 'login')

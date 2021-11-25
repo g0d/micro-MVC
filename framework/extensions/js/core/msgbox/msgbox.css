@@ -1,95 +1,93 @@
 /*
-    WorkBox
+    MsgBox (CSS)
 
-    File name: style.css
-    Description: This file contains the WorkBox - CSS.
+    File name: msgbox.css
+    Description: This file contains the MsgBox - CSS.
 
     Coded by George Delaportas (G0D) 
-    Copyright (C) 2017
+    Copyright (C) 2017 - 2021
     Open Software License (OSL 3.0)
 */
 
-#workbox
+#msgbox
 {
     visibility: hidden;
 }
 
-#workbox_title
+.mb_screen
 {
-    font-weight: bold;
-    text-align: center;
-    color: #FFFFFF;
-    background-color: #3eb5d7;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    padding-top: 4px;
-    padding-bottom: 6px;
-}
-
-#workbox_content
-{
-    text-align: justify;
-    background-color: #525154;
-    height: 80.5%;
-    min-height: 320px;
-    margin-bottom: 10px;
-    overflow-y: hidden;
-}
-
-#workbox_button
-{
-    color: #d8d8d8;
-    background-color: #3e3737;
-    text-align: center;
-    border: solid 1px #E06297;
-    cursor: pointer;
-    width: 20%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 8px;
-    transition: background .25s ease-in-out;
-    -moz-transition: background .25s ease-in-out;
-    -webkit-transition: background .25s ease-in-out;
-}
-
-#workbox_button:hover
-{
-    background-color: #424040;
-    transition: background .25s ease-in-out;
-    -moz-transition: background .25s ease-in-out;
-    -webkit-transition: background .25s ease-in-out;
-}
-
-.wb_screen
-{
-    background: rgba(245, 245, 245, 0.8);
+    background: rgb(30 30 30 / 70%);
     opacity: 0.0;
     position: fixed;
     width: 100%;
     height: 100%;
     left: 0px;
     top: 0px;
-    z-index: 99;
+    z-index: 2147483647;
 }
 
-.work_window
+.msg_window
 {
     float: none;
     color: #FFFFFF;
-    background-color: #413F44;
-    width: 520px;
-    height: 460px;
+    background-color: #353535;
+    font-size: 14px;
+    border-radius: 6px;
+    box-shadow: 0 0 12px #282c2c5e !important;
+    width: 440px;
+    height: 195px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 104px;
+    margin-top: 230px;
     padding: 8px;
-    box-shadow: #747474 2px 2px 4px;
-    z-index: 99;
+    z-index: 2147483647;
 }
 
-.wb_fade_in
+#msgbox_title
+{
+    text-align: center;
+    background-color: #4d94b3;
+    border-radius: 6px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    padding: 10px 0 10px 0;
+}
+
+#msgbox_content
+{
+    text-align: justify;
+    min-height: 100px;
+    margin-bottom: 10px;
+}
+
+#msgbox_button
+{
+    color: #d8d8d8;
+    background-color: #45454a;
+    text-align: center;
+    border: solid 1px #479e44;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 24%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 8px;
+    transition: background .25s ease-in-out;
+    -moz-transition: background .25s ease-in-out;
+    -webkit-transition: background .25s ease-in-out;
+}
+
+#msgbox_button:hover
+{
+    background-color: #5b5a63;
+    transition: background .25s ease-in-out;
+    -moz-transition: background .25s ease-in-out;
+    -webkit-transition: background .25s ease-in-out;
+}
+
+.mb_fade_in
 {
     animation: info_fade_in 0.25s ease-in forwards;
     -moz-animation: info_fade_in 0.25s ease-in forwards;
@@ -111,7 +109,7 @@
     from { opacity: 0.0; } to { opacity: 1.0; }
 }
 
-.wb_fade_out
+.mb_fade_out
 {
     animation: info_fade_out 0.25s ease-in forwards;
     -moz-animation: info_fade_out 0.25s ease-in forwards;
@@ -135,17 +133,17 @@
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 719px) and (orientation: portrait)
 {
-    #workbox_content
+    #msgbox_content
     {
         min-height: 120px;
     }
 
-    .work_window
+    .msg_window
     {
         font-size: 26px;
-        width: 480px;
+        width: 600px;
         height: 225px;
-        margin-top: 118px;
+        margin-top: 620px;
         padding: 20px;
     }
 }

@@ -2,7 +2,7 @@
     /*
         Regy (Registration Manager)
 
-        File name: regy.php (Version: 1.2)
+        File name: regy.php (Version: 1.4)
         Description: This file contains the Regy extension.
 
         Coded by George Delaportas (G0D)

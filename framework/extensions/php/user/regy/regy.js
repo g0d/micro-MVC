@@ -1,7 +1,7 @@
 /*
     Regy (Registration form)
 
-    File name: regy.js (Version: 1.2)
+    File name: regy.js (Version: 1.4)
     Description: This file contains the Regy extension.
     Dependencies: Vulcan, MsgBox, Key Manager and AJAX Factory.
 
@@ -26,7 +26,7 @@ function regy()
     {
         content_object = utils.objects.by_class('content')[0];
 
-        utils.graphics.apply_theme('/framework/extensions/php/user/regy', 'style');
+        utils.graphics.apply_theme('/framework/extensions/php/user/regy', 'regy');
     }
 
     function scan_enter(event)
@@ -106,7 +106,6 @@ function regy()
     this.init = function()
     {
         msg_box = new msgbox();
-
         msg_box.init('main');
 
         register_username_object = utils.objects.by_id('register_username_text');

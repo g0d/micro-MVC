@@ -6,7 +6,7 @@
     Dependencies: Vulcan and Content Fetcher.
 
     Coded by George Delaportas (G0D) 
-    Copyright (C) 2017
+    Copyright (C) 2017 - 2021
     Open Software License (OSL 3.0)
 */
 
@@ -51,7 +51,7 @@ function msgbox()
             container.appendChild(__msgbox_object);
 
             content_fetcher(win_title, null, 
-                            function(content)
+                            function()
                             {
                                 utils.objects.by_id(button_title).innerHTML = 'Close';
 
@@ -154,8 +154,7 @@ function msgbox()
         if (utils.validation.misc.is_invalid(container_id) || !utils.validation.alpha.is_string(container_id))
             return false;
 
-        if (!utils.graphics.apply_theme('/framework/extensions/js/core/msgbox', 'style'))
-            return false;
+        utils.graphics.apply_theme('/framework/extensions/js/core/msgbox', 'msgbox');
 
         if (!helpers.draw_screen(container_id))
             return false;
