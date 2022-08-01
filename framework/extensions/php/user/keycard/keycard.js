@@ -132,7 +132,7 @@ function keycard()
                                     "on_timeout"        :   function() { console.log('TIME OUT'); abnormal_logout(); }
                                 };
 
-        heartbeat_config.url = '/';
+        heartbeat_config.url = 'beat/';
         heartbeat_config.service_name = 'KeyCard';
 
         heartbeat(heartbeat_config);
