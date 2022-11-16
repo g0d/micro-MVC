@@ -52,7 +52,7 @@ function parallel()
             tasks_list.tasks.push(__new_task);
             tasks_list.num++;
 
-            __is_task_created = true;
+            is_task_created = true;
 
             return __new_task_id;
         };
@@ -70,7 +70,7 @@ function parallel()
                     tasks_list.tasks.splice(__index, 1);
 
                     if (tasks_list.num === 0)
-                        __is_task_created = false;
+                        is_task_created = false;
 
                     return __task.destroy();
                 }
@@ -104,7 +104,7 @@ function parallel()
             if (utils.validation.misc.is_undefined(tasks_config))
                 return false;
 
-            if (!config_parser.verify(__tasks_config_model, tasks_config))
+            if (!config_parser.verify(tasks_config_model, tasks_config))
                 return false;
 
             var __task = null;
@@ -140,7 +140,7 @@ function parallel()
 
             tasks_list = new tasks_list_model();
 
-            __is_task_created = false;
+            is_task_created = false;
 
             return null;
         };
@@ -153,7 +153,7 @@ function parallel()
 
     this.num = function()
     {
-        if (__is_task_created === false)
+        if (is_task_created === false)
             return false;
 
         return tasks_manager.tasks.num();
@@ -161,7 +161,7 @@ function parallel()
 
     this.list = function(index)
     {
-        if (__is_task_created === false)
+        if (is_task_created === false)
             return false;
 
         if (utils.validation.misc.is_undefined(index))
@@ -184,7 +184,7 @@ function parallel()
         if (!utils.validation.numerics.is_integer(task_id))
             return false;
 
-        if (__is_task_created === false)
+        if (is_task_created === false)
             return false;
 
         return tasks_manager.destroy(task_id);
@@ -195,7 +195,7 @@ function parallel()
         if (!utils.validation.numerics.is_integer(task_id))
             return false;
 
-        if (__is_task_created === false)
+        if (is_task_created === false)
             return false;
 
         return tasks_manager.run(task_id, data, callback);
@@ -203,7 +203,7 @@ function parallel()
 
     this.run_all = function(tasks_config)
     {
-        if (__is_task_created === false)
+        if (is_task_created === false)
             return false;
 
         return tasks_manager.run_all(tasks_config);
@@ -211,7 +211,7 @@ function parallel()
 
     this.kill = function()
     {
-        if (__is_task_created === false)
+        if (is_task_created === false)
             return false;
 
         tasks_manager.kill();
@@ -227,8 +227,8 @@ function parallel()
         return this;
     }
 
-    var __is_task_created = false,
-        __tasks_config_model = 
+    var is_task_created = false,
+        tasks_config_model = 
         { "arguments"   :   [
                                 {
                                     "key"       :   { "name" : "id", "optional" : false },

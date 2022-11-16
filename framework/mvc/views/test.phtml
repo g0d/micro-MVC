@@ -2,6 +2,7 @@
     UTIL::Load_Extension('vulcan', 'js');
     UTIL::Load_Extension('jap', 'js');
     UTIL::Load_Extension('bull', 'js');
+    UTIL::Load_Extension('taurus', 'js');
     UTIL::Load_Extension('sensei', 'js');
     UTIL::Load_Extension('stopwatch', 'js');
     UTIL::Load_Extension('heartbeat', 'js');
@@ -160,7 +161,8 @@
 
 <script>
     var dom = new vulcan();
-    var ajax = new bull();
+    var classic_ajax = new bull();
+    var new_ajax = new taurus();
     var work_box = new workbox();
     var key_card = new keycard();
     var regy_form = new regy();
@@ -194,7 +196,7 @@
                                 "content_fill_mode"     :   "replace"
                           };
 
-        ajax.run(ajax_config);
+        classic_ajax.run(ajax_config);
     }
 
     <?
@@ -209,7 +211,7 @@
                                     "content_fill_mode"     :   "replace"
                               };
 
-            ajax.run(ajax_config);
+            classic_ajax.run(ajax_config);
     <?
         }
 

@@ -1,17 +1,17 @@
 /*
-    BULL (AJAX System/Framework)
+    Taurus (Advanced AJAX System/Framework)
 
-    File name: bull.js (Version: 18.2)
-    Description: This file contains the BULL extension.
-    Dependencies: Vulcan and JAP.
+    File name: taurus.js (Version: 1.0)
+    Description: This file contains the Taurus extension.
+    Dependencies: Vulcan, JAP and BULL.
 
-    Coded by George Delaportas (G0D) / Contributions by Catalin Maftei
-    Copyright (C) 2013 - 2022
+    Coded by George Delaportas (G0D)
+    Copyright (C) 2022
     Open Software License (OSL 3.0)
 */
 
-// BULL
-function bull()
+// Taurus
+function taurus()
 {
     // Initialize configuration
     function init_config()
@@ -67,120 +67,44 @@ function bull()
                                                             "value"   :   { "type" : "function" }
                                                         }
                                                     ]
-                                  };
+                                   };
     }
     
-    // AJAX core infrastructure
     function ajax_core()
     {
-        function ajax_model()
-        {
-            this.http_session = function(url, data, mode)
-            {
-                __xml_http.open('POST', url, mode);
-                __xml_http.setRequestHeader('Access-Control-Allow-Origin', '*');
-                
-                if (!utils.validation.misc.is_object(data))
-                    __xml_http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                
-                __xml_http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                
-                if (mode === true)
-                    __xml_http.onreadystatechange = state_changed;
-                
-                __xml_http.send(data);
-                
-                if (mode === false)
-                    state_changed();
-            };
-            
-            this.create_object = function()
-            {
-                var __xml_http_obj = null;
-                
-                if (window.XMLHttpRequest)
-                    __xml_http_obj = new XMLHttpRequest();
-                else
-                    __xml_http_obj = new ActiveXObject("Microsoft.XMLHTTP");
-                
-                return __xml_http_obj;
-            };
-        }
-        
-        function state_changed()
-        {
-            if (__xml_http.readyState === 4)
-            {
-                if (__is_timeout === true)
-                {
-                    if (utils.validation.misc.is_function(__timeout_callback))
-                        __timeout_callback.call(this);
-                    else
-                    {
-                        if (utils.validation.misc.is_function(__fail_callback))
-                            __fail_callback.call(this);
-                    }
-                    
-                    return false;
-                }
-                
-                stop_timer(__timer_handler);
-                
-                __ajax_response = null;
-                __is_timeout = false;
-                
-                if (__xml_http.status === 200)
-                {
-                    if (__data_div_id === null)
-                        __ajax_response = __xml_http.responseText;
-                    else
-                    {
-                        var __container = utils.objects.by_id(__data_div_id);
-                        
-                        if (utils.validation.misc.is_invalid(__container))
-                            return false;
-                        
-                        __ajax_response = __xml_http.responseText;
-                        
-                        if (__content_fill_mode === 'replace')
-                            __container.innerHTML = __ajax_response;
-                        else
-                            __container.innerHTML += __ajax_response;
-                    }
-                    
-                    if (utils.validation.misc.is_function(__success_callback))
-                        __success_callback.call(this, result());
-                }
-                else
-                {
-                    if (utils.validation.misc.is_function(__fail_callback))
-                        __fail_callback.call(this);
-                    
-                    return false;
-                }
-            }
-            
-            return true;
-        }
-        
-        function result()
-        {
-            if (utils.validation.misc.is_undefined(__ajax_response))
-                return null;
-            
-            return __ajax_response;
-        }
-        
-        function init_ajax()
-        {
-            __xml_http = ajax.create_object();
-        }
+        var __data_div_id = null,
+            __content_fill_mode = null,
+            __success_callback = null,
+            __timeout_callback = null,
+            __fail_callback = null,
+            __timer_handler = null,
+            __ajax_response = null,
+            __is_timeout = false;
         
         function set_callbacks(success_callback, fail_callback, timeout_callback)
         {
             __success_callback = success_callback;
             __fail_callback = fail_callback;
             __timeout_callback = timeout_callback;
+        }
+        
+        function run_bad_callbacks()
+        {
+            if (__is_timeout === true)
+            {
+                if (utils.validation.misc.is_function(__timeout_callback))
+                    __timeout_callback.call(this);
+                else
+                {
+                    if (utils.validation.misc.is_function(__fail_callback))
+                        __fail_callback.call(this);
+                }
+            }
+            else
+            {
+                if (utils.validation.misc.is_function(__fail_callback))
+                    __fail_callback.call(this);
+            }
         }
         
         function run_timer(response_timeout)
@@ -204,42 +128,75 @@ function bull()
             
             run_timer(response_timeout);
             
-            ajax.http_session(url, data, true);
+            fetch(url, {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            credentials: 'same-origin',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            redirect: 'error',
+                            referrerPolicy: 'no-referrer',
+                            body: data
+                       }).then((response) => {
+                                                stop_timer(__timer_handler);
+                                                
+                                                if (response.ok)
+                                                {
+                                                    var __container = utils.objects.by_id(__data_div_id);
+                                                    
+                                                    if (utils.validation.misc.is_invalid(__container))
+                                                        return false;
+                                                    
+                                                    response.text().then((data) =>
+                                                    {
+                                                        if (__content_fill_mode === 'replace')
+                                                            __container.innerHTML = data;
+                                                        else
+                                                            __container.innerHTML += data;
+                                                        
+                                                        if (utils.validation.misc.is_function(__success_callback))
+                                                            __success_callback.call(this, data);
+                                                    });
+                                                }
+                                                else
+                                                    run_bad_callbacks();
+                                             });
             
             return null;
         };
         
-        this.request = function(url, data, ajax_mode, success_callback, fail_callback, response_timeout, timeout_callback)
+        this.request = async function(url, data, success_callback, fail_callback, response_timeout, timeout_callback)
         {
             set_callbacks(success_callback, fail_callback, timeout_callback);
             
             run_timer(response_timeout);
             
-            if (ajax_mode === 'asynchronous')
-                ajax.http_session(url, data, true);
-            else
+            __ajax_response = await fetch(url, {
+                                                    method: 'POST',
+                                                    mode: 'cors',
+                                                    cache: 'no-cache',
+                                                    credentials: 'same-origin',
+                                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                                    redirect: 'error',
+                                                    referrerPolicy: 'no-referrer',
+                                                    body: data
+                                               });
+            
+            stop_timer(__timer_handler);
+            
+            if (__ajax_response.ok)
             {
-                ajax.http_session(url, data, false);
-                
-                if (!utils.validation.misc.is_invalid(__ajax_response))
-                    return __ajax_response;
+                __ajax_response.text().then((data) =>
+                {
+                    if (utils.validation.misc.is_function(__success_callback))
+                        __success_callback.call(this, data);
+                });
             }
+            else
+                run_bad_callbacks();
             
             return null;
         };
-        
-        var __xml_http = null,
-            __data_div_id = null,
-            __content_fill_mode = null,
-            __success_callback = null,
-            __timeout_callback = null,
-            __fail_callback = null,
-            __timer_handler = null,
-            __ajax_response = null,
-            __is_timeout = false,
-            ajax = new ajax_model();
-        
-        init_ajax();
     }
     
     // Run AJAX
@@ -254,25 +211,35 @@ function bull()
              user_config.response_timeout < 1 || user_config.response_timeout > 60000))
             return false;
         
-        if (user_config.type === 'data')        // AJAX data (Asynchronous)
+        if (window.fetch)
         {
-            if (!utils.validation.misc.is_undefined(user_config.ajax_mode) || 
-                !utils.objects.by_id(user_config.element_id) || utils.validation.misc.is_invalid(user_config.content_fill_mode))
-                return false;
-            
-            return new ajax_core().data(user_config.url, user_config.data, user_config.element_id, user_config.content_fill_mode, 
-                                        user_config.on_success, user_config.on_fail, 
-                                        user_config.response_timeout, user_config.on_timeout);
+            if (user_config.type === 'data')                    // AJAX data (Asynchronous)
+            {
+                if (!utils.validation.misc.is_undefined(user_config.ajax_mode) || 
+                    !utils.objects.by_id(user_config.element_id) || utils.validation.misc.is_invalid(user_config.content_fill_mode))
+                    return false;
+                
+                return new ajax_core().data(user_config.url, user_config.data, user_config.element_id, user_config.content_fill_mode, 
+                                            user_config.on_success, user_config.on_fail, 
+                                            user_config.response_timeout, user_config.on_timeout);
+            }
+            else                                                // AJAX request (Asynchronous / Synchronous)
+            {
+                if (user_config.ajax_mode === 'asynchronous')   // Only asynchronous mode is supported by Fetch API
+                {
+                    if (utils.validation.misc.is_invalid(user_config.ajax_mode))
+                        return false;
+                    
+                    return new ajax_core().request(user_config.url, user_config.data, 
+                                                user_config.on_success, user_config.on_fail, 
+                                                user_config.response_timeout, user_config.on_timeout);
+                }
+                else                                            // Use BULL for synchronous mode
+                    return new bull().run(user_config);
+            }
         }
-        else                                    // AJAX request (Asynchronous [1] / Synchronous [2])
-        {
-            if (utils.validation.misc.is_invalid(user_config.ajax_mode))
-                return false;
-            
-            return new ajax_core().request(user_config.url, user_config.data, user_config.ajax_mode, 
-                                           user_config.on_success, user_config.on_fail, 
-                                           user_config.response_timeout, user_config.on_timeout);
-        }
+        else
+            return new bull().run(user_config);
     };
     
     var config_definition_model = null,

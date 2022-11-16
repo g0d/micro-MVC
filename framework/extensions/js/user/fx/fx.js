@@ -1,12 +1,12 @@
 /*
     FX (Colection of high quality fx for web apps)
 
-    File name: fx.js (Version: 2.0)
+    File name: fx.js (Version: 2.1)
     Description: This file contains the FX extension.
     Dependencies: Vulcan.
 
     Coded by George Delaportas (G0D) 
-    Copyright (C) 2014
+    Copyright (C) 2014 - 2022
     Open Software License (OSL 3.0)
 */
 
@@ -252,7 +252,7 @@ function fx()
                 __distance = 0,
                 __last_step = 0,
                 __interval = null,
-                interval = new interval_model();
+                __interval_utility = new interval_model();
 
             if (__element === false)
                 return false;
@@ -361,28 +361,28 @@ function fx()
                     if (direction === 'up' || direction === 'left')
                         reverse_parameters();
 
-                    interval.run(function()
-                                 {
-                                     __distance = __distance + step;
+                    __interval_utility.run(function()
+                                           {
+                                                __distance = __distance + step;
 
-                                     if (dynamic_logic(distance, direction, 1))
-                                     {
-                                         if (dynamic_logic(distance, direction, 2))
-                                         {
-                                             __last_step = distance - (__distance - step);
-                                             __element.style[__pos] = __pos_val + (__distance - step) + __last_step + 'px';
-                                         }
-                                         else
-                                             __element.style[__pos] = __pos_val + __distance + 'px';
+                                                if (dynamic_logic(distance, direction, 1))
+                                                {
+                                                    if (dynamic_logic(distance, direction, 2))
+                                                    {
+                                                        __last_step = distance - (__distance - step);
+                                                        __element.style[__pos] = __pos_val + (__distance - step) + __last_step + 'px';
+                                                    }
+                                                    else
+                                                        __element.style[__pos] = __pos_val + __distance + 'px';
 
-                                         interval.stop(__interval);
+                                                    __interval_utility.stop(__interval);
 
-                                         if (!utils.validation.misc.is_undefined(callback))
-                                             callback.call();
-                                     }
-                                     else
-                                         __element.style[__pos] = __pos_val + __distance + 'px';
-                                 }, speed);
+                                                    if (!utils.validation.misc.is_undefined(callback))
+                                                        callback.call();
+                                                }
+                                                else
+                                                    __element.style[__pos] = __pos_val + __distance + 'px';
+                                           }, speed);
                 }
                 else
                     return false;

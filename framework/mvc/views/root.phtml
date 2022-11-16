@@ -2,6 +2,7 @@
     UTIL::Load_Extension('vulcan', 'js');
     UTIL::Load_Extension('jap', 'js');
     UTIL::Load_Extension('bull', 'js');
+    UTIL::Load_Extension('taurus', 'js');
     UTIL::Load_Extension('sensei', 'js');
     UTIL::Load_Extension('content_fetcher', 'js');
     UTIL::Load_Extension('ultron', 'js');
@@ -23,7 +24,8 @@
 
 <script>
     var dom = new vulcan();
-    var ajax = new bull();
+    var classic_ajax = new bull();
+    var new_ajax = new taurus();
 
     dom.system.require('/framework/mvc/views/assets/js', 'root');
 </script>

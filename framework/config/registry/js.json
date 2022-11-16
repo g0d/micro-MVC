@@ -11,6 +11,7 @@
     "sensei"            :   "core",
     "stopwatch"         :   "core",
     "vulcan"            :   "core",
+    "taurus"            :   "user",
     "aether"            :   "user",
     "armadillo"         :   "user",
     "fx"                :   "user",

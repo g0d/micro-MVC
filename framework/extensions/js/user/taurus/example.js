@@ -1,7 +1,7 @@
-var my_bull = new bull();
-var ajax_data = 'some_id=some_data&another_id=other_data';
+var my_taurus = new taurus();
+var ajax_data = 'record=' + JSON.stringify({ id : 1000, full_name : "George Delaportas" });
 var response = null;
-var bull_config = {
+var taurus_config = {
                         "type"          :   "request",
                         "url"           :   "/",
                         "data"          :   ajax_data,
@@ -11,8 +11,8 @@ var bull_config = {
                                                 // Do actions here...
                                                 console.log(response);
                                             }
-                  };
+                    };
 
-response = my_bull.run(bull_config);
+response = my_taurus.run(taurus_config);
 
 console.log(response);
