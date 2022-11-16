@@ -1,7 +1,7 @@
 /*
     Parallel programming (Task parallelism)
 
-    File name: parallel.js (Version: 2.0)
+    File name: parallel.js (Version: 2.1)
     Description: This file contains the Parallel tasks framework extension.
     Dependencies: Vulcan, Pythia, JAP and Task.
 
@@ -41,10 +41,8 @@ function parallel()
 
         this.create = function(worker_file)
         {
-            var __new_task_id = null,
-                __new_task = new task(),
-
-            __new_task_id = __new_task.create(worker_file);
+            var __new_task = new task(),
+                __new_task_id = __new_task.create(worker_file);
 
             if (__new_task_id === false)
                 return false;
