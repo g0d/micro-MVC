@@ -35,7 +35,7 @@ function keycard()
     {
         key_control.scan(event);
 
-        if (key_control.get() === key_control.constants().ENTER)
+        if (key_control.get() === key_control.keys.ENTER)
             check_credentials();
     }
 
