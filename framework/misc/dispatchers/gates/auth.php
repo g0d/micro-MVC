@@ -55,7 +55,7 @@
 		$secure_query = 'SELECT * 
 						 FROM `users` 
 						 WHERE `username` = "' . mysqli_real_escape_string($db_conn_link, $username) . '" AND ' . '
-							   `password` = "' . mysqli_real_escape_string($db_conn_link, md5($password)) . '" AND ' . '
+							   `password` = "' . mysqli_real_escape_string($db_conn_link, hash("sha256", $password)) . '" AND ' . '
 							   `enabled` = 1';
 
 		$result = DB::Exec_SQL_Command($secure_query);

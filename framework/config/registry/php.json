@@ -1,9 +1,9 @@
 {
+    "portal"            :   "core",
     "adi"               :   "user",
     "anti_hijack"       :   "user",
     "keycard"           :   "user",
     "ms_sql"            :   "user",
-    "portal"            :   "user",
     "ra"                :   "user",
     "regy"              :   "user",
     "splash"            :   "user",
