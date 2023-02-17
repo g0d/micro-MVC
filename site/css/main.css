@@ -5,7 +5,7 @@
     Description: This file contains the main CSS.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2015
+    Copyright (C) 2015 - 2023
     Open Software License (OSL 3.0)
 */
 
@@ -16,11 +16,11 @@ body
     cursor: default;
     margin: 10px;
     padding: 0px;
-    user-select: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    user-select: none;
 }
 
 a
@@ -146,32 +146,32 @@ a
 
 .controls a
 {
-    transition: background .25s ease-in-out;
     -moz-transition: background .25s ease-in-out;
     -webkit-transition: background .25s ease-in-out;
+    transition: background .25s ease-in-out;
 }
 
 .controls a:hover
 {
     background-color: #F7F7F7;
-    transition: background .25s ease-in-out;
     -moz-transition: background .25s ease-in-out;
     -webkit-transition: background .25s ease-in-out;
+    transition: background .25s ease-in-out;
 }
 
 .controls .button
 {
-    transition: background .25s ease-in-out;
     -moz-transition: background .25s ease-in-out;
     -webkit-transition: background .25s ease-in-out;
+    transition: background .25s ease-in-out;
 }
 
 .controls .button:hover
 {
     background-color: #F7F7F7;
-    transition: background .25s ease-in-out;
     -moz-transition: background .25s ease-in-out;
     -webkit-transition: background .25s ease-in-out;
+    transition: background .25s ease-in-out;
 }
 
 .control_item
