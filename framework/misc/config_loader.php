@@ -6,7 +6,7 @@
 		Description: This file contains the Config Loader - Configurations initialization facility.
 		
 		Coded by George Delaportas (G0D)
-		Copyright (C) 2016
+		Copyright (C) 2016 - 2023
 		Open Software License (OSL 3.0)
 	*/
 	
