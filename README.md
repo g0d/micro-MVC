@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (4.1.0)
+# micro-MVC (4.2.0)
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/889562a17e174c438fd56d35780822b0)](https://www.codacy.com/gh/g0d/micro-MVC/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=g0d/micro-MVC&amp;utm_campaign=Badge_Grade)
 
@@ -18,7 +18,7 @@ micro-MVC is optimized, secure, lightning fast and consumes the least resources 
 The framework runs on nearly any platform including embedded systems and has been tested extensively in several hardware configurations. 
 Also, it comes with out-of-the-box configurations for Apache and NGINX offering enterprise-ready security, smart caching and compression.
 
-The latest release comes with the "Awesome!" platform that acts as a shorthand for micro-MVC folder structure and provides an easy way 
+The latest releases come with the "Awesome!" platform that acts as a shorthand for micro-MVC folder structure and provides an easy way 
 for developers to access and manage their front-end and back-end code separately and the designers to work without conflicts almost in parallel.
 
 Finally, on Dec-10-2020, micro-MVC has been audited, tested thoroughly for security vulnerabilities and put under stress with 

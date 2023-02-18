@@ -14,6 +14,7 @@
 function keycard()
 {
     var utils = new vulcan();
+    var local_labels = new yoda();
     var key_control = new key_manager();
     var msg_box = null;
     var content_object = null;
@@ -48,7 +49,8 @@ function keycard()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show('micro-MVC', 'The email format is invalid!', 
+            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -58,7 +60,8 @@ function keycard()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show('micro-MVC', 'Credentials are invalid!', 
+            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -78,7 +81,8 @@ function keycard()
                         {
                             content_object.style.filter = 'blur(8px)';
 
-                            msg_box.show('micro-MVC', 'Your credentials are wrong!', 
+                            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
                                          function() { content_object.style.filter = 'none'; });
                         },
                         function()
@@ -103,7 +107,8 @@ function keycard()
                            {
                                 content_object.style.filter = 'blur(8px)';
 
-                                msg_box.show('micro-MVC', 'Logout was impossible!', 
+                                msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                             local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'logout_error'), 
                                              function() { content_object.style.filter = 'none'; });
                            },
                            function()
@@ -116,7 +121,8 @@ function keycard()
     {
         content_object.style.filter = 'blur(8px)';
 
-        msg_box.show('micro-MVC', 'Your session has been terminated!', 
+        msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                     local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'session_lost'), 
                      function() { content_object.style.filter = 'none'; });
 
         setTimeout(function(){ logout(); }, 2500);

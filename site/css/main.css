@@ -63,7 +63,7 @@ a
     text-decoration: none;
 }
 
-#err_404
+#err_404, #err_ext
 {
     min-height: 509px;
 }

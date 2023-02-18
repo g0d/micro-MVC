@@ -14,6 +14,7 @@
 function regy()
 {
     var utils = new vulcan();
+    var local_labels = new yoda();
     var key_control = new key_manager();
     var msg_box = null;
     var content_object = null;
@@ -47,7 +48,8 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show('micro-MVC', 'The email format is invalid!', 
+            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -57,7 +59,8 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show('micro-MVC', 'Please choose more complex credentials!', 
+            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_cmplx'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -67,7 +70,8 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show('micro-MVC', 'Password confirmation failed!', 
+            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'passwd_confirm'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -84,14 +88,16 @@ function regy()
                         {
                             content_object.style.filter = 'blur(8px)';
 
-                            msg_box.show('micro-MVC', 'Registration succeeded!', 
+                            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_success'), 
                                          function(){ content_object.style.filter = 'none'; location.assign('/'); });
                         },
                         function()
                         {
                             content_object.style.filter = 'blur(8px)';
 
-                            msg_box.show('micro-MVC', 'Registration failed!', 
+                            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_fail'), 
                                          function() { content_object.style.filter = 'none'; });
                         },
                         function()

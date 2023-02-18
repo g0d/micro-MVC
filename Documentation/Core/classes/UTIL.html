@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1322753532"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-442081247"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1322753532" class="accordion-body collapse in">
+            <div id="namespace-442081247" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -207,6 +207,7 @@
                                                                     <a href="../classes/UTIL.html#method_Process_Dir" class="">Process_Dir()</a><br />
                                                                     <a href="../classes/UTIL.html#method_Delete_Dir" class="">Delete_Dir()</a><br />
                                                                     <a href="../classes/UTIL.html#method_Load_Extension" class="">Load_Extension()</a><br />
+                                                                    <a href="../classes/UTIL.html#method_Autoload_Extensions" class="">Autoload_Extensions()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -230,6 +231,7 @@
                             <section class="span4">
                                                                     <a href="../classes/UTIL.html#method_Check_Extension_Cache" class="">Check_Extension_Cache()</a><br />
                                                                     <a href="../classes/UTIL.html#method_Fetch_Extensions" class="">Fetch_Extensions()</a><br />
+                                                                    <a href="../classes/UTIL.html#method_Fetch_Autoload_Extensions" class="">Fetch_Autoload_Extensions()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No private properties found</em>
@@ -873,7 +875,7 @@
                                                     <tr>
                                 <td>string</td>
                                 <td>$arguments_array </td>
-                                <td><p>An array of arguments (default: null)</p></td>
+                                <td><p>A 2-dimensional array of arguments of the form: &quot;($searches, $replaces)&quot; (default: null)</p></td>
                             </tr>
                                             </table>
                 
@@ -1131,7 +1133,7 @@
             <article class="method">
                 <h3 class="public ">Load_Extension()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">Load_Extension(string  <span class="argument">$extension</span>, string  <span class="argument">$ext_type</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">Load_Extension(string  <span class="argument">$extension</span>, string  <span class="argument">$ext_type</span>, string  <span class="argument">$clear_cache = true</span>) : boolean</pre>
                 <p><em>UTIL::Load_Extension - Load extension by type</em></p>
                 
 
@@ -1147,7 +1149,43 @@
                                 <td>$ext_type </td>
                                 <td><p>Extension type (&quot;php&quot; / &quot;js&quot;)</p></td>
                             </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$clear_cache </td>
+                                <td><p>Cache control for JS extensions only - Options: &quot;true / false&quot; (default: true)</p></td>
+                            </tr>
                                             </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/UTIL.html"><div class="path-wrapper">\UTIL</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_Autoload_Extensions" name="method_Autoload_Extensions" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">Autoload_Extensions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">Autoload_Extensions() : boolean</pre>
+                <p><em>UTIL::Autoload_Extensions - Autoload all PHP &amp; JS extensions set in the config file</em></p>
+                
+
                 
                 
                                     <h4>Returns</h4>
@@ -1247,6 +1285,37 @@
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_Fetch_Autoload_Extensions" name="method_Fetch_Autoload_Extensions" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">Fetch_Autoload_Extensions()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">Fetch_Autoload_Extensions() : array</pre>
+                <p><em>UTIL::Fetch_Extensions - Fetch all configured extensions for autoloading</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/UTIL.html"><div class="path-wrapper">\UTIL</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
                                     </div>
     </section>
 
@@ -1296,7 +1365,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on January 8th, 2021 at 11:20.
+                    on February 18th, 2023 at 16:10.
                 </section>
             </section>
         </section>

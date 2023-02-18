@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/png" href="/site/pix/micro_mvc_icon.png">
         <link rel="stylesheet" href="/site/css/main.css">
+        <!-- [*] Uncomment the line below to load all JS extensions in one file after using the JS Compactor [*] -->
+        <!-- <script src="/site/js/all_ext_min.js"></script> -->
         <title><?=UTIL::Load_Content('title', 'static');?></title>
     </head>
     <body>
@@ -22,13 +24,18 @@
                 require('framework/errors/404.phtml');
             else
             {
-                if ($this_route === 'root')
-                    MVC::Go_To($this_route);
+                if (!UTIL::Autoload_Extensions())
+                    require('framework/errors/ext_autoload.phtml');
                 else
                 {
-                    $args = '';
-                    
-                    MVC::Go_To($this_route, $args);
+                    if ($this_route === 'root')
+                        MVC::Go_To($this_route);
+                    else
+                    {
+                        $args = '';
+                        
+                        MVC::Go_To($this_route, $args);
+                    }
                 }
             }
             

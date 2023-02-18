@@ -1,0 +1,4 @@
+{
+    "js"    :   ["vulcan", "jap", "bull", "taurus", "sensei", "ajax_factory", "content_fetcher", "ultron"],
+    "php"   :   ["splash"]
+}

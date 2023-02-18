@@ -19,12 +19,18 @@
 
 	if (!empty($_POST['send']) && $_POST['send'] === '1' && !empty($_POST['email']))
 	{
-		$result = Woody::Send_Mail('hello@micro-mvc.co', $_POST['email'], 'micro-MVC');
+		$this_lang = UTIL::Get_Session_Variable('this_lang');
+		$searches = array('{lang}', '{main}');
+		$replaces = array($this_lang, UTIL::Load_Content('test_mail', 'static', $this_lang));
+		$arguments = array($searches, $replaces);
+		$message = UTIL::Fetch_Template('woody', $arguments);
+
+		$result = Woody::Send_Mail('hello@micro-mvc.co', $_POST['email'], 'micro-MVC', $message);
 
 		if (!empty($result))
-			echo 'E-mail successfully sent!';
+			echo UTIL::Load_Content('email_sent', 'static', $this_lang);
 		else
-			echo 'E-mail was not sent!';
+			echo UTIL::Load_Content('email_not_sent', 'static', $this_lang);
 	}
 	else
 		echo '-1';

@@ -25,10 +25,14 @@
 	$this_route = MVC::Get_Route('this');
 	$all_routes = MVC::Get_Route('all');
 	
-	UTIL::Set_Session_Variable('this_lang', $this_lang);
-	UTIL::Set_Session_Variable('all_langs', $all_langs);
-	UTIL::Set_Session_Variable('this_route', $this_route);
-	UTIL::Set_Session_Variable('all_routes', $all_routes);
+	if (empty($_POST['gate']))
+	{
+		UTIL::Set_Session_Variable('this_lang', $this_lang);
+		UTIL::Set_Session_Variable('all_langs', $all_langs);
+		UTIL::Set_Session_Variable('this_route', $this_route);
+		UTIL::Set_Session_Variable('all_routes', $all_routes);
+	}
+
 	UTIL::Set_Session_Variable('extensions_cache', array());
 	
 	if (empty(UTIL::Get_Session_Variable('auth')))

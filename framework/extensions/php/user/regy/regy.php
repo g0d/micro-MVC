@@ -6,7 +6,7 @@
         Description: This file contains the Regy extension.
 
         Coded by George Delaportas (G0D)
-        Copyright © 2019
+        Copyright (C) 2019
         Open Software License (OSL 3.0)
     */
 

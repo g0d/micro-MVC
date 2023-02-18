@@ -38,12 +38,13 @@ function msgbox()
             msgbox_object.className = 'mb_screen';
 
             var __win_title = msgbox_object.id + '_title',
-                __button_title = msgbox_object.id + '_button';
+                __button_title = msgbox_object.id + '_button',
+                __close_label = local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'close_button');
 
             __html = '<div class="msg_window">' + 
                      '  <div id="' + __win_title + '"></div>' + 
                      '  <div id="' + msgbox_object.id + '_content"></div>' + 
-                     '  <div id="' + __button_title + '">Close</div>' + 
+                     '  <div id="' + __button_title + '">' + __close_label + '</div>' + 
                      '</div>';
 
             msgbox_object.innerHTML = __html;
@@ -164,5 +165,6 @@ function msgbox()
         global_hide_callback = null,
         timer = null,
         helpers = new general_helpers(),
+        local_labels = new yoda(),
         utils = new vulcan();
 }
