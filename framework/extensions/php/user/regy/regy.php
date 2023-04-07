@@ -25,6 +25,7 @@
             $replaces = array(UTIL::Load_Content('register', 'static'),
                               UTIL::Load_Content('register_button_text', 'static'));
             $arguments = array($searches, $replaces);
+
             $content = UTIL::Fetch_Template('registration_form', $arguments);
 
             return preg_replace('/[\n\r]/', '', $content);

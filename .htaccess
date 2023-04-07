@@ -35,6 +35,8 @@ AddType application/x-font-woff .woff
 <ifModule mod_headers.c>
   # Enable CORS for AJAX requests (Web services)
   Header set Access-Control-Allow-Origin "*"
+  #Header set Access-Control-Allow-Methods "GET,POST"
+  #Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
 
   # Enable CSP
   Header set Content-Security-Policy "script-src 'self' 'unsafe-inline';"

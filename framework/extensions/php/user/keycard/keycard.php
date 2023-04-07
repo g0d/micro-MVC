@@ -25,6 +25,7 @@
             $replaces = array(UTIL::Load_Content('login', 'static'),
                               UTIL::Load_Content('login_button_text', 'static'));
             $arguments = array($searches, $replaces);
+
             $content = UTIL::Fetch_Template('login_form', $arguments);
 
             return preg_replace('/[\n\r]/', '', $content);
@@ -37,6 +38,7 @@
             $searches = array('{logout_button_text}');
             $replaces = array(UTIL::Load_Content('logout_button_text', 'static'));
             $arguments = array($searches, $replaces);
+
             $content = UTIL::Fetch_Template('logout_button', $arguments);
 
             return preg_replace('/[\n\r]/', '', $content);

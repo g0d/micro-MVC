@@ -49,8 +49,8 @@ function keycard()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
+            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -60,8 +60,8 @@ function keycard()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
+            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -81,8 +81,8 @@ function keycard()
                         {
                             content_object.style.filter = 'blur(8px)';
 
-                            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
+                            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
                                          function() { content_object.style.filter = 'none'; });
                         },
                         function()
@@ -107,8 +107,8 @@ function keycard()
                            {
                                 content_object.style.filter = 'blur(8px)';
 
-                                msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                             local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'logout_error'), 
+                                msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                             local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'logout_error'), 
                                              function() { content_object.style.filter = 'none'; });
                            },
                            function()
@@ -121,8 +121,8 @@ function keycard()
     {
         content_object.style.filter = 'blur(8px)';
 
-        msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                     local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'session_lost'), 
+        msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                     local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'session_lost'), 
                      function() { content_object.style.filter = 'none'; });
 
         setTimeout(function(){ logout(); }, 2500);

@@ -39,7 +39,7 @@ function msgbox()
 
             var __win_title = msgbox_object.id + '_title',
                 __button_title = msgbox_object.id + '_button',
-                __close_label = local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'close_button');
+                __close_label = local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'close_button');
 
             __html = '<div class="msg_window">' + 
                      '  <div id="' + __win_title + '"></div>' + 

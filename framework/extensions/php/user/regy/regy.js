@@ -48,8 +48,8 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
+            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -59,8 +59,8 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_cmplx'), 
+            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_cmplx'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -70,8 +70,8 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'passwd_confirm'), 
+            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'passwd_confirm'), 
                          function() { content_object.style.filter = 'none'; });
 
             return;
@@ -88,16 +88,16 @@ function regy()
                         {
                             content_object.style.filter = 'blur(8px)';
 
-                            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_success'), 
+                            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_success'), 
                                          function(){ content_object.style.filter = 'none'; location.assign('/'); });
                         },
                         function()
                         {
                             content_object.style.filter = 'blur(8px)';
 
-                            msg_box.show(local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                         local_labels.fetch(m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_fail'), 
+                            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
+                                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_fail'), 
                                          function() { content_object.style.filter = 'none'; });
                         },
                         function()
