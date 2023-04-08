@@ -6,7 +6,7 @@
     Dependencies: Vulcan, BULL, JAP, Stopwatch and Sensei.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2017 = 2023
+    Copyright (C) 2017 - 2023
     Open Software License (OSL 3.0)
 */
 
