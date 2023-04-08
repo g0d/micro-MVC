@@ -84,9 +84,9 @@ function bull()
         {
             this.http_session = function(url, data, method, mode)
             {
-                __xml_http.open(method, url, mode);
+                __xml_http.open(method.toUpperCase(), url, mode);
                 
-                if (method === 'POST' && !utils.validation.misc.is_object(data))
+                if (method === 'post' && !utils.validation.misc.is_object(data))
                     __xml_http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 
                 __xml_http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -210,7 +210,7 @@ function bull()
             
             run_timer(response_timeout);
             
-            ajax.http_session(url, data, 'POST', true);
+            ajax.http_session(url, data, 'post', true);
             
             return null;
         };
@@ -263,14 +263,10 @@ function bull()
         if (utils.validation.misc.is_invalid(user_config.data))
             user_config.data = null;
         
-        if (utils.validation.misc.is_invalid(user_config.method))
-            user_config.method = 'GET';
-        else
-            user_config.method = user_config.method.toUpperCase();
-        
-        if (user_config.type === 'data')        // AJAX data (Asynchronous) - Methods: POST
+        if (user_config.type === 'data')        // [AJAX Data] => Modes: Asynchronous / Methods: POST
         {
-            if (!utils.validation.misc.is_undefined(user_config.ajax_mode) || 
+            if (utils.validation.misc.is_invalid(user_config.data) || 
+                !utils.validation.misc.is_invalid(user_config.method) || !utils.validation.misc.is_invalid(user_config.ajax_mode) || 
                 !utils.objects.by_id(user_config.element_id) || utils.validation.misc.is_invalid(user_config.content_fill_mode))
                 return false;
             
@@ -278,10 +274,15 @@ function bull()
                                         user_config.on_success, user_config.on_fail, 
                                         user_config.response_timeout, user_config.on_timeout);
         }
-        else                                    // AJAX request (Asynchronous [1] / Synchronous [2]) - Methods: GET, POST
+        else                                    // [AJAX Request] => Modes: Asynchronous, Synchronous / Methods: GET, POST
         {
             if (utils.validation.misc.is_invalid(user_config.ajax_mode))
                 return false;
+            
+            if (utils.validation.misc.is_invalid(user_config.method))
+                user_config.method = 'get';
+            else
+                user_config.method = user_config.method.toLowerCase();
             
             return new ajax_core().request(user_config.url, user_config.data, user_config.method, user_config.ajax_mode, 
                                            user_config.on_success, user_config.on_fail, 

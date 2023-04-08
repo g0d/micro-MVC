@@ -50,7 +50,6 @@ function heartbeat(user_config)
                                   },
         ajax_config = {
                             "type"          :   "request",
-                            "data"          :   "1",
                             "method"        :   "post",
                             "ajax_mode"     :   "asynchronous"
                       };
