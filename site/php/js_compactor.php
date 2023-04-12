@@ -2,7 +2,7 @@
     /*
         JS Compactor (Deployment utility)
 
-        File name: js_compactor.php (Version: 1.2)
+        File name: js_compactor.php (Version: 1.3)
         Description: This file contains the JS Compactor - Deployment utility that optimizes (minimizes and compacts) all JS extensions into one file.
 
         Coded by George Delaportas (G0D)
@@ -43,14 +43,29 @@
         return $result;
     }
 
+    function m_mvc_list_all_autoload_js_extensions()
+    {
+        $ext_data = file_get_contents('framework/config/misc/ext_autoload.json');
+        $result = json_decode($ext_data, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE)
+            return false;
+
+        return $result['js'];
+    }
+
     function m_mvc_compact_js($clear_cache = true)
     {
         $minified_js_file = null;
 
         $all_js_files = m_mvc_list_all_js_extensions();
+        $all_autoload_js_files = m_mvc_list_all_autoload_js_extensions();
 
         foreach ($all_js_files as $js_file => $js_level)
         {
+            if (!in_array($js_file, $all_autoload_js_files))
+                continue;
+
             $ext_contents = file_get_contents('framework/extensions/js/' . $js_level . '/' . $js_file . '/' . $js_file . '.js');
 
             $minified_js_file .= m_mvc_minify_js($ext_contents);

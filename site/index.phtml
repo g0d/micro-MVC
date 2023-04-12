@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?=LANG::Get('this'); ?>">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Cache-control" content="public">
@@ -16,6 +16,9 @@
         <?php
             UTIL::Load_Section('header');
             
+            // Include the JS Compactor to optimize and load all JS extensions on reload (Optional - Use for speed at release)
+            require('site/php/js_compactor.php');
+            
             $this_route = MVC::Get_Route('this');
             
             if ($this_route === false)
@@ -24,13 +27,13 @@
             {
                 /*
                     [!] ATTENTION [!]
-                    If you loaded the "JS Compactor" do not use the "Autoload_Extensions()" and "Load_Extension(...)" API calls anywhere in your project
-                    If you do so, you will end up with duplicated non-optimized extensions and strange code behavior.
+                    If you use the "JS Compactor" do not call "Autoload_Extensions()" and "Load_Extension(..., 'js')" API for any pre-loaded JS
+                    If you do so, you will end up with duplicated non-optimized JS extensions with strange behavior.
                 */
-                if (!UTIL::Autoload_Extensions())
-                    require('framework/errors/ext_autoload.phtml');
-                else
-                {
+                //if (!UTIL::Autoload_Extensions())
+                //  require('framework/errors/ext_autoload.phtml');
+                //else
+                //{
                     if ($this_route === 'root')
                         MVC::Go_To($this_route);
                     else
@@ -39,7 +42,7 @@
                         
                         MVC::Go_To($this_route, $args);
                     }
-                }
+                //}
             }
             
             unset($this_route);

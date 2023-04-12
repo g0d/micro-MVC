@@ -24,8 +24,4 @@
 
     // Include the supervisor
     require('framework/misc/supervisor.php');
-
-    // Include the JS compactor to optimize and load all JS extensions on refresh (Optional - Use for speed at release)
-    // (Note: After loading the JS compactor Do not use the "Autoload_Extensions()" and "Load_Extension(...)" API calls anyhere in your code)
-    //require('site/php/js_compactor.php');
 ?>
