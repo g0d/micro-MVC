@@ -237,7 +237,8 @@ a
 
 .footer_copyright
 {
-    float: right;
+    float: none;
+    text-align: center;
 }
 
 @media only screen and (max-device-width: 572px) and (orientation: portrait)
@@ -321,11 +322,5 @@ a
         font-size: 10px;
         width: 250px;
         padding: 2px;
-    }
-
-    .footer_copyright
-    {
-        float: none;
-        text-align: center;
     }
 }
