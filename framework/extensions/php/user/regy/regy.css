@@ -16,3 +16,12 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+@media only screen and (max-device-width: 572px) and (orientation: portrait)
+{
+    #logout_button
+    {
+        width: 60px;
+        margin-top: 15px;
+    }
+}

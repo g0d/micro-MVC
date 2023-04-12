@@ -16,7 +16,6 @@
 
 #workbox_title
 {
-    font-weight: bold;
     text-align: center;
     color: #FFFFFF;
     background-color: #3eb5d7;
@@ -133,24 +132,24 @@
     from { opacity: 1.0; } to { opacity: 0.0; }
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 719px) and (orientation: portrait)
+@media only screen and (max-device-width: 572px) and (orientation: portrait)
 {
-    #workbox_content
-    {
-        min-height: 120px;
-    }
-
     .work_window
     {
-        font-size: 26px;
-        width: 480px;
-        height: 225px;
-        margin-top: 118px;
-        padding: 20px;
+        width: 90%;
+        height: 340px;
+        margin-top: 135px;
     }
-}
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 719px) and (orientation: landscape)
-{
-    
+    #workbox_content
+    {
+        height: 266px;
+        min-height: 0px;
+        overflow-y: scroll;
+    }
+
+    #workbox_button
+    {
+        width: 24%;
+    }
 }

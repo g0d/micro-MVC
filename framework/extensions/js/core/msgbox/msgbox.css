@@ -131,24 +131,26 @@
     from { opacity: 1.0; } to { opacity: 0.0; }
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 719px) and (orientation: portrait)
+@media only screen and (max-device-width: 572px) and (orientation: portrait)
 {
-    #msgbox_content
-    {
-        min-height: 120px;
-    }
-
     .msg_window
     {
-        font-size: 26px;
-        width: 600px;
-        height: 225px;
-        margin-top: 620px;
-        padding: 20px;
+        font-size: 10px;
+        width: 270px;
+        height: 173px;
+        margin-top: 230px;
+        padding: 4px;
     }
-}
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 719px) and (orientation: landscape)
-{
-    
+    #msgbox_content
+    {
+        text-align: center;
+        min-height: 85px;
+    }
+
+    #msgbox_button
+    {
+        width: 24%;
+        padding: 8px;
+    }
 }

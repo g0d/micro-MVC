@@ -25,3 +25,29 @@
     margin-right: auto;
     margin-top: 100px;
 }
+
+
+@media only screen and (max-device-width: 572px) and (orientation: portrait)
+{
+    #login_control .text
+    {
+        width: auto;
+    }
+
+    #login_button
+    {
+        width: 60px;
+        margin-top: 15px;
+    }
+
+    #registration_control .text
+    {
+        width: auto;
+    }
+
+    #register_button
+    {
+        width: 60px;
+        margin-top: 15px;
+    }
+}

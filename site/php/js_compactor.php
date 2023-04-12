@@ -2,17 +2,19 @@
     /*
         JS Compactor (Deployment utility)
 
-        File name: js_compactor.php (Version: 1.0)
-        Description: This file contains the JS Compactor - Deployment utility that minimizes and compacts all JS extensions into one file.
+        File name: js_compactor.php (Version: 1.2)
+        Description: This file contains the JS Compactor - Deployment utility that optimizes (minimizes and compacts) all JS extensions into one file.
 
         Coded by George Delaportas (G0D)
         Copyright (C) 2023
         Open Software License (OSL 3.0)
     */
 
-    error_reporting(0);
+    // Check for direct access
+    if (!defined('micro_mvc'))
+        exit();
 
-    function minify_js($js_file)
+    function m_mvc_minify_js($js_file)
     {
 		$js_data = str_replace("\t", " ", $js_file);
 
@@ -30,7 +32,7 @@
 		return $js_data;
 	}
 
-    function list_all_js_extensions()
+    function m_mvc_list_all_js_extensions()
     {
         $ext_data = file_get_contents('framework/config/registry/js.json');
         $result = json_decode($ext_data, true);
@@ -41,32 +43,32 @@
         return $result;
     }
 
-    function compact_js()
+    function m_mvc_compact_js($cache_reset = true)
     {
         $minified_js_file = null;
 
-        $all_js_files = list_all_js_extensions();
+        $all_js_files = m_mvc_list_all_js_extensions();
 
         foreach ($all_js_files as $js_file => $js_level)
         {
             $ext_contents = file_get_contents('framework/extensions/js/' . $js_level . '/' . $js_file . '/' . $js_file . '.js');
 
-            $minified_js_file .= minify_js($ext_contents);
+            $minified_js_file .= m_mvc_minify_js($ext_contents);
         }
 
-        $minified_js_file = minify_js($minified_js_file);
+        $minified_js_file = m_mvc_minify_js($minified_js_file);
 
         file_put_contents('site/js/all_ext_min.js', $minified_js_file);
 
-        echo '<center>
-                <br><br><br><br><br>
-                <b>[ micro-MVC ]</b>
-                <br><br><br>
-                Compacting done!
-              </center>';
+        if ($cache_reset)
+            $version = '?version=' . time();
+        else
+            $version = '';
+
+        echo '<script src="/site/js/all_ext_min.js' . $version . '"></script>';
 
         return true;
     }
 
-    compact_js();
+    m_mvc_compact_js();
 ?>

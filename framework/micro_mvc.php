@@ -6,11 +6,11 @@
         Description: This file contains the micro-MVC framework.
         
         Coded by George Delaportas (G0D)
-        Copyright (C) 2015
+        Copyright (C) 2015 - 2023
         Open Software License (OSL 3.0)
     */
     
-    // Define constant for direct access control
+    // Define constant to block direct access
     define('micro_mvc', true);
 
     // Include UTIL class
