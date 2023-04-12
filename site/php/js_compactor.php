@@ -43,7 +43,7 @@
         return $result;
     }
 
-    function m_mvc_compact_js($cache_reset = true)
+    function m_mvc_compact_js($clear_cache = true)
     {
         $minified_js_file = null;
 
@@ -60,12 +60,12 @@
 
         file_put_contents('site/js/all_ext_min.js', $minified_js_file);
 
-        if ($cache_reset)
-            $version = '?version=' . time();
+        if ($clear_cache)
+            $cache_reset = '?version=' . time();
         else
-            $version = '';
+            $cache_reset = '';
 
-        echo '<script src="/site/js/all_ext_min.js' . $version . '"></script>';
+        echo '<script src="/site/js/all_ext_min.js' . $cache_reset . '"></script>';
 
         return true;
     }
