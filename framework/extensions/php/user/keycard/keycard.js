@@ -147,6 +147,7 @@ function keycard()
     this.init = function(mode)
     {
         msg_box = new msgbox();
+
         msg_box.init('main');
 
         if (mode === 'login')

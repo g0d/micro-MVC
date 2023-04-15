@@ -112,6 +112,7 @@ function regy()
     this.init = function()
     {
         msg_box = new msgbox();
+
         msg_box.init('main');
 
         register_username_object = utils.objects.by_id('register_username_text');
