@@ -2,7 +2,7 @@
 
 # micro-MVC (4.2.5)
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/889562a17e174c438fd56d35780822b0)](https://www.codacy.com/gh/g0d/micro-MVC/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=g0d/micro-MVC&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/889562a17e174c438fd56d35780822b0)](https://app.codacy.com/gh/g0d/micro-MVC/dashboard)
 
 An agile, small, productive and robust MVC framework for PHP (with integrated AJAX support).
 
