@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (4.2.5)
+# micro-MVC (4.2.6)
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/889562a17e174c438fd56d35780822b0)](https://app.codacy.com/gh/g0d/micro-MVC/dashboard)
 
@@ -29,7 +29,7 @@ You may test micro-MVC [here](https://micro-mvc.co/).
 Enjoy!
 
 George Delaportas (G0D)  
-Copyright (C) 2015 - 2023 micro-MVC  
+Copyright (C) 2015 - 2024 micro-MVC  
 Open Software License (OSL 3.0)  
 Supported by [PROBOTEK](https://probotek.eu/)  
 Audited for web security & certified by [OCTAGON](https://octagonsec.gr/)

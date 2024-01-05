@@ -1,6 +1,6 @@
 <?php
 	/*
-		Content (Programmable gate for delivering content)
+		Content (Programmable gate for delivering content) - { *** THIS IS A TEMPLATE / SAMPLE | NOT A FINAL CODE *** }
 		
 		File name: content.php
 		Description: This file contains the content gate.

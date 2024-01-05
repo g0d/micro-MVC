@@ -18,8 +18,9 @@
 {
     text-align: center;
     color: #FFFFFF;
-    background-color: #3eb5d7;
+    background-color: #ff8d06;
     width: 100%;
+    border-radius: 6px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
@@ -42,7 +43,8 @@
     color: #d8d8d8;
     background-color: #3e3737;
     text-align: center;
-    border: solid 1px #E06297;
+    border: solid 1px #9e4444;
+    border-radius: 6px;
     cursor: pointer;
     width: 20%;
     margin-left: auto;
@@ -78,6 +80,7 @@
     float: none;
     color: #FFFFFF;
     background-color: #413F44;
+    border-radius: 6px;
     width: 520px;
     height: 460px;
     margin-left: auto;

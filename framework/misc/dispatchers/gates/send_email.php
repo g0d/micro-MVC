@@ -1,6 +1,6 @@
 <?php
 	/*
-		Send Email (Programmable gate for delivering emails)
+		Send Email (Programmable gate for delivering emails) - { *** THIS IS A TEMPLATE / SAMPLE | NOT A FINAL CODE *** }
 		
 		File name: send_email.php
 		Description: This file contains the send email gate.

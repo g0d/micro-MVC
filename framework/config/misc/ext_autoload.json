@@ -1,4 +1,4 @@
 {
-    "js"    :   ["vulcan", "jap", "yoda", "bull", "taurus", "sensei", "ajax_factory", "content_fetcher", "ultron"],
+    "js"    :   ["vulcan", "pythia", "jap", "yoda", "bull", "taurus", "sensei", "ajax_factory", "content_fetcher", "ultron"],
     "php"   :   ["splash"]
 }

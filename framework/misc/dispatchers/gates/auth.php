@@ -1,6 +1,6 @@
 <?php
 	/*
-		Auth (Programmable gate for authentication)
+		Auth (Programmable gate for authentication) - { *** THIS IS A TEMPLATE / SAMPLE | NOT A FINAL CODE *** }
 		
 		File name: auth.php
 		Description: This file contains the authentication gate (AJAX).

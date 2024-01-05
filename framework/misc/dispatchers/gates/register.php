@@ -1,6 +1,6 @@
 <?php
 	/*
-		Register (Programmable gate for registration)
+		Register (Programmable gate for registration) - { *** THIS IS A TEMPLATE / SAMPLE | NOT A FINAL CODE *** }
 		
 		File name: register.php
 		Description: This file contains the registration gate (AJAX).
