@@ -6,7 +6,7 @@
     Dependencies: Vulcan, MsgBox, Key Manager and AJAX Factory.
 
     Coded by George Delaportas (G0D) 
-    Copyright (C) 2019
+    Copyright (C) 2019 - 2024
     Open Software License (OSL 3.0)
 */
 
@@ -48,9 +48,12 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
+            msg_box = new msgbox();
+
+            msg_box.init('main');
             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
-                         function() { content_object.style.filter = 'none'; });
+                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
         }
@@ -61,7 +64,7 @@ function regy()
 
             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_cmplx'), 
-                         function() { content_object.style.filter = 'none'; });
+                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
         }
@@ -70,9 +73,12 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
+            msg_box = new msgbox();
+
+            msg_box.init('main');
             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'passwd_confirm'), 
-                         function() { content_object.style.filter = 'none'; });
+                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
         }
@@ -88,17 +94,23 @@ function regy()
                         {
                             content_object.style.filter = 'blur(8px)';
 
+                            msg_box = new msgbox();
+
+                            msg_box.init('main');
                             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_success'), 
-                                         function(){ content_object.style.filter = 'none'; location.assign('/'); });
+                                         msg_box.types.OK, [function(){ content_object.style.filter = 'none'; location.assign('/'); }]);
                         },
                         function()
                         {
                             content_object.style.filter = 'blur(8px)';
 
+                            msg_box = new msgbox();
+
+                            msg_box.init('main');
                             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_fail'), 
-                                         function() { content_object.style.filter = 'none'; });
+                                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
                         },
                         function()
                         {
@@ -111,10 +123,6 @@ function regy()
 
     this.init = function()
     {
-        msg_box = new msgbox();
-
-        msg_box.init('main');
-
         register_username_object = utils.objects.by_id('register_username_text');
         register_password_object = utils.objects.by_id('register_password_text');
         register_password_confirm_object = utils.objects.by_id('register_password_confirm_text');

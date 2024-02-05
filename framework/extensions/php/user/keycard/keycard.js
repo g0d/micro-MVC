@@ -6,7 +6,7 @@
     Dependencies: Vulcan, MsgBox, Key Manager, Heartbeat and AJAX Factory.
 
     Coded by George Delaportas (G0D)
-    Copyright (C) 2019
+    Copyright (C) 2019 - 2024
     Open Software License (OSL 3.0)
 */
 
@@ -49,9 +49,12 @@ function keycard()
         {
             content_object.style.filter = 'blur(8px)';
 
+            msg_box = new msgbox();
+
+            msg_box.init('main');
             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
-                         function() { content_object.style.filter = 'none'; });
+                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
         }
@@ -60,9 +63,12 @@ function keycard()
         {
             content_object.style.filter = 'blur(8px)';
 
+            msg_box = new msgbox();
+
+            msg_box.init('main');
             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
-                         function() { content_object.style.filter = 'none'; });
+                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
         }
@@ -81,9 +87,12 @@ function keycard()
                         {
                             content_object.style.filter = 'blur(8px)';
 
+                            msg_box = new msgbox();
+
+                            msg_box.init('main');
                             msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                                          local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
-                                         function() { content_object.style.filter = 'none'; });
+                                         msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
                         },
                         function()
                         {
@@ -106,10 +115,12 @@ function keycard()
                            function()
                            {
                                 content_object.style.filter = 'blur(8px)';
+                                msg_box = new msgbox();
 
+                                msg_box.init('main');
                                 msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                                              local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'logout_error'), 
-                                             function() { content_object.style.filter = 'none'; });
+                                             msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
                            },
                            function()
                            {
@@ -121,9 +132,12 @@ function keycard()
     {
         content_object.style.filter = 'blur(8px)';
 
+        msg_box = new msgbox();
+
+        msg_box.init('main');
         msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
                      local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'session_lost'), 
-                     function() { content_object.style.filter = 'none'; });
+                     msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
         setTimeout(function(){ logout(); }, 2500);
     }
@@ -146,10 +160,6 @@ function keycard()
 
     this.init = function(mode)
     {
-        msg_box = new msgbox();
-
-        msg_box.init('main');
-
         if (mode === 'login')
         {
             login_username_object = utils.objects.by_id('login_username_text');

@@ -156,6 +156,7 @@
     var local_labels = new yoda();
     var classic_ajax = new bull();
     var next_gen_ajax = new taurus();
+    var msg_box = new msgbox();
     var work_box = new workbox();
     var key_card = new keycard();
     var regy_form = new regy();
@@ -219,6 +220,7 @@
     var m_mvc = local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc');
     var close_button = local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'close_button');
 
+    msg_box.init('main');
     work_box.init('main', m_mvc, close_button);
 
     function ajax_fetch_content(content_id)

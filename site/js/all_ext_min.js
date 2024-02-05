@@ -789,6 +789,70 @@ function yoda()
  available_langs = {},
  utils = new vulcan();
 }
+function pythia()
+{
+ function loop(rnd_num)
+ {
+ var __results_length = results.length,
+ __index = 0;
+ if (__results_length === 0 || rnd_num >= results[__results_length - 1])
+ {
+ if (rnd_num === max_random_num)
+ return rnd_num;
+ else
+ {
+ if (rnd_num === results[__results_length - 1])
+ rnd_num++;
+ results.push(rnd_num);
+ return rnd_num;
+ }
+ }
+ for (__index = 0; __index < __results_length; __index++)
+ {
+ if (rnd_num === results[__index])
+ rnd_num++;
+ else
+ {
+ if (rnd_num < results[__index])
+ {
+ results.splice(__index, 0, rnd_num);
+ break;
+ }
+ }
+ }
+ return rnd_num;
+ }
+ this.generate = function()
+ {
+ var __this_rnd_num = Math.floor((Math.random() * max_random_num) + 1);
+ return loop(__this_rnd_num);
+ };
+ this.load = function(values_array)
+ {
+ if (!utils.validation.misc.is_array(values_array) || values_array.length === 0)
+ return false;
+ var __index = 0,
+ __values_length = values_array.length;
+ for (__index = 0; __index++; __index < __values_length)
+ {
+ if (!utils.validation.numerics.is_integer(values_array[__index]))
+ {
+ results = [];
+ return false;
+ }
+ results.push(values_array[__index]);
+ }
+ return true;
+ };
+ this.reset = function()
+ {
+ results = [];
+ return null;
+ };
+ var max_random_num = Number.MAX_SAFE_INTEGER,
+ results = [],
+ utils = new vulcan();
+}
 function sensei(title, message)
 {
  var __index = 0,
@@ -1175,14 +1239,16 @@ function vulcan()
  return false;
  return __result;
  };
- this.apply_theme = function(directory, theme, clear_cache = true)
+ this.apply_theme = function(directory, theme, fail_on_existing = true, clear_cache = true)
  {
- if (self.validation.misc.is_invalid(directory) || self.validation.alpha.is_symbol(theme) || !self.validation.misc.is_bool(clear_cache))
+ if (self.validation.misc.is_invalid(directory) || self.validation.alpha.is_symbol(theme) ||
+ !self.validation.misc.is_bool(fail_on_existing) || !self.validation.misc.is_bool(clear_cache))
  return false;
  if (self.validation.misc.is_undefined(theme))
  theme = 'default';
- if (self.system.source_exists(theme, 'link', 'href'))
+ if (fail_on_existing && self.system.source_exists(theme, 'link', 'href'))
  return false;
+ self.graphics.clear_theme(theme);
  var __dynamic_object = null,
  __cache_reset = '';
  if (clear_cache)
@@ -1194,6 +1260,10 @@ function vulcan()
  __dynamic_object.setAttribute('href', directory + '/' + theme + '.css' + __cache_reset);
  self.objects.by_tag('head')[0].appendChild(__dynamic_object);
  return true;
+ };
+ this.clear_theme = function(theme)
+ {
+ return self.system.remove_source(theme, 'link', 'href');
  };
  }
  function misc()
@@ -1274,8 +1344,7 @@ function vulcan()
  self.validation.misc.is_invalid(js_file_name) || self.validation.alpha.is_symbol(js_file_name) ||
  !self.validation.misc.is_bool(clear_cache))
  return false;
- if (__self.source_exists(js_file_name, 'script', 'src'))
- return false;
+ self.system.remove_source(js_file_name, 'script', 'src');
  var __dynamic_object = null,
  __cache_reset = '';
  if (clear_cache)
@@ -1297,6 +1366,22 @@ function vulcan()
  {
  if (__sources[__counter_i].attributes[attribute].value.indexOf(file_name) > -1)
  return true;
+ }
+ return false;
+ };
+ this.remove_source = function(file_name, tag_type, attribute)
+ {
+ if (!self.system.source_exists(file_name, tag_type, attribute))
+ return false;
+ var __counter_i = 0,
+ __sources = document.head.getElementsByTagName(tag_type);
+ for (__counter_i = 0; __counter_i < __sources.length; __counter_i++)
+ {
+ if (__sources[__counter_i].attributes[attribute].value.indexOf(file_name) > -1)
+ {
+ __sources[__counter_i].remove();
+ return true;
+ }
  }
  return false;
  };
