@@ -11,10 +11,10 @@ AJAX-based code with ease. Although there are tons of free and open source MVC f
 usually end up becoming too complicated as they are overbloated with a bunch of infinite extensions that only 
 5% of developers really use them at some point.
 
-micro-MVC is trying to be hassle free, straightforward and helps you stay on track. micro-MVC API is robust 
+micro-MVC is not yet another framework for the hype. It follows a professional approach, trying to be hassle free, straightforward and helps you stay on track. micro-MVC API is robust 
 and solves roughly 95% of all the everyday issues you face under development with PHP and JS.
 
-micro-MVC is optimized for stable coding, is it secure, lightning fast and consumes the least resources possible.
+micro-MVC is optimized for stable coding, it's secure, lightning fast and consumes the least resources possible.
 The framework is backwards compatible down to PHP 5, runs on nearly any platform including embedded systems and has been 
 tested extensively in several hardware configurations. Also, it comes with out-of-the-box configurations for Apache and NGINX 
 offering enterprise-ready security, smart caching and compression.
