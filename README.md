@@ -30,7 +30,7 @@ You may test micro-MVC [here](https://micro-mvc.co/).
 Enjoy!
 
 George Delaportas (G0D)  
-Copyright (C) 2015 - 2024 micro-MVC  
+Copyright (C) 2015 - 2025 micro-MVC  
 Open Software License (OSL 3.0)  
 Supported by [PROBOTEK](https://probotek.eu/)  
 Audited for web security & certified by [OCTAGON](https://octagonsec.gr/)
