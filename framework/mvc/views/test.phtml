@@ -153,105 +153,8 @@
 
 <script>
     var utils = new vulcan();
-    var local_labels = new yoda();
     var classic_ajax = new bull();
     var next_gen_ajax = new taurus();
-    var msg_box = new msgbox();
-    var work_box = new workbox();
-    var key_card = new keycard();
-    var regy_form = new regy();
-
-    var global_m_mvc_dynamic_contents = {
-                                            "en"    :   [
-                                                            { "m_mvc"               :   "micro-MVC" },
-                                                            { "close_button"        :   "Close" },
-                                                            { "email_inv"           :   "The e-mail format is invalid!" },
-                                                            { "credentials_cmplx"   :   "Please choose more complex credentials!" },
-                                                            { "credentials_inv"     :   "Credentials are invalid!" },
-                                                            { "credentials_wrg"     :   "Your credentials are wrong!" },
-                                                            { "passwd_confirm"      :   "Password confirmation failed!" },
-                                                            { "session_lost"        :   "Your session has been terminated!" },
-                                                            { "reg_success"         :   "Registration succeeded!" },
-                                                            { "reg_fail"            :   "Registration failed!" },
-                                                            { "logout_error"        :   "Logout was impossible!" }
-                                                        ],
-                                            "gr"    :   [
-                                                            { "m_mvc"               :   "micro-MVC" },
-                                                            { "close_button"        :   "Κλείσε" },
-                                                            { "email_inv"           :   "Μη έγκυρο e-mail!" },
-                                                            { "credentials_cmplx"   :   "Παρακαλώ επιλέξτε πιο σύνθετα στοιχεία πρόσβασης!" },
-                                                            { "credentials_inv"     :   "Τα στοιχεία πρόσβασης είναι άκυρα!" },
-                                                            { "credentials_wrg"     :   "Τα στοιχεία πρόσβασης είναι λάθος!" },
-                                                            { "passwd_confirm"      :   "Αποτυχία επαλήθευσης πεδίου κωδικού!" },
-                                                            { "session_lost"        :   "Διεκόπη η σύνδεση με το σύστημα!" },
-                                                            { "reg_success"         :   "Η εγγραφή ήταν επιτυχής!" },
-                                                            { "reg_fail"            :   "Η εγγραφή ήταν ανεπιτυχής!" },
-                                                            { "logout_error"        :   "Δεν ήταν δυνατή η αποσύνδεση!" }
-                                                        ]
-                                        };
-
-    // Progammatic way to create the JSON config above
-    /*
-    local_labels.init(['en', 'gr']);
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "m_mvc" : "micro-MVC" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "close" : "Close" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "email_inv" : "The email format is invalid!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "credentials_cmplx" : "Please choose more complex credentials!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "credentials_inv" : "Credentials are invalid!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "credentials_wrg" : "Your credentials are wrong!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "passwd_confirm" : "Password confirmation failed!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "session_lost" : "Your session has been terminated!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "reg_success" : "Registration succeeded!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "reg_fail" : "Registration failed!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'en', { "logout_error" : "Logout was impossible!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "m_mvc" : "micro-MVC" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "close" : "Κλείσε" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "email_inv" : "Μη έγκυρο e-mail!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "credentials_cmplx" : "Παρακαλώ επιλέξτε πιο σύνθετα στοιχεία πρόσβασης!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "credentials_inv" : "Τα στοιχεία πρόσβασης είναι άκυρα!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "credentials_wrg" : "Τα στοιχεία πρόσβασης είναι λάθος!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "passwd_confirm" : "Αποτυχία επαλήθευσης πεδίου κωδικού!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "session_lost" : "Διεκόπη η σύνδεση με το σύστημα!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "reg_success" : "Η εγγραφή ήταν επιτυχής!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "reg_fail" : "Η εγγραφή ήταν ανεπιτυχής!" });
-    global_m_mvc_dynamic_contents = local_labels.set(global_m_mvc_dynamic_contents, 'gr', { "logout_error" : "Δεν ήταν δυνατή η αποσύνδεση!" });
-    */
-
-    var m_mvc = local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc');
-    var close_button = local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'close_button');
-
-    msg_box.init('main');
-    work_box.init('main', m_mvc, close_button);
-
-    function ajax_fetch_content(content_id)
-    {
-        var msg_box = new msgbox();
-
-        msg_box.init('main');
-
-        content_fetcher(content_id, '<?=LANG::Get('this');?>', 
-        function(response) { msg_box.show('micro-MVC', response); }, 
-        function() {}, 
-        function() {});
-    }
-
-    function send_data_to_server()
-    {
-        var file_input_element = utils.objects.by_id('file_input');
-        var form_data = new FormData();
-
-        form_data.append('test_file', file_input_element.files[0]);
-
-        var ajax_config = {
-                                "type"                  :   "data",
-                                "url"                   :   "/framework/mvc/views/assets/php/ajax_test.php",
-                                "data"                  :   form_data,
-                                "element_id"            :   "test_results",
-                                "content_fill_mode"     :   "replace"
-                          };
-
-        classic_ajax.run(ajax_config);
-    }
 
     <?
         if (!isset($post_data))
@@ -271,6 +174,18 @@
 
         unset($post_data);
     ?>
+
+    function ajax_fetch_content(content_id)
+    {
+        var msg_box = new msgbox();
+
+        msg_box.init('main');
+
+        content_fetcher(content_id, '<?=LANG::Get('this');?>', 
+        function(response) { msg_box.show('micro-MVC', response); }, 
+        function() {}, 
+        function() {});
+    }
 
     function show_login_box()
     {
@@ -303,59 +218,6 @@
         work_box.show(logout_button, null, function() { blur_screen('hide'); });
 
         key_card.init('logout');
-    }
-
-    function send_email()
-    {
-        var data = 'gate=send_email&send=1&email=test@testdomain.com';
-
-        ajax_factory(data, function(response)
-                           {
-                                utils.objects.by_id('test_results').innerHTML = response;
-
-                                console.log('[Woody]')
-                                console.log('OK');
-                                console.log('');
-                           },
-                           function()
-                           {
-                                // Nothing to do...
-                           },
-                           function()
-                           {
-                                // Nothing to do...
-                           });
-    }
-
-    // *** Either use this function when logged-in to avoid session hijacking or utilize Anti-Hijack extension straight from PHP ***
-    function hijack_protection()
-    {
-        var data = 'gate=hijack_protection';
-
-        ajax_factory(data, function(response)
-                           {
-                                console.log('[Anti-Hijack]')
-                                console.log(response);
-                                console.log('');
-                           },
-                           function()
-                           {
-                                location.assign('/');
-                           },
-                           function()
-                           {
-                               // Nothing to do...
-                           });
-    }
-
-    function blur_screen(mode)
-    {
-        var main_body = utils.objects.by_id('test');
-
-        if (mode === 'show')
-            main_body.style.filter = 'blur(8px)';
-        else
-            main_body.style.filter = 'none';
     }
 
     utils.system.require('/framework/mvc/views/assets/js', 'test');
