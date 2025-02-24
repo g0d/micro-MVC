@@ -165,9 +165,7 @@
             if (empty($mvc_var))
                 return false;
             
-            $result = self::$__mvc_vars[$mvc_var];
-            
-            return $result;
-        }    
+            return self::$__mvc_vars[$mvc_var];
+        }
     }
 ?>
