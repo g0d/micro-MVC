@@ -708,7 +708,9 @@ function yoda()
  if (this_record.hasOwnProperty(label))
  return this_record[label];
  }
+ return false;
  }
+ else
  return dynamic_contents[lang];
  };
  this.get = function(dynamic_contents, lang, label = null)
@@ -728,7 +730,9 @@ function yoda()
  if (this_record.hasOwnProperty(label))
  return this_record[label];
  }
+ return false;
  }
+ else
  return dynamic_contents[lang];
  };
  this.set = function(dynamic_contents, lang, label)
@@ -878,9 +882,7 @@ function vulcan()
  var __self = this;
  this.is_string = function(val)
  {
- if (typeof val !== 'string')
- return false;
- return true;
+ return (typeof val === 'string');
  };
  this.is_symbol = function(val)
  {
@@ -894,9 +896,7 @@ function vulcan()
  {
  if (!__self.is_string(val))
  return false;
- if (!val.trim())
- return true;
- return false;
+ return (!val.trim());
  };
  }
  function numerics()
@@ -906,23 +906,17 @@ function vulcan()
  {
  if (self.validation.misc.is_array(val) && val.length === 0)
  return false;
- if (!isNaN(val - parseFloat(val)))
- return true;
- return false;
+ return (!isNaN(val - parseFloat(val)))
  };
  this.is_integer = function(val)
  {
- if (__self.is_number(val) && (val % 1 === 0) && !self.misc.contains('.', val.toString()))
- return true;
- return false;
+ return (__self.is_number(val) && (val % 1 === 0) && !self.misc.contains('.', val.toString()));
  };
  this.is_float = function(val)
  {
  if (val === 0.0)
  return true;
- if (__self.is_number(val) && (val % 1 !== 0))
- return true;
- return false;
+ return (__self.is_number(val) && (val % 1 !== 0));
  };
  }
  function misc()
@@ -930,52 +924,38 @@ function vulcan()
  var __self = this;
  this.is_undefined = function(val)
  {
- if (val === undefined)
- return true;
- return false;
+ return (val === undefined);
  };
  this.is_nothing = function(val)
  {
- if (val === null || val === '')
- return true;
- return false;
+ return (val === null || val === '');
  };
  this.is_bool = function(val)
  {
- if (typeof val === 'boolean')
- return true;
- return false;
+ return (typeof val === 'boolean');
  };
  this.is_array = function(val)
  {
- if (Array.isArray(val))
- return true;
- return false;
+ return (Array.isArray(val));
  };
  this.is_function = function(val)
  {
- if (typeof val === 'function')
- return true;
- return false;
+ return (typeof val === 'function');
  };
  this.is_object = function(val)
  {
- if (typeof val === 'object')
- return true;
- return false;
+ return (typeof val === 'object');
  };
  this.is_invalid = function(val)
  {
- if (__self.is_undefined(val) || __self.is_nothing(val))
- return true;
- return false;
+ return (__self.is_undefined(val) || __self.is_nothing(val));
  };
  }
  function utilities()
  {
  this.is_email = function(val)
  {
- var __pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+ var __pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  return __pattern.test(String(val).toLowerCase());
  };
  this.is_phone = function(val)
@@ -1173,6 +1153,7 @@ function vulcan()
  {
  if (!self.validation.numerics.is_integer(mode) || mode < 0 || mode > 2 || !self.validation.alpha.is_string(text))
  return false;
+ var __final_attributes = null;
  if (!self.validation.misc.is_undefined(attributes))
  {
  if (attributes !== null)
@@ -1180,7 +1161,6 @@ function vulcan()
  if (!self.validation.misc.is_object(attributes))
  return false;
  var __this_attribute = null,
- __final_attributes = null,
  __valid_attributes = ['id', 'class', 'style', 'title', 'dir', 'lang', 'accesskey', 'tabindex',
  'contenteditable', 'draggable', 'spellcheck', 'target', 'rel'];
  for (__this_attribute in attributes)
@@ -1275,9 +1255,7 @@ function vulcan()
  };
  this.contains = function(subject, list)
  {
- if (list.indexOf(subject) === -1)
- return false;
- return true;
+ return (list.indexOf(subject) !== -1);
  };
  this.sort = function(array, mode, by_property)
  {
@@ -1337,7 +1315,6 @@ function vulcan()
  }
  function system()
  {
- var __self = this;
  this.require = function(js_file_path, js_file_name, clear_cache = true)
  {
  if (self.validation.misc.is_invalid(js_file_path) ||
