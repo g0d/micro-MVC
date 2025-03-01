@@ -32,6 +32,11 @@ function keycard()
         setTimeout(function(){ run_heartbeat(); }, 2500);
     }
 
+    function load_content(label)
+    {
+        return local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), label);
+    }
+
     function scan_enter(event)
     {
         key_control.scan(event);
@@ -52,8 +57,7 @@ function keycard()
             msg_box = new msgbox();
 
             msg_box.init('main');
-            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
+            msg_box.show(load_content('m_mvc'), load_content('email_inv'), 
                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
@@ -66,8 +70,7 @@ function keycard()
             msg_box = new msgbox();
 
             msg_box.init('main');
-            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
+            msg_box.show(load_content('m_mvc'), load_content('credentials_wrg'), 
                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
@@ -90,8 +93,7 @@ function keycard()
                             msg_box = new msgbox();
 
                             msg_box.init('main');
-                            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_wrg'), 
+                            msg_box.show(load_content('m_mvc'), load_content('credentials_wrg'), 
                                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
                         },
                         function()
@@ -118,8 +120,7 @@ function keycard()
                                 msg_box = new msgbox();
 
                                 msg_box.init('main');
-                                msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                             local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'logout_error'), 
+                                msg_box.show(load_content('m_mvc'), load_content('logout_error'), 
                                              msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
                            },
                            function()
@@ -135,8 +136,7 @@ function keycard()
         msg_box = new msgbox();
 
         msg_box.init('main');
-        msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                     local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'session_lost'), 
+        msg_box.show(load_content('m_mvc'), load_content('session_lost'), 
                      msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
         setTimeout(function(){ logout(); }, 2500);

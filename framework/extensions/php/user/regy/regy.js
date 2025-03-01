@@ -30,6 +30,11 @@ function regy()
         utils.graphics.apply_theme('/framework/extensions/php/user/regy', 'regy');
     }
 
+    function load_content(label)
+    {
+        return local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), label);
+    }
+
     function scan_enter(event)
     {
         key_control.scan(event);
@@ -51,8 +56,7 @@ function regy()
             msg_box = new msgbox();
 
             msg_box.init('main');
-            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'email_inv'), 
+            msg_box.show(load_content('m_mvc'), load_content('email_inv'), 
                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
@@ -62,8 +66,7 @@ function regy()
         {
             content_object.style.filter = 'blur(8px)';
 
-            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'credentials_cmplx'), 
+            msg_box.show(load_content('m_mvc'), load_content('credentials_cmplx'), 
                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
@@ -76,8 +79,7 @@ function regy()
             msg_box = new msgbox();
 
             msg_box.init('main');
-            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'passwd_confirm'), 
+            msg_box.show(load_content('m_mvc'), load_content('passwd_confirm'), 
                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
 
             return;
@@ -97,8 +99,7 @@ function regy()
                             msg_box = new msgbox();
 
                             msg_box.init('main');
-                            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_success'), 
+                            msg_box.show(load_content('m_mvc'), load_content('reg_success'), 
                                          msg_box.types.OK, [function(){ content_object.style.filter = 'none'; location.assign('/'); }]);
                         },
                         function()
@@ -108,8 +109,7 @@ function regy()
                             msg_box = new msgbox();
 
                             msg_box.init('main');
-                            msg_box.show(local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'm_mvc'), 
-                                         local_labels.fetch(global_m_mvc_dynamic_contents, utils.misc.active_language(), 'reg_fail'), 
+                            msg_box.show(load_content('m_mvc'), load_content('reg_fail'), 
                                          msg_box.types.OK, [function() { content_object.style.filter = 'none'; }]);
                         },
                         function()
