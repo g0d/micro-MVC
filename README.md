@@ -1,6 +1,6 @@
 ![alt tag](https://github.com/g0d/micro-MVC/blob/master/site/pix/micro_mvc.png)
 
-# micro-MVC (4.3.0)
+# micro-MVC (4.3.1)
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/889562a17e174c438fd56d35780822b0)](https://app.codacy.com/gh/g0d/micro-MVC/dashboard)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10058/badge)](https://www.bestpractices.dev/projects/10058)
