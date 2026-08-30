@@ -33,5 +33,5 @@ Enjoy!
 George Delaportas (G0D)  
 Copyright (C) 2015 - 2026 micro-MVC  
 Open Software License (OSL 3.0)  
-Supported by [PROBOTEK](https://probotek.eu/)  
+Supports all web infrastructure of [PROBOTEK](https://probotek.eu/) and [PROBOTEK AI](https://probotek.co.uk/)  
 Audited for web security & certified by [OCTAGON](https://octagonsec.gr/)
